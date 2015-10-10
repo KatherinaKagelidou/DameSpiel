@@ -15,7 +15,7 @@ public class Spieler {
 	 * @param figur steht für die Figuren die der Spieler besitzt
 	 * @param farbe ist die jeweilige Farbe des Spielers
 	 */
-	public Spieler(String name, Spielfigur figur, FarbEnum farbe){
+	public Spieler(String name, FarbEnum farbe){
 		this.setFarbe(farbe);
 		this.setFigur(figur);
 		this.setName(name);
