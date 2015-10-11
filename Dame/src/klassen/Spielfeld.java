@@ -13,7 +13,7 @@ public class Spielfeld {
 	 * @param id ist das Feld auf dem sich die einzelnen Spielfiguren befinden
 	 * @param figur ist die Spielfigur die das Spielfeld besitzt
 	 */
-	public Spielfeld(int id, Spielfigur figur){
+	public Spielfeld(int id){
 		this.setId(id);
 		this.setFigur(figur);
 	}
