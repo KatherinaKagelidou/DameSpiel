@@ -7,9 +7,11 @@ import klassen.Spielfeld;
 import org.junit.Test;
 
 public class TestSpielfeld {
-	
+	/**
+	 * vergleich zweier Felder ob sie nicht identisch sind
+	 */
 	@Test
-	public void test(){
+	public void vergleichZweierFeldID(){
 		Spielfeld Feld1 = new Spielfeld(1);
 		Spielfeld Feld2 = new Spielfeld(2);
 		Spielfeld Feld3 = new Spielfeld(3);
@@ -30,8 +32,10 @@ public class TestSpielfeld {
 		& (Feld3.getId() !=Feld4.getId()));
 	}
 	@Test
-	public void test1(){
-		
+	public void vergleichFeldgröße(){
+		/**
+		 * vergleich ob die Feldgrößer kleiner 0 oder größer 12 sind
+		 */
 		Spielfeld feld1 = new Spielfeld(5);
 		Spielfeld feld2 = new Spielfeld(6);
 		Spielfeld feld3 = new Spielfeld(7);
