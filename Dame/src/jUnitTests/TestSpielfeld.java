@@ -32,7 +32,7 @@ public class TestSpielfeld {
 		& (Feld3.getId() !=Feld4.getId()));
 	}
 	@Test
-	public void vergleichFeldgröße(){
+	public void vergleichFeldge(){
 		/**
 		 * vergleich ob die Feldgr��er kleiner 0 oder gr��er 12 sind
 		 */
