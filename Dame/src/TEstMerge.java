@@ -5,6 +5,7 @@ public class TEstMerge {
 		// TODO Auto-generated method stub
 System.out.println("dd");
 System.out.println("lol");
+System.out.println("huhu");
 	}
 
 }
