@@ -8,7 +8,9 @@ import org.junit.Test;
 
 
 public class TestSpieler {
-
+/**
+ * Test ueberprueft ob Spieler nicht die gleiche Farbe der Steine haben
+ */
 	@Test
 	public void test() {
 		Spieler S1 = new Spieler ("Bob",FarbEnum.SCHWARZ);
@@ -19,7 +21,9 @@ public class TestSpieler {
 		assertTrue((S1.getFarbe() != S2.getFarbe()));
 		
 	}
-	
+	/**
+	 * Test ueberprueft das Spieler nicht den selben Namen haben
+	 */
 	@Test
 	public void test1() {
 	Spieler S1 = new Spieler ("Bob",FarbEnum.SCHWARZ);
