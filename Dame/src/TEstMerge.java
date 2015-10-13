@@ -10,6 +10,7 @@ public class TEstMerge {
 		System.out.println("halllllooooo33333");
 		System.out.println("huhu");
 		System.out.println("test");
+		System.out.println("Teeessst");
 	}
 
 }
