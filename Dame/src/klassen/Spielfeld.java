@@ -1,7 +1,7 @@
 package klassen;
 /**
  * Klasse Spielfeld
- * @author Brankica
+ * @author B2
  *
  */
 public class Spielfeld {
@@ -11,7 +11,6 @@ public class Spielfeld {
 	/**
 	 * Konstruktor der Klasse Spielfeld
 	 * @param id ist das Feld auf dem sich die einzelnen Spielfiguren befinden
-	 * @param figur ist die Spielfigur die das Spielfeld besitzt
 	 */
 	public Spielfeld(int id){
 		this.setId(id);
@@ -20,6 +19,10 @@ public class Spielfeld {
 	public int getId(){
 		return id;
 	}
+	/**
+	 * Setter mit Ueberpruefung ob die Id zwischen 0 und 100 liegt
+	 * @param id setzt die id eines Spielfeldes
+	 */
 	public void setId(int id){
 		if(id<0||id>100){
 			throw new RuntimeException("ungültiges Spielfeld");
@@ -32,6 +35,10 @@ public class Spielfeld {
 	public void setFigur(Spielfigur figur){
 		this.figur=figur;
 	}
+	
+	/**
+	 * toString-Methode mit der AUgabe der Attribute Id und Figur
+	 */
 	@Override
 	public String toString(){
 		return ("Id: "+getId()+

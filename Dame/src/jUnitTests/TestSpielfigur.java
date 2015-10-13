@@ -34,7 +34,10 @@ public class TestSpielfigur {
 				& (F3.getPosition() != F2.getPosition())
 				& (F3.getPosition() != F4.getPosition()));
 	}
-	
+	/**
+	 * Ueberprueft ob die Position des SPielers mit den weiﬂen Steinen 
+	 * im Bereich zwischen 0 und 100 liegt
+	 */
 	
 	@Test
 	public  void test1(){

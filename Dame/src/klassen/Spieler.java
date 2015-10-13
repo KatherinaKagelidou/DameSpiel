@@ -12,8 +12,7 @@ public class Spieler {
 	/**
 	 * Der Konstruktor der Klasse Spieler
 	 * @param name ist der Name der Spielers
-	 * @param figur steht für die Figuren die der Spieler besitzt
-	 * @param farbe ist die jeweilige Farbe des Spielers
+	 * @param farbe für die spielfiguren
 	 */
 	public Spieler(String name, FarbEnum farbe){
 		this.setFarbe(farbe);
@@ -24,6 +23,10 @@ public class Spieler {
 	public String getName() {
 		return name;
 	}
+	/**
+	 * Setter mit Ueberpruefung ob ein Name existiert oder der Name zu kurz ist
+	 * @param name setzt den namen des Spielers
+	 */
 	public void setName(String name) {
 		if((name.length()<2)||(name==null)){
 			throw new RuntimeException("Name ist zu kurz");
@@ -43,6 +46,9 @@ public class Spieler {
 		this.farbe = farbe;
 	}
 	
+	/**
+	 * toString-Methode mit der Ausgabe der Attribute Name, Farbe und Figur
+	 */
 	@Override 
 	public String toString(){
 		return
