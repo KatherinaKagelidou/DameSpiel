@@ -6,7 +6,8 @@ public class TEstMerge {
 		System.out.println("dd");
 		System.out.println("lol");
 		System.out.println("hallo");
-System.out.println("huhu");
+		System.out.println("huhu");
+		System.out.println("test");
 	}
 
 }
