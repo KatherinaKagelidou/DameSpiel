@@ -17,13 +17,11 @@ public class Spielfeld {
 		this.setId(id);
 		//this.setFigur(figur);
 	}
-<<<<<<< HEAD
+
 	//public Spielfeld(Spielbrett spielbrett) {
 	//	this.spielbrett=spielbrett;
 	//}
 
-=======
->>>>>>> branch 'master' of https://github.com/KatherinaKagelidou/DameSpiel.git
 	public String getId(){
 		return id;
 	}
