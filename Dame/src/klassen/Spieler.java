@@ -18,15 +18,23 @@ public class Spieler {
 	 * @param farbe für die spielfiguren
 	 */
 	public Spieler(String name, FarbEnum farbe, KI ki){
+<<<<<<< HEAD
 		this.setName(name);
+=======
+>>>>>>> branch 'master' of https://github.com/KatherinaKagelidou/DameSpiel.git
 		this.setFarbe(farbe);
 		this.setFigur(figur);
+<<<<<<< HEAD
 		this.setKi(ki);
 	}
 	
 	public void setKi(KI ki){
 		this.ki=ki;
 	
+=======
+		this.setName(name);
+		this.setKi(ki);
+>>>>>>> branch 'master' of https://github.com/KatherinaKagelidou/DameSpiel.git
 	}
 	
 	public String getName() {
@@ -59,7 +67,15 @@ public class Spieler {
 		return ki;
 	}
 
+<<<<<<< HEAD
 
+=======
+	public void setKi(KI ki) {
+		this.ki = ki;
+	}
+
+	
+>>>>>>> branch 'master' of https://github.com/KatherinaKagelidou/DameSpiel.git
 	/**
 	 * toString-Methode mit der Ausgabe der Attribute Name, Farbe und Figur
 	 */

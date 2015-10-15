@@ -17,18 +17,20 @@ public class Spielfeld {
 		this.setId(id);
 		//this.setFigur(figur);
 	}
+<<<<<<< HEAD
 	//public Spielfeld(Spielbrett spielbrett) {
 	//	this.spielbrett=spielbrett;
 	//}
 
+=======
+>>>>>>> branch 'master' of https://github.com/KatherinaKagelidou/DameSpiel.git
 	public String getId(){
 		return id;
 	}
 	/**
 	 * Setter mit Ueberpruefung ob die Id zwischen 0 und 100 liegt
 	 * @param id setzt die id eines Spielfeldes
-	 */
-
+	*/
 	public void setId(String id){
 		if(id.length()<2){
 			throw new RuntimeException("ungültiges Spielfeld");
