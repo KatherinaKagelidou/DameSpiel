@@ -27,8 +27,12 @@ public class Spieler {
 	
 	public void setKi(KI ki){
 		this.ki=ki;
-		this.setName(name);
-		this.setKi(ki);
+		
+	
+	}
+	
+	public KI getKi() {
+		return ki;
 	}
 	
 	public String getName() {
@@ -57,14 +61,10 @@ public class Spieler {
 		this.farbe = farbe;
 	}
 	
-	public KI getKi() {
-		return ki;
-	}
 
 
-	public void setKi(KI ki) {
-		this.ki = ki;
-	}
+
+
 
 
 	/**
