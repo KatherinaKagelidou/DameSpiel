@@ -1,4 +1,7 @@
 package klassen;
+
+import java.awt.AlphaComposite;
+
 /**
  * Klasse SPielbrett
  * @author B2
@@ -8,10 +11,13 @@ public class Spielbrett {
 
 		
 		 private Spielfeld [][] feld;
+	
 		
 
 
 		 public Spielbrett(){
+			 
+			 
 			 
 			 feld= new Spielfeld[12][12];
 		

@@ -5,26 +5,32 @@ package klassen;
  *
  */
 public class Spielfeld {
-	private int id;
+	private String id;
 	private Spielfigur figur;
+	private Spielbrett spielbrett;
 	
 	/**
 	 * Konstruktor der Klasse Spielfeld
 	 * @param id ist das Feld auf dem sich die einzelnen Spielfiguren befinden
 	 */
-	public Spielfeld(int id){
+	public Spielfeld(String id){
 		this.setId(id);
-		this.setFigur(figur);
+		//this.setFigur(figur);
 	}
-	public int getId(){
+	//public Spielfeld(Spielbrett spielbrett) {
+	//	this.spielbrett=spielbrett;
+	//}
+
+	public String getId(){
 		return id;
 	}
 	/**
 	 * Setter mit Ueberpruefung ob die Id zwischen 0 und 100 liegt
 	 * @param id setzt die id eines Spielfeldes
 	 */
-	public void setId(int id){
-		if(id<0||id>100){
+
+	public void setId(String id){
+		if(id.length()<2){
 			throw new RuntimeException("ungültiges Spielfeld");
 		}
 		this.id=id;
