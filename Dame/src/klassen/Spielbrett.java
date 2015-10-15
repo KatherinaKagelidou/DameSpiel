@@ -13,6 +13,8 @@ public class Spielbrett {
 
 		 public Spielbrett(){
 			 
+			 
+			 
 			 feld= new Spielfeld[12][12];
 		
 

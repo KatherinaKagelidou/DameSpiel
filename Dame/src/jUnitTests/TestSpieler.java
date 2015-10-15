@@ -13,8 +13,8 @@ public class TestSpieler {
  */
 	@Test
 	public void test() {
-		Spieler S1 = new Spieler ("Bob",FarbEnum.SCHWARZ);
-		Spieler S2 = new Spieler ("Charlie",FarbEnum.WEISS);
+		Spieler S1 = new Spieler ("Bob",FarbEnum.SCHWARZ,null);
+		Spieler S2 = new Spieler ("Charlie",FarbEnum.WEISS,null);
 		
 		System.out.println(S1);
 		System.out.println(S2);
@@ -26,8 +26,8 @@ public class TestSpieler {
 	 */
 	@Test
 	public void test1() {
-	Spieler S1 = new Spieler ("Bob",FarbEnum.SCHWARZ);
-	Spieler S2 = new Spieler ("Charlie",FarbEnum.WEISS);
+	Spieler S1 = new Spieler ("Bob",FarbEnum.SCHWARZ,null);
+	Spieler S2 = new Spieler ("Charlie",FarbEnum.WEISS,null);
 	
 	System.out.println(S1);
 	System.out.println(S2);

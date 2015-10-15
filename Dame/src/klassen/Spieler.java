@@ -8,16 +8,19 @@ public class Spieler {
 	private String name;
 	private Spielfigur figur;
 	private FarbEnum farbe;
+	private KI ki;
+	
 	
 	/**
 	 * Der Konstruktor der Klasse Spieler
 	 * @param name ist der Name der Spielers
 	 * @param farbe für die spielfiguren
 	 */
-	public Spieler(String name, FarbEnum farbe){
+	public Spieler(String name, FarbEnum farbe, KI ki){
 		this.setFarbe(farbe);
 		this.setFigur(figur);
 		this.setName(name);
+		this.setKi(ki);
 	}
 	
 	public String getName() {
@@ -45,6 +48,15 @@ public class Spieler {
 	public void setFarbe(FarbEnum farbe) {
 		this.farbe = farbe;
 	}
+	
+	public KI getKi() {
+		return ki;
+	}
+
+	public void setKi(KI ki) {
+		this.ki = ki;
+	}
+
 	
 	/**
 	 * toString-Methode mit der Ausgabe der Attribute Name, Farbe und Figur
