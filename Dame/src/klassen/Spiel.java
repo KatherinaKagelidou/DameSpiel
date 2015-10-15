@@ -68,12 +68,7 @@ public class Spiel implements iBediener {
 							
 						}
 						spielerliste.add(s);
-						if(s.g){
-							
-						}
-						if (s.getKI() != null) {
-							this.setKI(KI);
-						}
+					
 					}
 				}
 				
