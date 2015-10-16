@@ -37,20 +37,26 @@ public class Spielbrett {
 
 	
 
-			 for (int i = 0; i < feld.length; i++) {
+			 for (int i = 0; i <=feld.length; i++) {
 
-		            for (int  j =0; j <feld[i].length; j++) {
-		            	
-		            	
-		            	
-//		            	feld[i][j]= new Spielfeld();
-
-		    
-		                
-		            System.out.println(feld[i][j]);	
+		            for (int  j =0; j <=feld[i].length; j++) {
+		            	str=""+ch+x;
+		            	x++;
+		            	if(x>12){
+		            		x=1;
+		            		ch++;
+		            	}
+		            	System.out.println(str);
 		            }
+		            if(ch==ch1){
+		            	break;
+		            }
+		      }
+			 
+			 
+			 
+			 
 			 }
-		            }
 	
 		
 public static void main(String[] args) {
