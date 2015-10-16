@@ -49,6 +49,7 @@ public class Spielbrett {
 		            	System.out.println(str);
 		            }
 		            if(ch==ch1){
+		            	System.out.println(str=""+ch1+x);
 		            	break;
 		            }
 		      }
