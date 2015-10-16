@@ -39,9 +39,9 @@ public class Spielbrett {
 
 		for (int i = 0; i <feld.length; i++) {
 			for (int j = 0; j <12; j++) {
-				if (ch <=ch1) {
+				if (j<=12) {
 					str = "" + ch + x;
-					ch++;
+//					ch++;
 					x++;
 				}
 				
