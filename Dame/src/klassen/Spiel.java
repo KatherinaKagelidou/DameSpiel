@@ -8,7 +8,7 @@ public class Spiel implements iBediener {
 	private int AnzSpieler = 2;
 	private int spielerAmZug = 0;
 	private ArrayList<Spieler> spielerliste = new ArrayList<Spieler>();
-
+	private int zielPos;
 	
 	public Spiel(){
 		
@@ -40,7 +40,7 @@ public class Spiel implements iBediener {
 
 
 
-	public void spielerHinzu(String name, String farbe, boolean ki){
+	public void spielerHinzu(String name, String farbe, KI ki){
 		if(spielerliste.size() < this.getAnzSpieler()){
 			Spieler s = new Spieler(name, FarbEnum.valueOf(farbe), ki);
 				if(s.getFarbe()==null){
@@ -74,8 +74,33 @@ public class Spiel implements iBediener {
 				
 			}
 		}
+	
+	public void startSpiel(int AnzSpieler) {
+
+		if (AnzSpieler == 2) {
+			sb = new Spielbrett();
+			this.setAnzSpieler(AnzSpieler);
+			spielerliste.clear();
+		
+		}
 	}
 	
-
+	public void zeigeSpieler() {
+		for (int i = 0; i < spielerliste.size(); i++) {
+			System.out.println("Name: " + spielerliste.get(i).getName()
+					+ ", Farbe: " + spielerliste.get(i).getFarbe());
+		}
+	}
 	
-
+	public void spielfeldBelegt(int id, int zielPos){
+	
+		if (spielerliste.get(spielerAmZug).getFarbe()
+				.equals(sb.getSpielfeld(zielPos).getFigur().getFarbe())) {
+			spielerliste.get(spielerAmZug).getFigur().setPosition(spielerliste.get(spielerAmZug).getFigur()
+					.getPosition());
+			
+			System.out.println("Auf dieser Position befindet sich bereits deine eigene Figur \n "
+					+ "wähle eine andere Figur");
+		}
+	}
+}
