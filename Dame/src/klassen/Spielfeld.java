@@ -47,7 +47,7 @@ public class Spielfeld {
 	 */
 	@Override
 	public String toString(){
-		return ("Id: "+getId()+
-				"Figur: "+getFigur());
+		return ("Id : "  + getId() +
+				" mit der Figur: " + getFigur());
 	}
 }
