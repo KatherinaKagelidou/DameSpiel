@@ -34,6 +34,8 @@ public class Spielbrett {
 		char ch1 = 'L';
 		int x = 1;
 		String str=null;
+		boolean schwarzesFeld=true;
+		
 
 	
 
@@ -42,18 +44,30 @@ public class Spielbrett {
 		            for (int  j =0; j <=feld[i].length; j++) {
 		            	str=""+ch+x;
 		            	x++;
+		            	
+			            
 		            	if(x>12){
 		            		x=1;
 		            		ch++;
 		            	}
-		            	System.out.println(str);
+		            	
+		            	
+		            	
+		            	Spielfeld spielfeld = new Spielfeld(str);
+		            	System.out.println(spielfeld);
+		            	
+		            	
+		            	
+		            	
+//		            	
 		            }
+		            
 		            if(ch==ch1){
 		            	System.out.println(str=""+ch1+x);
 		            	break;
 		            }
 		      }
-			 
+			 	
 			 
 			 
 			 
