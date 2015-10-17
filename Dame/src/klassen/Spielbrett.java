@@ -64,6 +64,10 @@ public class Spielbrett {
 		            
 		            if(ch==ch1){
 		            	System.out.println(str=""+ch1+x);
+		            	
+		            	Spielfeld spielfeld=new Spielfeld(str);
+		            	System.out.println(spielfeld);
+		            	
 		            	break;
 		            }
 		      }
