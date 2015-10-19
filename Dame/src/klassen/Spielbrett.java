@@ -53,7 +53,7 @@ public class Spielbrett {
 		            	
 		            	
 		            	
-		            	Spielfeld spielfeld = new Spielfeld(str);
+		            	Spielfeld spielfeld = new Spielfeld(str,null);
 		            	System.out.println(spielfeld);
 		            	
 		            	
@@ -65,7 +65,7 @@ public class Spielbrett {
 		            if(ch==ch1){
 		            	System.out.println(str=""+ch1+x);
 		            	
-		            	Spielfeld spielfeld=new Spielfeld(str);
+		            	Spielfeld spielfeld=new Spielfeld(str,null);
 		            	System.out.println(spielfeld);
 		            	
 		            	break;
