@@ -1,6 +1,6 @@
 package klassen;
 
-import java.awt.AlphaComposite;
+
 
 /**
  * Klasse SPielbrett
@@ -14,13 +14,14 @@ public class Spielbrett {
 		
 		Spielfeld spielfeld;
 
-	boolean feldSchwarz;
+
 
 	/**
 	 * Konstruktor der Klasse Spielbrett
 	 */
 
 	private Spielfeld[][] feld;
+	private boolean schwarz=true;
 
 	public Spielbrett() {
 
@@ -28,55 +29,51 @@ public class Spielbrett {
 		getSpielbrett(feld);
 	}
 	
+	
+	
 	public void getSpielbrett(Spielfeld[][] feld) {
 
 		char ch = 'A';
 		char ch1 = 'L';
 		int x = 1;
 		String str=null;
-		boolean schwarzesFeld=true;
-		
-
 	
 
-			 for (int i = 0; i <=feld.length; i++) {
+			 for (int i = 0; i <feld.length; i++) {
 
-		            for (int  j =0; j <=feld[i].length; j++) {
+		            for (int  j =0; j <feld[i].length; j++) {
 		            	str=""+ch+x;
 		            	x++;
+		           
 		            	
-			            
-		            	if(x>12){
-		            		x=1;
-		            		ch++;
-		            	}
-		            	
-		            	
-		            	
-		            	Spielfeld spielfeld = new Spielfeld(str,null);
-		            	System.out.println(spielfeld);
-		            	
-		            	
-		            	
-		            	
-//		            	
-		            }
+		            	Spielfeld spielfeld = new Spielfeld(this,str,schwarz);
 		            
-		            if(ch==ch1){
-		            	System.out.println(str=""+ch1+x);
-		            	
-		            	Spielfeld spielfeld=new Spielfeld(str,null);
 		            	System.out.println(spielfeld);
 		            	
-		            	break;
+		            	  schwarz=!schwarz;
+		            	  
+		            	  if(x>12){
+			            		x=1;
+			            		ch++;
+			            		if(ch==ch1){
+			            			str=""+ch1+x;
+			            			schwarz=!schwarz;
+			            			break;
+			            			
+			            		}
+			            		 schwarz=!schwarz;
 		            }
-		      }
-			 	
-			 
-			 
+		            	  }
+		            }
 			 
 			 }
+			 	
+		
 	
+	public boolean getFarbe(){
+		return schwarz;
+	
+	}
 		
 public static void main(String[] args) {
 

@@ -9,16 +9,19 @@ public class Spielfeld {
 	private Spielfigur figur;
 	private boolean hatSpielfigur = false;
 	private Spielbrett spielbrett;
-	private Spielfeld spielfeld;
 	private FarbEnum farbeFeld;
+	private boolean istSchwarz;
+	
 	
 	/**
 	 * Konstruktor der Klasse Spielfeld
 	 * @param id ist das Feld auf dem sich die einzelnen Spielfiguren befinden
 	 */
-	public Spielfeld(String id, FarbEnum farbeFeld){
+	public Spielfeld(Spielbrett brett,String id, boolean schwarz){
 		setId(id);
 		setFarbeFeld(farbeFeld);
+		this.istSchwarz=schwarz;
+		this.spielbrett=brett;
 		//this.setFigur(figur);
 	}
 
@@ -61,7 +64,13 @@ public class Spielfeld {
 	}
 	
 	public FarbEnum getFarbeFeld(){
-		return farbeFeld;
+		
+		if(istSchwarz==true){
+			return FarbEnum.SCHWARZ;
+		}
+			
+		
+		return FarbEnum.WEISS;
 	}
 	
 	
