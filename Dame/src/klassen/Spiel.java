@@ -1,5 +1,8 @@
 package klassen;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class Spiel implements iBediener {
@@ -38,6 +41,17 @@ public class Spiel implements iBediener {
 		this.spielerAmZug = spielerAmZug;
 	}
 
+	public static String readString() {
+		String Eingabe = new String();
+		try {
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					System.in));
+			Eingabe = in.readLine();
+		} catch (IOException ex) {
+			System.out.println(ex.getMessage());
+		}
+		return Eingabe;
+	}
 
 	@Override
 	public void spielerHinzu(String name, String farbe, KI ki){
@@ -92,15 +106,21 @@ public class Spiel implements iBediener {
 		}
 	}
 	@Override
-	public void spielfeldBelegt(int id, int zielPos){
-	
+	public void spielfeldBelegt(int id, int zielPos) {
+
 		if (spielerliste.get(spielerAmZug).getFarbe()
-				.equals(sb.getSpielfeld(zielPos).getFigur().getFarbe())) {
-			spielerliste.get(spielerAmZug).getFigur().setPosition(spielerliste.get(spielerAmZug).getFigur()
-					.getPosition());
-			
-			System.out.println("Auf dieser Position befindet sich bereits deine eigene Figur \n "
-					+ "wähle eine andere Figur");
+				.equals(sb.getSpielbrett(zielPos).getFigur().getFarbe())) {
+			spielerliste
+					.get(spielerAmZug)
+					.getFigur()
+					.setPosition(
+							spielerliste.get(spielerAmZug).getFigur()
+									.getPosition());
+
+			System.out
+					.println("Auf dieser Position befindet sich bereits deine eigene Figur \n "
+							+ "wähle eine andere Figur");
 		}
+	}
 	}
 }
