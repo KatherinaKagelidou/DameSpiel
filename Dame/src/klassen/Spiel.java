@@ -39,7 +39,7 @@ public class Spiel implements iBediener {
 	}
 
 
-
+	@Override
 	public void spielerHinzu(String name, String farbe, KI ki){
 		if(spielerliste.size() < this.getAnzSpieler()){
 			Spieler s = new Spieler(name, FarbEnum.valueOf(farbe), ki);
@@ -74,7 +74,7 @@ public class Spiel implements iBediener {
 				
 			}
 		}
-	
+	@Override
 	public void startSpiel(int AnzSpieler) {
 
 		if (AnzSpieler == 2) {
@@ -84,14 +84,14 @@ public class Spiel implements iBediener {
 		
 		}
 	}
-	
+	@Override
 	public void zeigeSpieler() {
 		for (int i = 0; i < spielerliste.size(); i++) {
 			System.out.println("Name: " + spielerliste.get(i).getName()
 					+ ", Farbe: " + spielerliste.get(i).getFarbe());
 		}
 	}
-	
+	@Override
 	public void spielfeldBelegt(int id, int zielPos){
 	
 		if (spielerliste.get(spielerAmZug).getFarbe()
