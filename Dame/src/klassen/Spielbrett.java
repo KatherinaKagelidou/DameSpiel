@@ -74,6 +74,10 @@ public class Spielbrett {
 		return schwarz;
 	
 	}
+	@Override
+	public String toString(){
+		return "";
+	}
 		
 public static void main(String[] args) {
 
