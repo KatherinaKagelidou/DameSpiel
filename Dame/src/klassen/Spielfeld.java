@@ -107,8 +107,10 @@ public class Spielfeld {
 	 */
 	@Override
 	public String toString(){
-		return ("Id : "  + getId() +
-				" hat die Farbe " + getFarbeFeld() + 
-				" mit der Figur: " + getFigur());
+		String s = "[" + this.getId() + " "+ this.getFarbeFeld() +  "]";
+		if(this.getId().contains("12")){
+			s+= "\n";
+		}
+		return s;
 	}
 }

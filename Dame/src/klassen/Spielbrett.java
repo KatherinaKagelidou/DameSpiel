@@ -16,6 +16,7 @@ public class Spielbrett {
 
 
 
+		Spielbrett sb;
 	/**
 	 * Konstruktor der Klasse Spielbrett
 	 */
@@ -33,8 +34,8 @@ public class Spielbrett {
 	
 	public void getSpielbrett(Spielfeld[][] feld) {
 
-		char ch = 'A';
-		char ch1 = 'L';
+		char ch = 'L';
+		char ch1 = 'A';
 		int x = 1;
 		String str=null;
 	
@@ -45,38 +46,35 @@ public class Spielbrett {
 		            	str=""+ch+x;
 		            	x++;
 		           
+		           
 		            	
-		            	Spielfeld spielfeld = new Spielfeld(this,str,schwarz);
-		            
-		            	System.out.println(spielfeld);
+		            	Spielfeld spielfeld = new Spielfeld(sb, str,true);
+		            	spielfeld.setFarbeFeld(FarbEnum.SCHWARZ);
+		            	System.out.print(spielfeld);
 		            	
-		            	  schwarz=!schwarz;
+		            	
 		            	  
 		            	  if(x>12){
 			            		x=1;
-			            		ch++;
+			            		ch--;
 			            		if(ch==ch1){
 			            			str=""+ch1+x;
-			            			schwarz=!schwarz;
+			            		
 			            			break;
 			            			
 			            		}
-			            		 schwarz=!schwarz;
+			            		 
 		            }
 		            	  }
 		            }
 			 
 			 }
-			 	
+	
 		
 	
 	public boolean getFarbe(){
 		return schwarz;
 	
-	}
-	@Override
-	public String toString(){
-		return "";
 	}
 		
 public static void main(String[] args) {
