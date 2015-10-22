@@ -15,10 +15,10 @@ public class TestSpielfigur {
 
 	@Test
 	public void test() {
-		Spielfigur F1 = new Spielfigur(FarbEnum.SCHWARZ,3);
-		Spielfigur F2 = new Spielfigur(FarbEnum.WEISS,60);
-		Spielfigur F3 = new Spielfigur(FarbEnum.SCHWARZ,20);
-		Spielfigur F4 = new Spielfigur(FarbEnum.WEISS,30);
+		Spielfigur F1 = new Spielfigur(FarbEnum.SCHWARZ);
+		Spielfigur F2 = new Spielfigur(FarbEnum.WEISS);
+		Spielfigur F3 = new Spielfigur(FarbEnum.SCHWARZ);
+		Spielfigur F4 = new Spielfigur(FarbEnum.WEISS);
 
 		System.out.println(F1);
 		System.out.println(F2);
@@ -42,19 +42,19 @@ public class TestSpielfigur {
 	@Test
 	public  void test1(){
 		
-		Spielfigur s1 = new Spielfigur(FarbEnum.WEISS,100);
-		Spielfigur s2 = new Spielfigur(FarbEnum.WEISS,50);
-		Spielfigur s3 = new Spielfigur(FarbEnum.WEISS,30);
-		Spielfigur s4 = new Spielfigur(FarbEnum.WEISS,130);
+		Spielfigur s1 = new Spielfigur(FarbEnum.WEISS);
+		Spielfigur s2 = new Spielfigur(FarbEnum.WEISS);
+		Spielfigur s3 = new Spielfigur(FarbEnum.WEISS);
+		Spielfigur s4 = new Spielfigur(FarbEnum.WEISS);
 		
-		assertFalse((s1.getPosition() <0 )
-				& (s1.getPosition() >100)
-				& (s2.getPosition() <0)
-				& (s2.getPosition() >100)
-				& (s3.getPosition() <0)
-				& (s3.getPosition() >100)
-				& (s4.getPosition() <0)
-				& (s4.getPosition() >100));
+//		assertFalse((s1.getPosition() <0 )
+//				& (s1.getPosition() >100)
+//				& (s2.getPosition() <0)
+//				& (s2.getPosition() >100)
+//				& (s3.getPosition() <0)
+//				& (s3.getPosition() >100)
+//				& (s4.getPosition() <0)
+//				& (s4.getPosition() >100));
 	}
 	
 
