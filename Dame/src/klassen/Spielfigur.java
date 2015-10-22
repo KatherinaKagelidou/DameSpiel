@@ -8,7 +8,10 @@ public class Spielfigur {
 	
 	
 	private FarbEnum farbe;
-	private int position;
+	private String position;
+	private Spieler spieler;
+	private Spielfeld spielfeld;
+	
 	
 	
 	/**
@@ -17,15 +20,25 @@ public class Spielfigur {
 	 * @param position der Figur
 	 */
 	
-	public Spielfigur(FarbEnum farbe, int position){
+	public Spielfigur(FarbEnum farbe){
 		
 		this.setFarbe(farbe);
-		this.setPosition(position);
+		this.setSpieler(spieler);
 		
+	}
+	
+	public void setSpielfeld(Spielfeld spielfeld){
+		if (spielfeld==null){
+			throw new RuntimeException(" Falsche Eingabe");
+		}
+		else{
+			this.spielfeld=spielfeld;
+		}
 	}
 	
 	public FarbEnum getFarbe(){
 		return farbe;
+		
 	}
 	
 	/**
@@ -42,8 +55,20 @@ public class Spielfigur {
 		this.farbe=farbe;
 	}
 	
-	public int getPosition(){
+	public String getPosition(){
 		return position;
+	}
+	
+	public void setSpieler(Spieler spieler){
+		this.spieler=spieler;
+	}
+	
+	public Spieler getSpieler(){
+		return spieler;
+	}
+	
+	public Spielfeld getSpielfeld(){
+		return spielfeld;
 	}
 	
 	/**
@@ -51,12 +76,15 @@ public class Spielfigur {
 	 * größer 0 ist
 	 * @param position setzt die position der spielfigur
 	 */
-	public void setPosition(int position){
-		
-		if(position<0){
-			throw new RuntimeException("Keine gueltige Position auf dem Spielbrett");
-		}
-		this.position=position;
+	public void setPosition(String pos) {	
+		if(spielfeld.istFeldBelegt()==true)
+			System.out.println("Es befindet sich eine Figur auf diesem Spielfeld. Schlagen?");
+		else{
+			this.position= pos;
+			this.setSpielfeld(spielfeld);
+			spielfeld.setSpielfigur(this);
+			System.out.println(""+this +" wurde auf Position: " + pos + " gelegt.");
+			}
 	}
 	
 	/**

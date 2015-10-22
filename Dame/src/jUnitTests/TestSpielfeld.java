@@ -2,6 +2,7 @@ package jUnitTests;
 
 import static org.junit.Assert.*;
 import klassen.FarbEnum;
+import klassen.Spielbrett;
 import klassen.Spielfeld;
 
 import org.junit.Test;
@@ -12,10 +13,11 @@ public class TestSpielfeld {
 	 */
 	@Test
 	public void vergleichZweierFeldID(){
-		Spielfeld Feld1 = new Spielfeld("1",FarbEnum.SCHWARZ);
-		Spielfeld Feld2 = new Spielfeld("2", FarbEnum.WEISS);
-		Spielfeld Feld3 = new Spielfeld("3",FarbEnum.SCHWARZ);
-		Spielfeld Feld4 = new Spielfeld("4",FarbEnum.WEISS);
+		Spielbrett sb = new Spielbrett();
+		Spielfeld Feld1 = new Spielfeld(sb,"1",true);
+		Spielfeld Feld2 = new Spielfeld(sb,"2",false);
+		Spielfeld Feld3 = new Spielfeld(sb,"3",true);
+		Spielfeld Feld4 = new Spielfeld(sb,"4",false);
 		
 		System.out.println(Feld1);
 		System.out.println(Feld2);
@@ -36,9 +38,10 @@ public class TestSpielfeld {
 		/**
 		 * vergleich ob die Feldgr��er kleiner 0 oder gr��er 12 sind
 		 */
-		Spielfeld feld1 = new Spielfeld("5", FarbEnum.WEISS);
-		Spielfeld feld2 = new Spielfeld("6", FarbEnum.SCHWARZ);
-		Spielfeld feld3 = new Spielfeld("7", FarbEnum.WEISS);
+		Spielbrett sb = new Spielbrett();
+		Spielfeld feld1 = new Spielfeld(sb,"5",true);
+		Spielfeld feld2 = new Spielfeld(sb,"6",false);
+		Spielfeld feld3 = new Spielfeld(sb,"7",true);
 		
 		assertFalse ((feld1.getId().length()<0)
 		&& (feld1.getId().length()>12)

@@ -13,6 +13,7 @@ public class Spielfeld {
 	private boolean istSchwarz;
 	
 	
+	
 	/**
 	 * Konstruktor der Klasse Spielfeld
 	 * @param id ist das Feld auf dem sich die einzelnen Spielfiguren befinden
@@ -103,13 +104,30 @@ public class Spielfeld {
 	}
 	
 	/**
+	 * Setzt eine Spielfigur auf ein Spielfeld
+	 * 
+	 * @param sfigur Uebergabewert vom Typ Spielfigur
+	 */
+	
+	public void setSpielfigur(Spielfigur sfigur) {
+		if(this.hatSpielfigur==false){
+			this.figur = sfigur;
+			}
+		else System.out.println("Es befindet sich eine Figur auf dem Feld, kicken?");
+		
+	}
+	
+	/**
 	 * toString-Methode mit der AUgabe der Attribute Id und Figur
 	 */
 	@Override
 	public String toString(){
-		String s = "[" + this.getId() + " "+ this.getFarbeFeld() +  "]";
+		String s = ""
+				+ "[" + this.getId() + " - "+ this.getFarbeFeld() + " - "  + getFigur()+"]";
 		if(this.getId().contains("12")){
+			
 			s+= "\n";
+			
 		}
 		return s;
 	}

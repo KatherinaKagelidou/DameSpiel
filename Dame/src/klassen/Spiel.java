@@ -1,126 +1,176 @@
 package klassen;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-
 public class Spiel implements iBediener {
 
-	private Spielbrett sb;
-	private int AnzSpieler = 2;
-	private int spielerAmZug = 0;
-	private ArrayList<Spieler> spielerliste = new ArrayList<Spieler>();
-	private int zielPos;
-	
-	public Spiel(){
+	private static int spielerAnz = 0;
+	private final static int spielerMax = 2;
+	private static Spieler[] spieler = new Spieler[spielerMax];
+	private static int sCounter = 0;
+	private Spielfigur spielfigur;
+	private Spielbrett spielbrett;
+	private Spielfeld spielfeld;
+
+	public Spiel() {
+
+//		spielbrett= new Spielbrett();
+	}
+
+	/**
+	 * 
+	 * Methode addSpieler()
+	 * 
+	 * Fuegt die jeweiligen Spieler ins Spiel hinzu.
+	 * Der erste Spieler waehlt eine Farbei, wobei 
+	 * der zweite Spieler die Farbe automatisch bekommt
+	 * die der erste Spieler nicht ausgewaehlt hat
+	 * 
+	 * @param name
+	 *            Name des Spielers.
+	 * @param farbe
+	 *            Farbe des Spielers
+	 */
+
+@Override
+	public void addSpieler(String name, FarbEnum farbe, KI ki) {
 		
-	}
+		
 	
-	
-	
-	public int getAnzSpieler() {
-		return AnzSpieler;
-	}
+		if (spielerAnz == spielerMax || sCounter == spielerMax) {
+			throw new RuntimeException(
+					"Maximale Spieleranzahl bereits erreicht");
 
-
-
-	public void setAnzSpieler(int anzSpieler) {
-		AnzSpieler = anzSpieler;
-	}
-
-
-
-	public int getSpielerAmZug() {
-		return spielerAmZug;
-	}
-
-
-
-	public void setSpielerAmZug(int spielerAmZug) {
-		this.spielerAmZug = spielerAmZug;
-	}
-
-	public static String readString() {
-		String Eingabe = new String();
-		try {
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					System.in));
-			Eingabe = in.readLine();
-		} catch (IOException ex) {
-			System.out.println(ex.getMessage());
-		}
-		return Eingabe;
-	}
-
-	@Override
-	public void spielerHinzu(String name, String farbe, KI ki){
-		if(spielerliste.size() < this.getAnzSpieler()){
-			Spieler s = new Spieler(name, FarbEnum.valueOf(farbe), ki);
-				if(s.getFarbe()==null){
-					for(Spieler spieler:spielerliste){
-						if(spieler.getFarbe().equals(FarbEnum.SCHWARZ)){
-							s.setFarbe(FarbEnum.WEISS);
-							spielerliste.add(s);
-						}else{
-							s.setFarbe(FarbEnum.SCHWARZ);
-							spielerliste.add(s);
-						}
-							
-						
-					}
-					if(spielerliste.isEmpty()){
-						spielerliste.add(s);
-						
-					}else{
-						for (Spieler spieler : spielerliste) {
-							// falls ein Spieler die gleiche Farbe gewählt hat
-							if(s.getFarbe().equals(s.getFarbe())){
-								System.out.println("Die Farbe wurde schon gewählt!");
-							}
-							
-							
-						}
-						spielerliste.add(s);
-					
-					}
-				}
+		} else {
+			spieler[sCounter] = new Spieler(name, farbe, ki);
+			
+			for (int i = 0; i < sCounter; i++) {
 				
+				if (spieler[0].getFarbe().equals(spieler[1].getFarbe())) {
+					
+					
+					if(spieler[0].getFarbe().equals(FarbEnum.SCHWARZ)){
+						
+						spieler[1].setFarbe(FarbEnum.WEISS);
+						
+					}
+					if(spieler[0].getFarbe().equals(FarbEnum.WEISS)){
+						
+						spieler[1].setFarbe(FarbEnum.SCHWARZ);
+						
+					}
+				
+				}
+					
+					
+					System.out.println("waehle eine andere farbe");
+				 }
+			}
+		sCounter++;
+		}
+		
+		
+	
+		
+		
+	
+
+
+
+
+	/**
+	 * 
+	 * Methode starteSpiel()
+	 * 
+	 * Spielbrett wird erstellt und
+	 * Startet das Spiel und laesst den Spieler mit den weissen Spielfiguren
+	 * anfangen. 
+	 */
+	@Override
+	public void starteSpiel() {
+		
+		System.out.println("--- Das Spiel beginnt! ---");
+		System.out.println(" ");
+
+		System.out.println(this.toString());
+		System.out.println("");
+		System.out.println("---Das Spielbrett wird erstellt---");
+		System.out.println("");
+		spielbrett = new Spielbrett();
+		System.out.println("");
+		for (int i = 0; i < spieler.length; i++) {
+			if (spieler[i].getFarbe() == FarbEnum.WEISS) {
+			
+				System.out.println( spieler[i].getName()
+						+ " du musst anfangen :-)");
+				break;
 			}
 		}
-	@Override
-	public void startSpiel(int AnzSpieler) {
-
-		if (AnzSpieler == 2) {
-			sb = new Spielbrett();
-			this.setAnzSpieler(AnzSpieler);
-			spielerliste.clear();
 		
-		}
 	}
-	@Override
-	public void zeigeSpieler() {
-		for (int i = 0; i < spielerliste.size(); i++) {
-			System.out.println("Name: " + spielerliste.get(i).getName()
-					+ ", Farbe: " + spielerliste.get(i).getFarbe());
-		}
-	}
-	@Override
-	public void spielfeldBelegt(int id, int zielPos) {
 
-		if (spielerliste.get(spielerAmZug).getFarbe()
-				.equals(sb.getSpielbrett(zielPos).getFigur().getFarbe())) {
-			spielerliste
-					.get(spielerAmZug)
-					.getFigur()
-					.setPosition(
-							spielerliste.get(spielerAmZug).getFigur()
-									.getPosition());
-
-			System.out
-					.println("Auf dieser Position befindet sich bereits deine eigene Figur \n "
-							+ "wähle eine andere Figur");
-		}
+	
+//	/**
+//	 * 
+//	 * Methode FigurAnSpieler()
+//	 * 
+//	 * Uebergibt den Spielern ihre Figuren und befuellt gleichzeitig deren Homefelder.
+//	 * @param spieler Ein Objekt der Klasse Spieler
+//	 */
+//	@Override
+//	public void FigurAnSpieler(Spieler spieler){
+//		
+//		for(int i = 0; i<4;i++){
+//			spielfigur = new Spielfigur(spieler.getFarbe(), spieler);
+//			spieler.figurHinzufuegen(spielfigur);}
+//			
+//			switch (spieler.getFarbe()){				
+//
+//			case WEISS:
+//				int j=41;
+//				do{
+//					int r = 0;
+//					spielfigur.setSpielfeld(spielbrett.getSpielbrett[][]);
+//					spielfigur.setPos(j);
+//					j++;
+//					r++;
+//				}while(j<45);
+//					break;
+//			case SCHWARZ:
+//				int k=49;
+//				do{
+//					int b = 0;
+//					spielfigur.setSpielfeld(sb.getHomeblau().get(b));
+//					spielfigur.setPos(k);
+//					k++;
+//					b++;
+//				}while(k<53);
+//				  break;
+//			
+//		}
+//
+//		
+//	}
+//	
+	
+	@Override
+	public void setzeFigurAufPos(Spielfigur sf , String ID){
+		
+		String getID = ID;
+		spielfeld.setId(getID);
 	}
+
+//	@Override
+//	public String toString() {
+//		String s = "";
+//		s += "Es sind folgende Spieler im Spiel: \n";
+//		for (int i = 0; i < spieler.length; i++) {
+//			s += spieler[i].getName() + " "
+//					+ "Farbe "
+//					+ spieler[i].getFarbe() + " | ";
+//		}
+//		return s;
+//	}
+	@Override
+	public String toString(){
+		return "";
 	}
 }
