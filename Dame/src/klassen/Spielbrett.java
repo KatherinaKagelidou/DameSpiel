@@ -14,10 +14,10 @@ public class Spielbrett {
 
 	private Spielfeld spielfeld;
 	private Spielbrett sb;
-	
 	private Spielfeld[][] felder =new Spielfeld[12][12];;
 	private boolean schwarz = false;
-	
+	private Spiel spiel;
+	private Spieler spieler;
 	/**
 	 * Konstruktor der Klasse Spielbrett
 	 * Methode getSpielbrett wird aufgerufe 
@@ -27,7 +27,7 @@ public class Spielbrett {
 
 	public Spielbrett() {
 		getSpielbrett();
-		System.out.println(felder[0][1]);
+		
 		
 	}
 	
@@ -57,8 +57,9 @@ public class Spielbrett {
 
 				Spielfeld spielfeld = new Spielfeld(this, str, schwarz);
 				felder[i][j]=spielfeld;
-				
 				spielfeld.setFarbeFeld(FarbEnum.SCHWARZ);
+			
+		
 				
 				if (felder[i][j].getId().startsWith("A")
 						|| felder[i][j].getId().startsWith("B")
@@ -67,6 +68,8 @@ public class Spielbrett {
 						|| felder[i][j].getId().startsWith("E")) {
 					if (felder[i][j].getFarbeFeld() == FarbEnum.SCHWARZ) {
 						felder[i][j].setFigur(new Spielfigur(FarbEnum.SCHWARZ));
+						
+						
 					}
 				}else{
 					if (felder[i][j].getId().startsWith("H")
@@ -77,7 +80,10 @@ public class Spielbrett {
 						if (felder[i][j].getFarbeFeld() == FarbEnum.SCHWARZ) {
 							felder[i][j].setFigur(new Spielfigur(FarbEnum.WEISS));
 						}
-					}}
+					}
+				}
+				
+				
 		
 				System.out.print(spielfeld);
 
@@ -105,6 +111,78 @@ public class Spielbrett {
 	
 
 	
+
+	public Spielfeld getSpielfeld() {
+		return spielfeld;
+	}
+
+
+
+
+
+
+	public void setSpielfeld(Spielfeld spielfeld) {
+		this.spielfeld = spielfeld;
+	}
+
+
+
+
+
+
+	public Spielbrett getSb() {
+		return sb;
+	}
+
+
+
+
+
+
+	public void setSb(Spielbrett sb) {
+		this.sb = sb;
+	}
+
+
+
+
+
+
+	public Spielfeld[][] getFelder() {
+		return felder;
+	}
+
+
+
+
+
+
+	public void setFelder(Spielfeld[][] felder) {
+		this.felder = felder;
+	}
+
+
+
+
+
+
+	public boolean isSchwarz() {
+		return schwarz;
+	}
+
+
+
+
+
+
+	public void setSchwarz(boolean schwarz) {
+		this.schwarz = schwarz;
+	}
+
+
+
+
+
 
 	/**
 	 * Getter fuer die Farbe

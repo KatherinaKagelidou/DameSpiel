@@ -14,7 +14,6 @@ public class Spieler {
 	private KI ki;
 	private static final int spielfigurMax =30;
 	private static Spielfigur []spielfigur = new Spielfigur[spielfigurMax];
-	public ArrayList <Object[]> spielfiguren = new ArrayList<Object[]>();
 	private int spielfigurAnz=0;
 
 	
@@ -31,7 +30,14 @@ public class Spieler {
 
 		this.setKi(ki);
 	}
+	private Spieler(Spielfigur spielfigur){
+		this.setSpielfigur(spielfigur);
+	}
 	
+	private void setSpielfigur(Spielfigur spielfigur2) {
+		this.spielfigur=spielfigur;
+		
+	}
 	public void setKi(KI ki){
 		this.ki=ki;
 		
@@ -84,9 +90,19 @@ public class Spieler {
 			}
 			spielfigurAnz++;
 		}
-		else 
+		else {
 			throw new RuntimeException("figurHinzufuegen: Maximale Anzahl bereits erreicht!");
-		spielfiguren.add(spielfigur);	
+	}
+		
+//		if(spielfigurAnz<spielfigurMax){
+//			
+//			
+//			
+//			spielfigur[i].s
+//			spielfiguren.add(spielfigur);	
+//		}
+		
+		
 	}
 
 
@@ -101,9 +117,7 @@ public class Spieler {
 	}
 	
 
-	public ArrayList<Object[]> getFiguren(){
-		return spielfiguren;
-	}
+	
 
 
 	/**
@@ -112,7 +126,7 @@ public class Spieler {
 	@Override 
 	public String toString(){
 		return
-				("SpielerName: " + getName());
+				("SpielerName: " + getName()+getFigur());
 				
 				
 	}
@@ -120,4 +134,3 @@ public class Spieler {
 	
 
 }
-

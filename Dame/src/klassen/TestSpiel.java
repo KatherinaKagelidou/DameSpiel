@@ -12,11 +12,14 @@ public class TestSpiel {
 		
 		
 		i.addSpieler("Kathi", FarbEnum.SCHWARZ,null );
-		i.addSpieler("sarah", FarbEnum.WEISS, null);
+		i.addSpieler("Sarah", FarbEnum.SCHWARZ, null);
 
 		i.starteSpiel();
+
 		
-//		System.out.println(i);
+
+		
+
 
 
 		
