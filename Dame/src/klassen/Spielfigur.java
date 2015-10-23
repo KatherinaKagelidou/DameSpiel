@@ -94,8 +94,8 @@ public class Spielfigur {
 	@Override
 	public String toString() {
 		return 
-				("Farbe: " + getFarbe() + 
-				" | "+ "ID: "+ getPosition()
+				("Figur"
+						+ "Farbe: " + getFarbe() 
 				);	
 	
 

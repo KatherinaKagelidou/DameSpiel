@@ -1,4 +1,7 @@
 package klassen;
+
+import java.util.ArrayList;
+
 /**
  * Die Klasse Spieler
  * @author B2
@@ -9,6 +12,10 @@ public class Spieler {
 	private Spielfigur figur;
 	private FarbEnum farbe;
 	private KI ki;
+	private static final int spielfigurMax =30;
+	private static Spielfigur []spielfigur = new Spielfigur[spielfigurMax];
+	public ArrayList <Object[]> spielfiguren = new ArrayList<Object[]>();
+	private int spielfigurAnz=0;
 
 	
 	
@@ -58,13 +65,45 @@ public class Spieler {
 		return farbe;
 	}
 	public void setFarbe(FarbEnum farbe) {
+		if(farbe==null){
+			throw new RuntimeException("Waehle eine Farbe aus!!");
+		}
 		this.farbe = farbe;
 	}
 	
 
+	/**
+	 * Fuegt einem Array spielfigur Spielfiguren hinzu
+	 * 	
+	 */
+	
+	public void figurHinzufuegen(Spielfigur sf){
+		if(spielfigurAnz < spielfigurMax){
+			for(int i = 0; i<spielfigurMax;i++) {
+				spielfigur[i] = sf;
+			}
+			spielfigurAnz++;
+		}
+		else 
+			throw new RuntimeException("figurHinzufuegen: Maximale Anzahl bereits erreicht!");
+		spielfiguren.add(spielfigur);	
+	}
 
 
+	/**
+	 * Getter
+	 * 
+	 * @return Gibt die Anzahl der Spielfiguren im Spiefiguren Array zurueck
+	 */
+	
+	public int getAnzahlFiguren() {
+		return spielfigurAnz;
+	}
+	
 
+	public ArrayList<Object[]> getFiguren(){
+		return spielfiguren;
+	}
 
 
 	/**
@@ -73,12 +112,12 @@ public class Spieler {
 	@Override 
 	public String toString(){
 		return
-				("Name: " + getName() +
-				"Farbe: " + getFarbe() +
-				"Figur: " + getFigur());
+				("SpielerName: " + getName());
+				
 				
 	}
 	
 	
 
 }
+
