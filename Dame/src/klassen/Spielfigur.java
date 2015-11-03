@@ -1,16 +1,14 @@
 package klassen;
-/**
- * Klasse Spielfigur
- * @author B2
- *
- */
+
 public class Spielfigur {
 	
 	
 	private FarbEnum farbe;
+	private String id;
 	private String position;
-	private Spieler spieler;
 	private Spielfeld spielfeld;
+	private static int counter = 0;
+	private boolean istDame;
 	
 	
 	
@@ -20,13 +18,50 @@ public class Spielfigur {
 	 * @param position der Figur
 	 */
 	
-	public Spielfigur(FarbEnum farbe){
-		
+	public Spielfigur(Spielfeld feld, FarbEnum farbe){
+//		this.setPosition(position);
+		if(counter>30){
+			counter=1;
+		}
 		this.setFarbe(farbe);
-		this.setSpieler(spieler);
+		this.setzeFigurId();
+		this.setSpielfeld(feld);
+	
 		
 	}
 	
+
+	
+	public String getId(){
+		return id;
+	}
+	
+	
+	/**
+	 * Setzen der ID
+	 * 
+	 * @param id
+	 * setzt die ID
+	 */
+	
+	
+	public void setzeFigurId(){
+		
+		switch (this.farbe) {
+		case SCHWARZ:
+			position="black"+counter;
+			this.id = position;
+			break;
+		case WEISS:
+			position="white"+counter;
+			this.id = position;
+			break;
+		}
+		
+		counter+=1;
+		
+	}
+
 	public void setSpielfeld(Spielfeld spielfeld){
 		if (spielfeld==null){
 			throw new RuntimeException(" Falsche Eingabe");
@@ -48,7 +83,7 @@ public class Spielfigur {
 	 */
 	public void setFarbe(FarbEnum farbe){
 		if(farbe==null){
-			throw new RuntimeException("keine gueltige Farbe");
+			throw new RuntimeException("Fehler setter figur - keine gueltige Farbe");
 		}
 		
 		
@@ -56,56 +91,67 @@ public class Spielfigur {
 	}
 	
 	public String getPosition(){
-		return position;
+		return this.spielfeld.getId();
 	}
 	
-	public void setSpieler(Spieler spieler){
-		this.spieler=spieler;
+	public void setzeFigur(Spielfeld feld){
+		if(feld!=null){
+			if(feld.getFigur()==null){
+				this.spielfeld=feld;
+				this.spielfeld.setFigur(this);
+			}
+		}
 	}
 	
-	public Spieler getSpieler(){
-		return spieler;
-	}
 	
-	public Spielfeld getSpielfeld(){
-		return spielfeld;
-	}
+
 	
 	/**
 	 * Setter mit Ueberpfuefung pb die Position der Spielfigur
 	 * größer 0 ist
 	 * @param position setzt die position der spielfigur
 	 */
-	public void setPosition(String pos) {	
-		if(spielfeld.istFeldBelegt()==true)
-			System.out.println("Es befindet sich eine Figur auf diesem Spielfeld. Schlagen?");
-		else{
-			this.position= pos;
-			this.setSpielfeld(spielfeld);
-			spielfeld.setSpielfigur(this);
-			System.out.println(""+this +" wurde auf Position: " + pos + " gelegt.");
+//	public void setPosition(String position) {	
+//		if(spielfeld.istFeldBelegt()==true){
+//			System.out.println("Es befindet sich eine Figur auf diesem Spielfeld. Schlagen?");
+//		}else{
+//			this.position= position;
+//			this.setSpielfeld(spielfeld);
+//			spielfeld.setFigur(this);
+//			System.out.println(""+this +" wurde auf Position: " + position + " gelegt.");
+//			}
+//	}
+	
+	public void istDame(boolean istDame){
+		if(this.getFarbe().equals(FarbEnum.WEISS)){
+			if(this.position.contains("12")){
+				this.istDame=true;
 			}
+			else{
+				this.istDame=false;
+			}
+		}
+		if(this.getFarbe().equals(FarbEnum.SCHWARZ)){
+			if(this.position.contains("1")){
+				this.istDame=true;
+			}
+			else{
+				this.istDame=false;
+			}
+		}
+		
 	}
 	
-	/**
-	 * toString-Methode mit der Ausgabe der Attribute Farbe und ID
-	 */
 	
+	
+	
+
 	@Override
 	public String toString() {
-		return 
-				("Figur"
-						+ "Farbe: " + getFarbe() 
-				);	
-	
+
+		return "Spielfigur: ID " + this.getId()+"mit pos:" + this.getPosition() + " mit der Farbe " + this.getFarbe();
+
+	}
+
 
 }
-}
-
-
-
-
-
-
-
-

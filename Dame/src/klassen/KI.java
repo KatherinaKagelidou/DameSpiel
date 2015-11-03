@@ -1,6 +1,7 @@
 
 package klassen;
 
+
 abstract class KI {
 	
 

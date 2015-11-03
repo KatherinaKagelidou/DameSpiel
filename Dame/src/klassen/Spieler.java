@@ -12,8 +12,9 @@ public class Spieler {
 	private Spielfigur figur;
 	private FarbEnum farbe;
 	private KI ki;
-	private static final int spielfigurMax =30;
-	private static Spielfigur []spielfigur = new Spielfigur[spielfigurMax];
+	private static final int spielfigurMax =31;
+//	private ArrayList<Spielfigur> spielfiguren = new ArrayList<Spielfigur>();
+	private Spielfigur[] figurArray = new Spielfigur[spielfigurMax] ;
 	private int spielfigurAnz=0;
 
 	
@@ -26,18 +27,29 @@ public class Spieler {
 	public Spieler(String name, FarbEnum farbe, KI ki){
 		this.setName(name);
 		this.setFarbe(farbe);
-		this.setFigur(figur);
-
 		this.setKi(ki);
-	}
-	private Spieler(Spielfigur spielfigur){
-		this.setSpielfigur(spielfigur);
-	}
-	
-	private void setSpielfigur(Spielfigur spielfigur2) {
-		this.spielfigur=spielfigur;
+//		hinzufügen();
 		
 	}
+	
+	public void hinzufügen(){
+		for(int i=0; i<30;i++){
+			figurArray[i] = new Spielfigur(null,this.getFarbe());
+		}
+	}
+	
+	
+	public Spielfigur[] getFigurArray() {
+
+		return figurArray;
+	}
+
+
+	public void setFigurArray(Spielfigur[] figurArray) {
+		this.figurArray = figurArray;
+	}
+
+
 	public void setKi(KI ki){
 		this.ki=ki;
 		
@@ -83,16 +95,17 @@ public class Spieler {
 	 * 	
 	 */
 	
-	public void figurHinzufuegen(Spielfigur sf){
-		if(spielfigurAnz < spielfigurMax){
-			for(int i = 0; i<spielfigurMax;i++) {
-				spielfigur[i] = sf;
-			}
-			spielfigurAnz++;
-		}
-		else {
-			throw new RuntimeException("figurHinzufuegen: Maximale Anzahl bereits erreicht!");
-	}
+//	public void figurHinzufuegen(Spielfigur sf){
+//		if(spielfigurAnz < spielfigurMax){
+//			for(int i=0;i<figurArray.length;i++){
+//				sf=figurArray[i];
+//				this.setFigur(sf);
+//			    spielfigurAnz++;
+//			}
+//		}
+//		else {
+//			throw new RuntimeException("figurHinzufuegen: Maximale Anzahl bereits erreicht!");
+//	}
 		
 //		if(spielfigurAnz<spielfigurMax){
 //			
@@ -103,7 +116,17 @@ public class Spieler {
 //		}
 		
 		
-	}
+//	}
+
+
+//	public ArrayList<Spielfigur> getSpielfiguren() {
+//		return spielfiguren;
+//	}
+
+
+//	public void setSpielfiguren(ArrayList<Spielfigur> spielfiguren) {
+//		this.spielfiguren = spielfiguren;
+//	}
 
 
 	/**
@@ -125,8 +148,9 @@ public class Spieler {
 	 */
 	@Override 
 	public String toString(){
-		return
-				("SpielerName: " + getName()+getFigur());
+		return getName();
+//				(getName()+ "mit der Figur " + 
+//						getFigur()+ "und Farbe" + figur.getFarbe());
 				
 				
 	}

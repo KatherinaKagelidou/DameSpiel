@@ -14,27 +14,29 @@ public class Spielbrett {
 
 	private Spielfeld spielfeld;
 	private Spielbrett sb;
-	private Spielfeld[][] felder =new Spielfeld[12][12];;
+	private Spielfeld[][] felder ;
 	private boolean schwarz = false;
 	private Spiel spiel;
 	private Spieler spieler;
+	private String str = null;
 	/**
 	 * Konstruktor der Klasse Spielbrett
-	 * Methode getSpielbrett wird aufgerufe 
+	 * Methode getSpielbrett wird aufgerufen
 	 * und die 12*12 Spielfelder werden dem Spielbrett uebergeben
 	 * 
 	 */
 
 	public Spielbrett() {
-		getSpielbrett();
-		
-		
+		felder= new Spielfeld[12][12];
+//		for(int i=0;i<12;i++){
+//			for(int j=0;j<12;j++){
+//			felder[i][j]=new Spielfeld(this, str, schwarz);
+//			}
+//		}
+		feldBelegen();
 	}
 	
-	
-	
-	
-	
+
 
 	/**
 	 * Methode getSpielbrett 
@@ -42,12 +44,11 @@ public class Spielbrett {
 	 * deren Farbe und den Spielfiguren
 	 * @param felder
 	 */
-	public void getSpielbrett() {
-
+	public void feldBelegen() {
 		char ch = 'L';
 		char ch1 = 'A';
 		int x = 1;
-		String str = null;
+		
 
 		for (int i = 0; i < felder.length; i++) {
 
@@ -55,38 +56,12 @@ public class Spielbrett {
 				str = "" + ch + x;
 				x++;
 
-				Spielfeld spielfeld = new Spielfeld(this, str, schwarz);
-				felder[i][j]=spielfeld;
-				spielfeld.setFarbeFeld(FarbEnum.SCHWARZ);
+//				felder[i][j].setFarbeFeld(FarbEnum.SCHWARZ);
 			
 		
+				felder[i][j]=new Spielfeld(this, str, schwarz);
 				
-				if (felder[i][j].getId().startsWith("A")
-						|| felder[i][j].getId().startsWith("B")
-						|| felder[i][j].getId().startsWith("C")
-						|| felder[i][j].getId().startsWith("D")
-						|| felder[i][j].getId().startsWith("E")) {
-					if (felder[i][j].getFarbeFeld() == FarbEnum.SCHWARZ) {
-						felder[i][j].setFigur(new Spielfigur(FarbEnum.SCHWARZ));
-						
-						
-					}
-				}else{
-					if (felder[i][j].getId().startsWith("H")
-							|| felder[i][j].getId().startsWith("I")
-							|| felder[i][j].getId().startsWith("J")
-							|| felder[i][j].getId().startsWith("K")
-							|| felder[i][j].getId().startsWith("L")){
-						if (felder[i][j].getFarbeFeld() == FarbEnum.SCHWARZ) {
-							felder[i][j].setFigur(new Spielfigur(FarbEnum.WEISS));
-						}
-					}
-				}
-				
-				
-		
-				System.out.print(spielfeld);
-
+			System.out.println(felder[i][j].toString());
 				schwarz = !schwarz;
 
 				if (x > 12) {
@@ -197,24 +172,57 @@ public class Spielbrett {
 		return this;
 	}
 	
-/**
- * toString Methode der Klasse Spielbrett
- */
-	@Override
-	public String toString() {
-		String s = null;
-		for(int i=0;i<felder.length;i++){
-			for(int j=0;j<felder[i].length;j++){
-				
-				s = ""+ felder[i][j];
-			}
-			
+	public Spielfeld getFeld(String id){
+		int [] in = stringId(id);
+		if(in[0]>64&&in[0]<77){
+			return felder[in[0]-65][in[1]-1];
 		}
-		return s;
+		return null;
+	}
+	
+	public int [] stringId(String id){
+		String [] s = new String[3];
+		for(int i=0; i<id.length();i++){
+			s[i]=Character.toString(id.toCharArray()[i]);
+		}
+		int [] in = new int[2];
+		char ch = s[0].charAt(0);
+		in[0]=ch;
+		
+		if(id.length()==2){
+			in[1]=Integer.parseInt(s[1]);
+		}
+		if(id.length()==3){
+			in[1]=Integer.parseInt(s[1]+s[2]);
+		}
+		if(in[0]>77){
+			System.out.println("fehler");
+		}
+		return in;
+	}
 	
 
-				
-	}
+
+
+	
+///**
+// * toString Methode der Klasse Spielbrett
+// */
+//	@Override
+//	public String toString() {
+//		String s = "";
+//		for(int i=0;i<felder.length;i++){
+//			for(int j=0;j<felder[i].length;j++){
+//				
+//				s = ""+ felder[i][j];
+//			}
+//			
+//		}
+//		return s;
+//	
+//
+//				
+//	}
 
 	
 }
