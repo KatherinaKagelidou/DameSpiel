@@ -28,14 +28,7 @@ public class Spieler {
 		this.setName(name);
 		this.setFarbe(farbe);
 		this.setKi(ki);
-//		hinzufügen();
 		
-	}
-	
-	public void hinzufügen(){
-		for(int i=0; i<30;i++){
-			figurArray[i] = new Spielfigur(null,this.getFarbe());
-		}
 	}
 	
 	
@@ -148,9 +141,8 @@ public class Spieler {
 	 */
 	@Override 
 	public String toString(){
-		return getName();
-//				(getName()+ "mit der Figur " + 
-//						getFigur()+ "und Farbe" + figur.getFarbe());
+		return getName() ;
+
 				
 				
 	}

@@ -1,28 +1,41 @@
 package klassen;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Properties;
 
-public class Spiel implements iBediener {
+import daten.DatenzugriffCSV;
+import daten.DatenzugriffSerialisiert;
+import daten.iDatenzugriff;
 
-	private int spielerAnz = 0;
+public class Spiel implements iBediener, Serializable {
+
 	private final static int spielerMax = 2;
-	private Spieler[] Spieler= new Spieler[spielerMax] ;
-	// private Spieler sp1;
-	// private Spieler sp2;
-	private static int sCounter = 0;
-	// private Spielfigur spielfigur;
-	private Spielbrett spielbrett;
-	// private Spielfeld spielfeld;
-	private Spieler sp;//greift nicht auf die Spielerklasse zu
-//	private int spielerAmZug;
-	private boolean istDame = false;
+	// private Spieler[] Spieler = new Spieler[spielerMax];
+	private Spieler spieler1;
+	private Spieler spieler2;
 	private Spieler spielerAmZug;
-	private Spielfigur f;
-	private Spielfigur [] figurWeiss = new Spielfigur[30];
-	private Spielfigur [] figurSchwarz= new Spielfigur[30];
+	private int spielerAnz = 0;
+	private Spielbrett spielbrett;
+	private Spieler sp;// greift nicht auf die Spielerklasse zu
+	private boolean istDame = false;
+	private Spielfigur figur;
+	private Spielfigur[] figurWeiss = new Spielfigur[31];
+	private Spielfigur[] figurSchwarz = new Spielfigur[31];
 	private ArrayList<Spielfigur> figurenListe = new ArrayList<Spielfigur>();
+	private boolean istZugbeginn = true;
+	private boolean kannSchlagen;
+	private boolean rechts = false;
 
-	private  int counter = 0;
+	private static final long SerialVersion = 1l;
+	private static iDatenzugriff daten;
+
+	private PrintWriter pw;
 
 	public Spiel() {
 
@@ -44,103 +57,76 @@ public class Spiel implements iBediener {
 
 	@Override
 	public void addSpieler(String name, FarbEnum farbe, KI ki) {
-	
-		Spieler sp = new Spieler(name, farbe, ki);
-	
-	
-	
-	
-	
-		if (spielerAnz==2) {
-			
-			System.out.println("Es kann kein Spieler mehr hinzugefügt werden");
-			return;
+		if (spielerAnz == 2) {
+
+			throw new RuntimeException(
+					"Es kann kein Spieler mehr hinzugefügt werden");
 		}
-		
+
+		if (spielerAnz == 1) {
+			Spieler sp = new Spieler(name, farbe, ki);
+
 			// wenn spieler keine farbe gewählt hat
 			if (sp.getFarbe() == null) {
 
-				System.out.println("Bitte wähle eine Farbe aus du Schmock!!");
-				return;
+				throw new RuntimeException(
+						"Bitte wähle eine Farbe aus du Schmock!!");
 
 			}
-			if(spielerAnz==1) {
-				// wenn spieler die gleiche farbe gewählt hat
-			//	for (int i=0;i<Spieler.length;i++) {
-				
-//						if (Spieler[i].getFarbe().equals(sp.getFarbe())) {
-//			
-//							System.out.println(sp);
-//							System.out.println(Spieler[0]);
-				
-//							System.out
-//									.println(sp.getName()
-//											+ "Die Farbe"
-//											+ sp.getFarbe()
-//											+ "wurde leider schon gewählt! Bitte wähle eine andere!");
-//							
-//						} else {
-							if (sp.getFarbe().equals(FarbEnum.SCHWARZ)) {
-								this.Spieler[1]=sp;
-								spielerAnz++;
-							} else if (sp.getFarbe().equals(FarbEnum.WEISS)) {
-								this.Spieler[0]=sp; 
-								spielerAnz++;
-							}
-							System.out.println("Spieler " + sp + " wurde hinzugefügt " + sp.getFarbe());
-						}
-			if (spielerAnz==0) {
-				if (sp.getFarbe().equals(FarbEnum.WEISS)) {
-					this.Spieler[0]=sp;
-					spielerAnz++;
-				} else if (sp.getFarbe().equals(FarbEnum.SCHWARZ)) {
-					this.Spieler[1]=sp;
-					spielerAnz++;
-				}
-				
-				System.out.println("Spieler " + sp + " wurde hinzugefügt " + sp.getFarbe());
+
+			if (sp.getFarbe().equals(FarbEnum.SCHWARZ)) {
+				this.spieler2 = sp;
+				spielerAnz++;
+			} else if (sp.getFarbe().equals(FarbEnum.WEISS)) {
+				this.spieler1 = sp;
+				spielerAnz++;
 			}
+			System.out.println("Spieler " + sp + " wurde hinzugefügt "
+					+ sp.getFarbe());
 		}
+		if (spielerAnz == 0) {
+			Spieler sp = new Spieler(name, farbe, ki);
+			if (sp.getFarbe().equals(FarbEnum.WEISS)) {
+				this.spieler1 = sp;
+				spielerAnz++;
+			} else if (sp.getFarbe().equals(FarbEnum.SCHWARZ)) {
+				this.spieler2 = sp;
+				spielerAnz++;
+			}
 
-	
+			System.out.println("Spieler " + sp + " wurde hinzugefügt "
+					+ sp.getFarbe());
+		}
+	}
 
-	
-
-	private int getSpielerAnz() {
+	public int getSpielerAnz() {
 		return spielerAnz;
 	}
-	
+
 	@Override
 	public void figurSetzen() {
 
-		SpielerAmZug(Spieler[0]);
-		
+		SpielerAmZug(spieler1);
+
 		char ch = 'L';
 		char ch1 = 'A';
 		int x = 1;
-		 String str = null;
-		 boolean schwarz = false;
-			int count = 0;
+		String str = null;
+		boolean schwarz = false;
+		int count = 1;
 
 		for (int i = 0; i < spielbrett.getFelder().length; i++) {
-
 			for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
-				str = "" + ch + x;
+				str = "" + ch1 + x;
 				x++;
 
-//				felder[i][j].setFarbeFeld(FarbEnum.SCHWARZ);
-			
-		
-//				spielbrett.getFelder()[i][j]=new Spielfeld(spielbrett, str, schwarz);
-				
-			System.out.println(spielbrett.getFelder()[i][j].toString());
 				schwarz = !schwarz;
 
 				if (x > 12) {
 					x = 1;
-					ch--;
-					if (ch == ch1) {
-						str = "" + ch1 + x;
+					ch1++;
+					if (ch1 == ch) {
+						str = "" + ch + x;
 						schwarz = !schwarz;
 
 						break;
@@ -149,126 +135,134 @@ public class Spiel implements iBediener {
 					schwarz = !schwarz;
 
 				}
-//				if (this.spielbrett.getFelder()[i][j].getFarbeFeld().equals(FarbEnum.WEISS)) {
-					
 
-//					if (spielFigur.getFarbe().equals(FarbEnum.SCHWARZ)) {
-						if (this.spielbrett.getFelder()[i][j].getId()
-								.startsWith("A")
-								|| this.spielbrett.getFelder()[i][j].getId()
-										.startsWith("B")
-								|| this.spielbrett.getFelder()[i][j].getId()
-										.startsWith("C")
-								|| this.spielbrett.getFelder()[i][j].getId()
-										.startsWith("D")
-								|| this.spielbrett.getFelder()[i][j].getId()
-										.startsWith("E")) {
-							if(this.spielbrett.getFelder()[i][j].getFarbeFeld().equals(FarbEnum.SCHWARZ)){
-//							this.spielbrett.getFelder()[i][j].setFigur(spielFigur);
-//							this.Spieler[0].getFigurArray()[i].setSpielfeld(this.spielbrett.getFelder()[i][j]);
-//							spielbrett.getFelder()[i][j].setFigur(this.Spieler[1].getFigurArray()[v]);
-//							v++;
-							f = new Spielfigur(spielbrett.getFeld(str), FarbEnum.SCHWARZ);
-							figurSchwarz[count] = f;
-							count++;
-							
-							System.out.println(f);
+				// if
+				// (this.spielbrett.getFelder()[i][j].getFarbeFeld().equals(FarbEnum.WEISS))
+				// {
 
-							}
-					} else {
-//						if (spielFigur.getFarbe().equals(FarbEnum.WEISS)) {
-							if (spielbrett.getFelder()[i][j].getId()
-									.startsWith("H")
-									|| spielbrett.getFelder()[i][j].getId()
-											.startsWith("I")
-									|| spielbrett.getFelder()[i][j].getId()
-											.startsWith("J")
-									|| spielbrett.getFelder()[i][j].getId()
-											.startsWith("K")
-									|| spielbrett.getFelder()[i][j].getId()
-											.startsWith("L")) {
-								if(this.spielbrett.getFelder()[i][j].getFarbeFeld().equals(FarbEnum.SCHWARZ)){
-
-//								this.spielbrett.getFelder()[i][j].setFigur(spielFigur);
-//								this.Spieler[0].getFigurArray()[i].setSpielfeld(this.spielbrett.getFelder()[i][j]);
-//								spielbrett.getFelder()[i][j].setFigur(this.Spieler[0].getFigurArray()[v]);
-								f = new Spielfigur(spielbrett.getFeld(str), FarbEnum.WEISS);
-								figurWeiss[count] = f;
-								count++;
-								
-								System.out.println(f);
-								}
-							}
+				// if (spielFigur.getFarbe().equals(FarbEnum.SCHWARZ)) {
+				if (this.spielbrett.getFelder()[i][j].getId().startsWith("A")
+						|| this.spielbrett.getFelder()[i][j].getId()
+								.startsWith("B")
+						|| this.spielbrett.getFelder()[i][j].getId()
+								.startsWith("C")
+						|| this.spielbrett.getFelder()[i][j].getId()
+								.startsWith("D")
+						|| this.spielbrett.getFelder()[i][j].getId()
+								.startsWith("E")) {
+					if (this.spielbrett.getFelder()[i][j].getFarbeFeld()
+							.equals(FarbEnum.SCHWARZ)) {
+						// this.spielbrett.getFelder()[i][j].setFigur(spielFigur);
+						// this.Spieler[0].getFigurArray()[i].setSpielfeld(this.spielbrett.getFelder()[i][j]);
+						// spielbrett.getFelder()[i][j].setFigur(this.Spieler[1].getFigurArray()[v]);
+						// v++;
+						figur = new Spielfigur(spielbrett.getFeld(str),
+								FarbEnum.SCHWARZ);
+						//
+						// if (count == 30) {
+						// spieler2.getFigurArray()[count] = figur;
+						// figur.setId(count);
+						// count = 0;
+						// } else {
+						// spieler2.getFigurArray()[count] = figur;
+						// figur.setId(count);
+						// }
+						//
+						// }
+						// count++;
+						if (count == 30) {
+							figurSchwarz[count] = figur;
+							figur.setId(count);
+							count = 0;
+						} else {
+							figurSchwarz[count] = figur;
+							figur.setId(count);
 						}
+						count++;
 
-					}// else schließen
+						figur.setSpielfeld(spielbrett.getFeld(str));
+						spielbrett.getFelder()[i][j].setFigur(figur);
 
-				}// 1. if
-				
+						spieler2.setFigurArray(figurSchwarz);
+
+						System.out.println(figur);
+
+					}
+				} else {
+
+					if (spielbrett.getFelder()[i][j].getId().startsWith("H")
+							|| spielbrett.getFelder()[i][j].getId().startsWith(
+									"I")
+							|| spielbrett.getFelder()[i][j].getId().startsWith(
+									"J")
+							|| spielbrett.getFelder()[i][j].getId().startsWith(
+									"K")
+							|| spielbrett.getFelder()[i][j].getId().startsWith(
+									"L")) {
+						if (this.spielbrett.getFelder()[i][j].getFarbeFeld()
+								.equals(FarbEnum.SCHWARZ)) {
+
+							figur = new Spielfigur(spielbrett.getFeld(str),
+									FarbEnum.WEISS);
+
+							if (count == 1 && str.equals("L12")) {
+								count = 1;
+								figurWeiss[count] = figur;
+								figur.setId(count);
+							} else if (count == 1) {
+								count = 30;
+								figurWeiss[count] = figur;
+								figur.setId(count);
+							} else {
+								figurWeiss[count] = figur;
+								figur.setId(count);
+							}
+							count--;
+							figur.setSpielfeld(spielbrett.getFeld(str));
+							spielbrett.getFelder()[i][j].setFigur(figur);
+							spieler1.setFigurArray(figurWeiss);
+							System.out.println(figur);
+						}
+					}
+				}
+
+			}// else schließen
+
+		}// 1. if
+
+	}
+
+	public Spielfeld gebeFeld(String id) {
+		Spielfeld feld = null;
+		for (int i = 0; i < this.spielbrett.getFelder().length; i++) {
+			for (int j = 0; j < this.spielbrett.getFelder()[i].length; j++) {
+				if (this.spielbrett.getFelder()[i][j].getId().equals(id)) {
+					feld = this.spielbrett.getFelder()[i][j];
+				}
 			}
-			
-//		}
-		
-		
-//		int v=0;
-//		for (int i = 0; i < this.spielbrett.getFelder().length; i++) {
-//			
-//			for (int j = 0; j < this.spielbrett.getFelder()[i].length; j++) {
-//				
-//				
-//				
-//			}// for 2.
-//		}// for 1.
-	
-	
+		}
+		return feld;
+	}
+
 	public void SpielerAmZug(Spieler spieler) {
 		if (spieler != null) {
 			this.spielerAmZug = spieler;
 		}
 	}
 
+	@Override
+	public void gibKoordinate(String s) {
 
-	// letzte
+		for (int i = 0; i < this.spielbrett.getFelder().length; i++) {
+			for (int j = 0; j < this.spielbrett.getFelder()[i].length; j++) {
+				if (this.spielbrett.getFelder()[i][j].getId().equals(s)) {
 
-//	public Spielfigur bekommeFigur() {
-//		Spielfigur sf = null;
-//
-//		for (int f = 0; f < this.Spieler[0].getFigurArray().length; f++) {
-//			sf = this.Spieler[0].getFigurArray()[f];
-//
-//		}
-//		for (int k = 0; k < this.Spieler[1].getFigurArray().length; k++) {
-//			sf = this.Spieler[1].getFigurArray()[k];
-//
-//		}
-//
-//		return sf;
-//
-//	}
-	
-	//ist in Bearbeitung! :)
-	public Spielfigur bekommeFigur() {
-		Spielfigur sfSchwarz = null;
-		Spielfigur sfWeiss = null;
-		Spielfigur figur=null;
-		
-		for(int i=0;i<Spieler.length;i++){
-		if(this.Spieler[i].getFarbe().equals(FarbEnum.WEISS)){
-		for (int f = 0; f < this.Spieler[i].getFigurArray().length; f++) {
-			sfWeiss = this.Spieler[i].getFigurArray()[f];
-			}
-		}else if(this.Spieler[i].getFarbe().equals(FarbEnum.SCHWARZ)){
-			for (int k = 0; k < this.Spieler[i].getFigurArray().length; k++) {
-				sfSchwarz = this.Spieler[i].getFigurArray()[k];
+					System.out.println("i an index :" + i + "und j an index "
+							+ j);
+				}
+
 			}
 		}
-		}
-		if(sfSchwarz.equals(null)){
-			figur=sfWeiss;
-		}else if(sfWeiss.equals(null)){
-			figur=sfSchwarz;
-		}
-		return figur;
 	}
 
 	/**
@@ -279,7 +273,7 @@ public class Spiel implements iBediener {
 	 * den weissen Spielfiguren anfangen.
 	 */
 	@Override
-	public void starteSpiel(int spielerAnz) {
+	public void starteSpiel() {
 
 		System.out.println("--- Das Spiel beginnt! ---");
 		System.out.println(" ");
@@ -294,16 +288,7 @@ public class Spiel implements iBediener {
 			spielbrett = new Spielbrett();
 			this.setSpielerAnz(spielerAnz);
 			this.figurSetzen();
-//			Spieler[0]=null;
-//			Spieler[1]=null;
-			System.out.println("");
-			for (Spieler s : Spieler) {
-				if (s.getFarbe().equals(FarbEnum.WEISS)) {
-					System.out.println(s.getName() + " du musst anfangen :-)");
-					break;
-				}
-			}
-
+			System.out.println(spieler1.getName() + " du musst anfangen :-)");
 		}
 	}
 
@@ -324,8 +309,11 @@ public class Spiel implements iBediener {
 		String s = "";
 		s += "Es sind folgende Spieler im Spiel: \n";
 		s += "\n";
-		for (Spieler spieler : Spieler) {
-			s += spieler.toString() + " | ";
+		if (spieler1 != null) {
+			s += spieler1.toString() + " | ";
+		}
+		if (spieler2 != null) {
+			s += spieler2.toString();
 		}
 		return s;
 	}
@@ -351,36 +339,658 @@ public class Spiel implements iBediener {
 	}
 
 	@Override
-	public void umwandeln(String id) {
+	public void schlagen(Spielfeld aktPos, Spielfeld zielPos,
+			Spielfigur spielfigur) {
 
-		// String s=new String("A1");
-		// String ss=new String("A1");
+		aktPos.removeSpielfigur(aktPos.getFigur());
+		zielPos.setFigur(spielfigur);
+		String aktFeld = aktPos.getId();
 
-		// for(int i = 0; i<sb.getFeld().length;i++){
-		String s = new String(id);
+		if (spielfigur.getFarbe().equals(FarbEnum.SCHWARZ)) {
 
-		char Buchstabe = s.charAt(0);
-		char Zahl = s.charAt(1);
-		System.out.println(Buchstabe);
-		System.out.println(Zahl);
-		// String[] bla = s.split(""+Buchstabe);
-		// String Zahl = bla[0];
+			if (kannSchlagenRechtsSchwarz()) {
 
+				Spielfeld feld = this.getNachbar(aktFeld, rechts);
+				feld.removeSpielfigur(feld.getFigur());
+
+			} else if (kannSchlagenLinksSchwarz()) {
+				Spielfeld feld = this.getNachbar(aktFeld, !rechts);
+				feld.removeSpielfigur(feld.getFigur());
+			}
+
+		} else {
+
+			if (kannSchlagenRechtsWeiss()) {
+
+				Spielfeld feld = this.getNachbar(aktFeld, rechts);
+				feld.removeSpielfigur(feld.getFigur());
+
+			} else if (kannSchlagenLinksWeiss()) {
+				Spielfeld feld = this.getNachbar(aktFeld, !rechts);
+				feld.removeSpielfigur(feld.getFigur());
+			}
+
+		}
+	}
+
+	@Override
+	public Spielfigur gebeFigur(String figurId) {
+		Spielfigur f = null;
+		for (Spielfigur figure : spielerAmZug.getFigurArray()) {
+			if (figure == null)
+				continue;
+			if (figure.getId().equals(figurId)) {
+				f = figure;
+			}
+		}
+		return f;
+		// Spielfigur f = null;
+		// if (figurId.startsWith("b")) {
+		// for (int i = 1; i < this.figurSchwarz.length; i++) {
+		// if (this.figurSchwarz[i].getId().equals(figurId)) {
+		// f = this.figurSchwarz[i];
+		// System.out.println(f);
 		// }
+		// }
+		// } else if (figurId.startsWith("w")) {
+		// for (int i = 1; i < this.figurWeiss.length; i++) {
+		// if (this.figurWeiss[i].getId().equals(figurId)) {
+		// f = this.figurWeiss[i];
+		// }
+		// }
+		//
+		// }
+		// return f;
+	}
+
+	private void moveFigur(Spielfigur figur, Spielfeld aktFeld,
+			Spielfeld zielFeld) {
+		for (int i = 0; i < spielbrett.getFelder().length; i++) {
+			for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
+				if (spielbrett.getFelder()[i][j].equals(aktFeld)) {
+					spielbrett.getFelder()[i][j].setFigur(null);
+					aktFeld.removeSpielfigur(figur);
+
+					figur.setSpielfeld(spielbrett.getFeld(zielFeld.getId()));
+
+					zielFeld.setFigur(figur);
+				}
+
+			}
+		}
+	}
+
+	@Override
+	public void laufen(String aktPos, String zielPos, String figurId) {
+		spielbrett.getPositionen().clear();
+		Spielfigur figur = this.gebeFigur(figurId);
+		Spielfeld aktFeld = this.gebeFeld(aktPos);
+		Spielfeld zielFeld = this.gebeFeld(zielPos);
+
+		if (figur.getId().equals(aktFeld.getFigur().getId())) {
+			figur = aktFeld.getFigur();
+		}
+		spielbrett.Umwandler(aktPos);
+		spielbrett.Umwandler(zielPos);
+
+		if (spielerAmZug.getFarbe().equals(FarbEnum.SCHWARZ)) {
+
+			if (kannSchlagenRechtsSchwarz() == false
+					|| kannSchlagenLinksSchwarz() == false) {
+				// wenn figur schwarz ist
+				if (figur.getFarbe().equals(FarbEnum.SCHWARZ)) {
+					if (this.spielbrett.getPositionen().get(1) < this.spielbrett
+							.getPositionen().get(3)) {
+						this.rechts = true;
+						Spielfeld f = getNachbar(aktPos, true);
+						if (f.equals(zielFeld) && zielFeld.getFigur() == null) {
+							moveFigur(figur, aktFeld, zielFeld);
+							System.out.println("Figur " + figur);
+							System.out.println(aktFeld);
+						}
+
+					} else {
+						this.rechts = false;
+						Spielfeld f = getNachbar(aktPos, false);
+						if (f.equals(zielFeld) && zielFeld.getFigur() == null) {
+							moveFigur(figur, aktFeld, zielFeld);
+							System.out.println("Figur " + figur);
+							System.out.println(aktFeld);
+						}
+					}
+				}
+			} else {
+				System.out.println(spielerAmZug.getName()
+						+ " du musst schlagen!!!");
+				schlagen(aktFeld, zielFeld, figur);
+
+			}
+		} else if (spielerAmZug.getFarbe().equals(FarbEnum.WEISS)) {
+			if (kannSchlagenRechtsWeiss() == false
+					|| kannSchlagenLinksWeiss() == false) {
+				// wenn figur weiss ist
+				if (figur.getFarbe().equals(FarbEnum.WEISS)) {
+					if (this.spielbrett.getPositionen().get(1) > this.spielbrett
+							.getPositionen().get(3)) {
+						this.rechts = true;
+						Spielfeld f = getNachbar(aktPos, true);
+						if (f.equals(zielFeld) && zielFeld.getFigur() == null) {
+							moveFigur(figur, aktFeld, zielFeld);
+							System.out.println("Figur " + figur);
+							System.out.println(aktFeld);
+						}
+
+					} else {
+						this.rechts = false;
+						Spielfeld f = getNachbar(aktPos, false);
+						if (f.equals(zielFeld) && zielFeld.getFigur() == null) {
+							moveFigur(figur, aktFeld, zielFeld);
+							System.out.println("Figur " + figur);
+							System.out.println(aktFeld);
+						}
+					}
+				}
+
+			} else {
+				System.out.println(spielerAmZug.getName()
+						+ " du musst schagen!!!");
+				schlagen(aktFeld, zielFeld, figur);
+			}
+
+		}
+
+		zugBeenden();
 
 	}
 
-	// char Buchstabe = s.charAt(0);
-	// char Zahl = ss.charAt(1);
-
-	// System.out.println(Buchstabe);
-	// System.out.println(Zahl);
 	@Override
-	public void laufen(String altePos, String zielPos) {
+	public void zugBeenden() {
+		if (this.spielerAmZug.equals(spieler1)) {
+			SpielerAmZug(spieler2);
+			System.out.println(" Spieler " + spielerAmZug
+					+ " ist an der Reihe!");
+		} else {
+			SpielerAmZug(spieler1);
+			System.out.println(" Spieler " + spielerAmZug
+					+ " ist an der Reihe!");
+		}
 
-		altePos = spielbrett.getSpielfeld().getId();
+	}
 
-		System.out.println();
+	public Spielfeld getNachbar(String feld, boolean rechts) {
+		Spielfeld fe = null;
+		Spielfeld spielfeld = this.gebeFeld(feld);
+		Spielfigur figur = spielfeld.getFigur();
+
+		if (figur.getFarbe().equals(FarbEnum.SCHWARZ)) {
+			// laufe rechts schwarz
+			if (rechts) {
+				for (int i = 0; i < spielbrett.getFelder().length; i++) {
+					for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
+						if (spielbrett.getFelder()[i][j].getId().equals(feld)) {
+							fe = spielbrett.getFelder()[i + 1][j + 1];
+						}
+					}
+				}
+			} else {
+				// laufe links schwarz
+				for (int i = 0; i < spielbrett.getFelder().length; i++) {
+					for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
+
+						if (spielbrett.getFelder()[i][j].getId().equals(feld)) {
+							fe = spielbrett.getFelder()[i + 1][j - 1];
+						}
+					}
+				}
+
+			}
+		} else {
+			// laufe rechts weiss
+			if (figur.getFarbe().equals(FarbEnum.WEISS)) {
+				if (rechts) {
+					for (int i = 0; i < spielbrett.getFelder().length; i++) {
+						for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
+							if (spielbrett.getFelder()[i][j].getId().equals(
+									feld)) {
+								fe = spielbrett.getFelder()[i - 1][j - 1];
+							}
+						}
+					}
+				} else {
+					// laufe links weiss
+					for (int i = 0; i < spielbrett.getFelder().length; i++) {
+						for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
+							if (spielbrett.getFelder()[i][j].getId().equals(
+									feld)) {
+								fe = spielbrett.getFelder()[i - 1][j + 1];
+							}
+						}
+					}
+				}
+			}
+		}
+		return fe;
+	}
+
+	public void laufeDame(String aktPos, String zielPos, String figurId) {
+
+		Spielfeld aktFeld = this.gebeFeld(aktPos);
+		Spielfeld zielFeld = this.gebeFeld(zielPos);
+		Spielfigur figur = this.gebeFigur(figurId);
+
+		spielbrett.Umwandler(aktPos);
+		spielbrett.Umwandler(zielPos);
+
+		// ObenRechts
+
+		for (int i = 0; i < spielbrett.getFelder().length; i++) {
+			for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
+
+				if (figur.getFarbe().equals(FarbEnum.SCHWARZ)) {
+					if ((this.spielbrett.getPositionen().get(0) < this.spielbrett
+							.getPositionen().get(2))
+							&& (this.spielbrett.getPositionen().get(1) < this.spielbrett
+									.getPositionen().get(3))) {
+						while (aktFeld.getId() != zielPos) {
+							aktFeld = spielbrett.getFelder()[i++][j++];
+						}
+						aktFeld.removeSpielfigur(figur);
+						figur.setSpielfeld(zielFeld);
+						aktFeld.setFigur(figur);
+					}
+				}
+
+			}
+		}
+	}
+
+	public boolean kannSchlagenRechtsSchwarz() {
+
+		boolean kannSchlagen = false;
+
+		if (spielerAmZug.getFarbe().equals(FarbEnum.SCHWARZ)) {
+			for (int i = spielbrett.getFelder().length - 1; i < spielbrett
+					.getFelder().length; i++) {
+				for (int j = spielbrett.getFelder()[i].length - 1; j < spielbrett
+						.getFelder()[i].length; j++) {
+
+					if (spielbrett.getFelder()[i][j].getFarbeFeld().equals(
+							FarbEnum.SCHWARZ)) {
+						if (spielbrett.getFelder()[i][j].getFigur() == null) {
+							continue;
+						}
+						if (spielbrett.getFelder()[i][j].getFarbeFeld().equals(
+								FarbEnum.SCHWARZ)) {
+							if (spielbrett.getFelder()[i][j].getFigur()
+									.getFarbe().equals(FarbEnum.SCHWARZ)) {
+								if (spielbrett.getFelder()[i + 1][j + 1]
+										.getFigur() != null) {
+									if ((spielbrett.getFelder()[i + 1][j + 1]
+											.getFigur().getFarbe()
+											.equals(FarbEnum.WEISS) && (spielbrett
+											.getFelder()[i + 2][j + 2]
+											.getFigur() == null))) {
+										kannSchlagen = true;
+									} else {
+										kannSchlagen = false;
+									}
+								} else {
+									kannSchlagen = false;
+								}
+
+							}
+						}
+					}
+				}
+			}
+		}
+		return kannSchlagen;
+
+	}
+
+	public boolean kannSchlagenLinksSchwarz() {
+
+		boolean kannSchlagen = false;
+
+		if (spielerAmZug.getFarbe().equals(FarbEnum.SCHWARZ)) {
+			for (int i = 0; i < spielbrett.getFelder().length; i++) {
+				for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
+
+					if (spielbrett.getFelder()[i][j].getFarbeFeld().equals(
+							FarbEnum.SCHWARZ)) {
+						if (spielbrett.getFelder()[i][j].getFigur() == null) {
+							continue;
+						}
+
+						if (spielbrett.getFelder()[i][j].getFarbeFeld().equals(
+								FarbEnum.SCHWARZ)) {
+							if (spielbrett.getFelder()[i][j].getFigur()
+									.getFarbe().equals(FarbEnum.SCHWARZ)) {
+								if (spielbrett.getFelder()[i + 1][j - 1]
+										.getFigur() != null) {
+									if ((spielbrett.getFelder()[i + 1][j - 1]
+											.getFigur().getFarbe()
+											.equals(FarbEnum.WEISS) && (spielbrett
+											.getFelder()[i + 2][j - 2]
+											.getFigur() == null))) {
+										kannSchlagen = true;
+									} else {
+										kannSchlagen = false;
+									}
+								} else {
+									kannSchlagen = false;
+								}
+
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return kannSchlagen;
+
+	}
+
+	public boolean kannSchlagenRechtsWeiss() {
+
+		boolean kannSchlagen = false;
+
+		if (spielerAmZug.getFarbe().equals(FarbEnum.WEISS)) {
+			for (int i = spielbrett.getFelder().length - 1; i > spielbrett
+					.getFelder().length; i--) {
+				for (int j = spielbrett.getFelder()[i].length - 1; j > spielbrett
+						.getFelder()[i].length; j--) {
+
+					if (spielbrett.getFelder()[i][j].getFarbeFeld().equals(
+							FarbEnum.SCHWARZ)) {
+						if (spielbrett.getFelder()[i][j].getFigur() == null) {
+							continue;
+						}
+						if (spielbrett.getFelder()[i][j].getFarbeFeld().equals(
+								FarbEnum.SCHWARZ)) {
+							if (spielbrett.getFelder()[i][j].getFigur()
+									.getFarbe().equals(FarbEnum.WEISS)) {
+
+								if (spielbrett.getFelder()[i - 1][j - 1]
+										.getFigur() != null) {
+									if ((spielbrett.getFelder()[i - 1][j - 1]
+											.getFigur().getFarbe()
+											.equals(FarbEnum.SCHWARZ) && (spielbrett
+											.getFelder()[i - 2][j - 2]
+											.getFigur() == null))) {
+										kannSchlagen = true;
+									} else {
+										kannSchlagen = false;
+									}
+								} else {
+									kannSchlagen = false;
+								}
+							}
+
+						}
+					}
+				}
+			}
+		}
+
+		return kannSchlagen;
+
+	}
+
+	public boolean kannSchlagenLinksWeiss() {
+
+		boolean kannSchlagen = false;
+
+		if (spielerAmZug.getFarbe().equals(FarbEnum.WEISS)) {
+			for (int i = spielbrett.getFelder().length - 1; i < spielbrett
+					.getFelder().length; i--) {
+				for (int j = spielbrett.getFelder().length - 1; j < spielbrett
+						.getFelder()[i].length; j--) {
+
+					if (spielbrett.getFelder()[i][j].getFarbeFeld().equals(
+							FarbEnum.SCHWARZ)) {
+						if (spielbrett.getFelder()[i][j].getFigur() == null) {
+							continue;
+						}
+						if (spielbrett.getFelder()[i][j].getFarbeFeld().equals(
+								FarbEnum.SCHWARZ)) {
+							if (spielbrett.getFelder()[i][j].getFigur()
+									.getFarbe().equals(FarbEnum.WEISS)) {
+								if (spielbrett.getFelder()[i - 1][j + 1]
+										.getFigur() != null) {
+									if ((spielbrett.getFelder()[i - 1][j + 1]
+											.getFigur().getFarbe()
+											.equals(FarbEnum.SCHWARZ) && (spielbrett
+											.getFelder()[i - 2][j + 2]
+											.getFigur() == null))) {
+										kannSchlagen = true;
+									} else {
+										kannSchlagen = false;
+									}
+								} else {
+									kannSchlagen = false;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return kannSchlagen;
+
+	}
+
+	public boolean istOK(Spielfeld feld) {
+
+		int dx = feld.getX() - spielbrett.getSpielfeld().getX();
+		int dy = feld.getY() - spielbrett.getSpielfeld().getY();
+
+		if (Math.abs(dx) != Math.abs(dy)) {
+			return false;
+		} else if (Math.abs(dx) == 0 || (Math.abs(dx) > 2)) {
+			return false;
+		} else if (spielbrett.getSpielfeld().getFarbeFeld()
+				.equals(FarbEnum.SCHWARZ)
+				&& (dy > 0)
+				|| !spielbrett.getSpielfeld().getFarbeFeld()
+						.equals(FarbEnum.SCHWARZ) && (dy < 0)) {
+			return false;
+		}
+
+		return true;
+
+	}
+
+	public boolean getZugBeginn() {
+		return istZugbeginn;
+	}
+
+	public void merkeBeginn() {
+		istZugbeginn = false;
+	}
+
+	public void laufenDame(String aktPos, String zielPos, String figurId) {
+		Spielfeld feld = null;
+
+		Spielfigur figur = this.gebeFigur(figurId);
+		Spielfeld aktFeld = this.gebeFeld(aktPos);
+		Spielfeld zielFeld = this.gebeFeld(zielPos);
+
+		if (figur.getId().equals(aktFeld.getFigur().getId())) {
+			figur = aktFeld.getFigur();
+		}
+		spielbrett.Umwandler(aktPos);
+		spielbrett.Umwandler(zielPos);
+
+		if (istDame == true) {
+			for (int i = 0; i < spielbrett.getFelder().length; i++) {
+				for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
+					while (j > 0 && j > 13) {
+						if (spielbrett.getFelder()[i][j].getId().equals(feld)) {
+							feld = spielbrett.getFelder()[i + 1][j + 1];
+						}
+						if (spielbrett.getFelder()[i][j].getId().equals(feld)) {
+							feld = spielbrett.getFelder()[i + 1][j - 1];
+						}
+						if (spielbrett.getFelder()[i][j].getId().equals(feld)) {
+							feld = spielbrett.getFelder()[i - 1][j + 1];
+						}
+						if (spielbrett.getFelder()[i][j].getId().equals(feld)) {
+							feld = spielbrett.getFelder()[i - 1][j - 1];
+						}
+
+					}
+
+				}
+
+			}
+		}
+
+	}
+
+	/**
+	 * Speichert die aktuelle Belegung des Spielbretts in CSV-Notation.
+	 * Speicherort: savegame/savegame.csv
+	 */
+	@Override
+	public void belegungCSV() {
+
+		try {
+			pw = new PrintWriter(new FileWriter("speichern/belegung.csv"));
+		} catch (FileNotFoundException e) {
+			System.err.println("DATEI ZUM SPEICHERN NICHT GEFUNDEN!");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		Spielfeld[][] belegung = spielbrett.getFelder();
+		char ch = 'L';
+		char ch1 = 'A';
+		int x = 1;
+		String str = null;
+		boolean schwarz = true;
+
+		for (int i = 0; i < spielbrett.getFelder().length; i++) {
+
+			for (int j = 0; j < belegung[i].length; j++) {
+				str = "" + ch1 + x;
+				x++;
+
+				pw.print(belegung[i][j] = new Spielfeld(spielbrett, str,
+						schwarz, i, j));
+
+				schwarz = !schwarz;
+
+				if (x > 12) {
+					x = 1;
+					ch1++;
+					if (ch1 == ch) {
+						str = "" + ch + x;
+						schwarz = !schwarz;
+
+						break;
+
+					}
+					schwarz = !schwarz;
+
+				}
+
+			}
+			pw.println();
+		}
+
+		pw.close();
+	}
+
+	@Override
+	public void speichernCSV(String dateiname) {
+		try {
+			daten = new DatenzugriffCSV();
+			Properties p = new Properties();
+			p.setProperty("Dateiname", dateiname + ".csv");
+			p.setProperty("Modus", "s");
+			daten.oeffnen(p);
+
+			String s = "";
+			s += "Spieler: " + spieler1.getName() + " mit der Farbe "
+					+ spieler1.getFarbe() + " \n" + "Spieler: " + spieler2.getName() + " mit der Farbe "
+					+ spieler2.getFarbe()+ "";
+			daten.schreiben(s + "\n");
+
+			for (int i = 0; i < spielbrett.getFelder().length; i++) {
+				for (int j = 0; j < spielbrett.getFelder()[i].length; j++)
+					daten.schreiben(spielbrett.getFelder()[i][j] + "\n");
+			}
+
+			daten.schreiben(this);
+
+		} catch (Exception e) {
+			// System.err.println("Speichern CSV fehlgeschlagen!");
+			System.out.println("geladen");
+		} finally {
+
+			try {
+				daten.schliessen(dateiname);
+			} catch (IOException fehler) {
+				System.out.println(fehler.getMessage());
+			}
+
+		}
+
+	}
+
+	@Override
+	public Spiel ladenCSV(String s) {
+		try {
+			daten = new DatenzugriffCSV();
+			Properties p = new Properties();
+			daten.oeffnen(p);
+			Spiel spiel = (Spiel) daten.lesen();
+			System.out.println("Das Spiel wird geladen.");
+			daten.schliessen(p);
+			return spiel;
+		} catch (Exception e) {
+			System.err.println("Laden CSV fehlgeschlagen!");
+			return null;
+		}
+
+	}
+
+	@Override
+	public void speichernSerial(String s) {
+		try {
+			daten = new DatenzugriffSerialisiert();
+			Properties p = new Properties();
+			p.setProperty("datei", s + ".ser");
+			daten.oeffnen(p);
+			daten.schreiben(this);
+			System.out.println("Das Spiel wurde gespeichert: "
+					+ p.getProperty("datei"));
+			daten.schliessen(p);
+		} catch (Exception e) {
+			System.out.println("Speichern serialisiert !");
+		}
+	}
+
+	/**
+	 * laden serial return spiel
+	 */
+	@Override
+	public Spiel ladenSerial(String s) {
+		try {
+			daten = new DatenzugriffSerialisiert();
+			Properties p = new Properties();
+			daten.oeffnen(p);
+			Spiel spiel = (Spiel) daten.lesen();
+			System.out.println("Das Spiel wurde erfolgreich geladen.");
+			daten.schliessen(p);
+			return spiel;
+		} catch (Exception e) {
+			System.out.println("Laden serialisiert fehlgeschlagen!");
+			return null;
+		}
 
 	}
 

@@ -2,6 +2,9 @@
 
 package klassen;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 
 
 /**
@@ -10,15 +13,21 @@ package klassen;
  * @author B2
  *
  */
-public class Spielbrett {
+public class Spielbrett implements Serializable {
 
+	private static final long SerialVersion = 1l;
 	private Spielfeld spielfeld;
 	private Spielbrett sb;
 	private Spielfeld[][] felder ;
-	private boolean schwarz = false;
+	private boolean schwarz = true;
 	private Spiel spiel;
 	private Spieler spieler;
 	private String str = null;
+	private int x;
+	private int y;
+	private ArrayList <Integer> positionen = new ArrayList<Integer>();
+	
+	
 	/**
 	 * Konstruktor der Klasse Spielbrett
 	 * Methode getSpielbrett wird aufgerufen
@@ -53,22 +62,24 @@ public class Spielbrett {
 		for (int i = 0; i < felder.length; i++) {
 
 			for (int j = 0; j < felder[i].length; j++) {
-				str = "" + ch + x;
+				str = "" + ch1 + x;
 				x++;
 
 //				felder[i][j].setFarbeFeld(FarbEnum.SCHWARZ);
 			
 		
-				felder[i][j]=new Spielfeld(this, str, schwarz);
+				felder[i][j]=new Spielfeld(this, str, schwarz,i,j);
+				felder[i][j].setX(j);
+				felder[i][j].setY(i);
 				
 			System.out.println(felder[i][j].toString());
 				schwarz = !schwarz;
 
 				if (x > 12) {
 					x = 1;
-					ch--;
-					if (ch == ch1) {
-						str = "" + ch1 + x;
+					ch1++;
+					if (ch1 == ch) {
+						str = "" + ch + x;
 						schwarz = !schwarz;
 
 						break;
@@ -84,6 +95,46 @@ public class Spielbrett {
 		
 	}
 	
+	public int getX(){
+		return this.x;
+	}
+	public int getKY(){
+		return this.y;
+	}
+
+	public String Umwandler(String s){
+		
+		
+		char c = s.charAt(0);
+//		c=c-97;
+		
+		String s2=s.substring(1);
+		Integer i = 0;
+		i = i.parseInt(s2);
+//		i -= 1;
+		
+		this.x=c;
+		this.y=i;
+		
+//		System.out.println(this.x );
+//		System.out.println(this.y);
+		
+		positionen.add(x);
+		positionen.add(y);
+		
+		
+		return this.x + "" +this.y;
+	
+		
+	}
+	
+	public String getUmwandler(int x, int y){
+		
+		char c = (char) x;
+		String s="" + c + "" + y;
+		
+		return s;
+		}
 
 	
 
@@ -153,6 +204,16 @@ public class Spielbrett {
 	public void setSchwarz(boolean schwarz) {
 		this.schwarz = schwarz;
 	}
+	
+	public ArrayList<Integer> getPositionen() {
+		return positionen;
+	}
+
+
+
+	public void setPositionen(ArrayList<Integer> positionen) {
+		this.positionen = positionen;
+	}
 
 
 
@@ -171,6 +232,8 @@ public class Spielbrett {
 	public Spielbrett getSB(){
 		return this;
 	}
+	
+	
 	
 	public Spielfeld getFeld(String id){
 		int [] in = stringId(id);
@@ -202,7 +265,14 @@ public class Spielbrett {
 	}
 	
 
-
+//public static void main(String[] args) {
+//	
+//	
+//	Spielbrett s = new Spielbrett();
+//	s.Umwandler("B2");
+//	s.getUmwandler(66,2);
+//	System.out.println(s);
+//}
 
 	
 ///**
@@ -223,6 +293,10 @@ public class Spielbrett {
 //
 //				
 //	}
+@Override 
+public String toString(){
+	return "" + getUmwandler(this.x, this.y);
+}
 
 	
 }

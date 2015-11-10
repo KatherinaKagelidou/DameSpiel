@@ -1,6 +1,5 @@
 package daten;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 
 import klassen.FarbEnum;
@@ -9,43 +8,31 @@ import klassen.Spieler;
 import klassen.iBediener;
 
 public class SpielTestSpeichernCSV {
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		PrintWriter pw = null;
 		iDatenzugriff d=new DatenzugriffSerialisiert();
 		
-		Spiel i = new Spiel();
+		iBediener spiel = new Spiel();
 		
 	
 		
-//		Spieler weiss =new Spieler("Kathi",FarbEnum.SCHWARZ,null);
-//		Spieler schwarz=new Spieler("Branki",FarbEnum.WEISS,null);
-//		
-//		s.nimmtTeil(weiss);
-//		s.nimmtTeil(schwarz);
-//		
-//		s.starteSpiel();
-//	s.ermittleSpielerAmZug();
-//		
-//		s.laufen("H2", "G3","white 30");
-//	
-//		s.laufen("E11", "F10","black 30");
-		
-		
+		spiel.addSpieler("Kathi", FarbEnum.SCHWARZ,null );
+		spiel.addSpieler("Sarah", FarbEnum.WEISS, null);
 
-		i.addSpieler("Kathi", FarbEnum.SCHWARZ,null );
-		i.addSpieler("Sarah", FarbEnum.WEISS, null);
-		i.starteSpiel();
 		
+		spiel.starteSpiel();
+//		spiel.ermittleSpielerAmZug();
 		
-
-		i.laufen("H4", "G3","white 29");
-		i.zugBeenden();
+		spiel.laufen("H2", "G3","white 30");
+		
+		spiel.laufen("E11", "F10","black 30");
+		
 		
 	
 		
 		
 		
-		i.speichernCSV("BinCSV");
 		
+		spiel.speichernCSV("hallo");
 //		s.ladenCSV("koko");
 	}}

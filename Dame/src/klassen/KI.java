@@ -1,7 +1,6 @@
 
 package klassen;
 
-
 abstract class KI {
 	
 
@@ -24,3 +23,4 @@ abstract class KI {
 
 
 }
+

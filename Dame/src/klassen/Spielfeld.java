@@ -1,19 +1,23 @@
 package klassen;
 
+import java.io.Serializable;
 
 /**
  * Klasse Spielfeld
- * 
  * @author B2
  *
  */
-public class Spielfeld {
+public class Spielfeld implements Serializable{
+	
+	private static final long SerialVersion = 1l;
 	private String id;
 	private Spielfigur figur;
 	private boolean hatSpielfigur = false;
 	private Spielbrett spielbrett;
 	private FarbEnum farbeFeld;
 	private boolean istSchwarz;
+	private int x; 
+	private int y;
 
 	/**
 	 * Konstruktor der Klasse Spielfeld
@@ -21,7 +25,7 @@ public class Spielfeld {
 	 * @param id
 	 *            ist das Feld auf dem sich die einzelnen Spielfiguren befinden
 	 */
-	public Spielfeld(Spielbrett brett, String id, boolean schwarz) {
+	public Spielfeld(Spielbrett brett, String id, boolean schwarz, int x , int y) {
 		setId(id);
 		if (schwarz) {
 			setFarbeFeld(FarbEnum.SCHWARZ);
@@ -30,6 +34,8 @@ public class Spielfeld {
 		}
 		this.istSchwarz = schwarz;
 		this.spielbrett = brett;
+		this.x=x;
+		this.y=y;
 		// this.setFigur(figur);
 	}
 
@@ -51,11 +57,13 @@ public class Spielfeld {
 
 		this.id = id;
 	}
+	
 
 	public Spielfigur getFigur() {
 		return figur;
 	}
 
+	
 	/**
 	 * Setter fuer die Ueberpruefung ob auf einem Feld eine Figur ist
 	 * 
@@ -63,11 +71,9 @@ public class Spielfeld {
 	 */
 	public void setFigur(Spielfigur figur) {
 
-		if (this.hatSpielfigur) {
-			this.figur = figur;
-		} else
-			System.out.println("Es befindet sich eine Figur auf dem Feld, klicken?");
+				this.figur = figur;
 
+			
 	}
 
 	public void setFarbeFeld(FarbEnum farbeFeld) {
@@ -88,14 +94,11 @@ public class Spielfeld {
 	 * 
 	 */
 
-	public void removeSpielfigur() {
-		if (this.hatSpielfigur == true) {
-			figur = null;
-			System.out
-					.println("Die Figur auf dem " + this + " wurde entfernt!");
-			this.hatSpielfigur = false;
-		} else
-			throw new RuntimeException("Keine Figur auf dem Feld!");
+	public void removeSpielfigur(Spielfigur figur) {
+		System.out
+		.println("Die Figur "+ this.getFigur()+"auf Feld " + this.getId() + " wurde entfernt!");
+	
+			this.setFigur(null);
 	}
 
 	/**
@@ -111,6 +114,28 @@ public class Spielfeld {
 		}
 		return false;
 	}
+	
+	
+	public int getX(){
+		return x;
+	}
+	public int getY(){
+		return y;
+	}
+	
+	public void setX(int x){
+		this.x=x;
+	}
+	
+	public void setY(int y){
+		this.x=y;
+	}
+
+	
+	//nach Datentyp nochmal schauen -- vll doch void?
+	public Spielfigur entferneFigur(){
+		return figur=null;
+	}
 
 	/**
 	 * Setzt eine Spielfigur auf ein Spielfeld
@@ -125,9 +150,10 @@ public class Spielfeld {
 	@Override
 	public String toString() {
 		String s = "";
-		s += "[ Spielfeld+" + this.getId() + " - Farbe " + this.getFarbeFeld();
+		s += "Spielfeld+ " + this.getId() + " - Farbe " + this.getFarbeFeld() ;
 		if (figur != null) {
-			s += " - Figur" + getFigur() + "]";
+			s += " - Figur" + getFigur() +"\n";
+			s+="\n";
 		}
 		if (this.getId().contains("12")) {
 

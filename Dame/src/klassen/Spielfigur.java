@@ -1,5 +1,9 @@
 package klassen;
-
+/**
+ * Klasse Spielfigur
+ * @author B2
+ *
+ */
 public class Spielfigur {
 	
 	
@@ -7,7 +11,7 @@ public class Spielfigur {
 	private String id;
 	private String position;
 	private Spielfeld spielfeld;
-	private static int counter = 0;
+	private static int counter = 1;
 	private boolean istDame;
 	
 	
@@ -24,13 +28,19 @@ public class Spielfigur {
 			counter=1;
 		}
 		this.setFarbe(farbe);
-		this.setzeFigurId();
 		this.setSpielfeld(feld);
 	
 		
 	}
 	
+	public void setDame(boolean istDame) {
+		this.istDame = istDame;
 
+	}
+
+	public boolean getDame(Spielfigur fig) {
+		return this.istDame;
+	}
 	
 	public String getId(){
 		return id;
@@ -45,29 +55,27 @@ public class Spielfigur {
 	 */
 	
 	
-	public void setzeFigurId(){
+	public void setId(int count){
 		
 		switch (this.farbe) {
 		case SCHWARZ:
-			position="black"+counter;
-			this.id = position;
+			id ="black "+count;
 			break;
 		case WEISS:
-			position="white"+counter;
-			this.id = position;
+			id ="white "+count;
 			break;
 		}
-		
-		counter+=1;
 		
 	}
 
 	public void setSpielfeld(Spielfeld spielfeld){
+		
 		if (spielfeld==null){
 			throw new RuntimeException(" Falsche Eingabe");
 		}
 		else{
 			this.spielfeld=spielfeld;
+			
 		}
 	}
 	
@@ -91,7 +99,8 @@ public class Spielfigur {
 	}
 	
 	public String getPosition(){
-		return this.spielfeld.getId();
+		 position=this.spielfeld.getId();
+		 return position;
 	}
 	
 	public void setzeFigur(Spielfeld feld){
@@ -122,34 +131,36 @@ public class Spielfigur {
 //			}
 //	}
 	
-	public void istDame(boolean istDame){
-		if(this.getFarbe().equals(FarbEnum.WEISS)){
-			if(this.position.contains("12")){
-				this.istDame=true;
-			}
-			else{
-				this.istDame=false;
-			}
-		}
-		if(this.getFarbe().equals(FarbEnum.SCHWARZ)){
-			if(this.position.contains("1")){
-				this.istDame=true;
-			}
-			else{
-				this.istDame=false;
-			}
-		}
-		
+//	public void istDame(boolean istDame){
+//		if(this.getFarbe().equals(FarbEnum.WEISS)){
+//			if(this.position.contains("12")){
+//				this.istDame=true;
+//			}
+//			else{
+//				this.istDame=false;
+//			}
+//		}
+//		if(this.getFarbe().equals(FarbEnum.SCHWARZ)){
+//			if(this.position.contains("1")){
+//				this.istDame=true;
+//			}
+//			else{
+//				this.istDame=false;
+//			}
+//		}
+//		
+//	}
+	
+	public Spielfeld getFeld(){
+		return spielfeld;
 	}
-	
-	
 	
 	
 
 	@Override
 	public String toString() {
 
-		return "Spielfigur: ID " + this.getId()+"mit pos:" + this.getPosition() + " mit der Farbe " + this.getFarbe();
+		return "Spielfigur: ID " + this.getId()+ " mit pos: " + this.getPosition() + " mit der Farbe " + this.getFarbe();
 
 	}
 
