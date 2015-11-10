@@ -1,94 +1,90 @@
 package daten;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.io.OutputStreamWriter;
+import java.util.Properties;
 
 import klassen.Spiel;
 
 public class DatenzugriffCSV implements iDatenzugriff {
 
-	private static final String split = ";";
-	private static final String NEW_LINE_SEPARATOR = "\n";
-	private static final String FILE_HEADER = "id,firstName,lastName,gender,age";
-/**
- * die methode laden aus dem interface iDatenzugriff wurde ï¿½berschrieben und neu implementiert
- * eine csv datei wird ausgelesen
- */
+	private BufferedReader br;
+	private BufferedWriter bw;
+	
+	/**
+	 * Diese Methode öffnet die CSV Datei.
+
+	 */
 	@Override
-	public Object laden(String filename) {
-		ObjectInputStream ois = null;
-		FileInputStream fis = null;
-		Object obj = null;
-		try {
-			fis = new FileInputStream(filename);
-			ois = new ObjectInputStream(fis);
-			obj = ois.readObject();
-			if (obj instanceof Spiel) {
-				Spiel sp = (Spiel) obj;
-//				
-//				System.out.println(sp.getBrett()); // true
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} finally {
-			if (ois != null)
-				try {
-					ois.close();
-				} catch (IOException e) {
-				}
-			if (fis != null)
-				try {
-					fis.close();
-				} catch (IOException e) {
-				}
+	public void oeffnen(Properties p) throws IOException {
+		String dateiname = p.getProperty("Dateiname");
+		
+		if(dateiname == null) {
+			throw new IOException("Dateiname wurde nicht definiert!");
 		}
-		return obj;
+		
+		if("s".equals(p.getProperty("Modus"))) {
+			bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(dateiname)));
+		} else if("l".equals(p.getProperty("Modus"))) {
+			br = new BufferedReader(new InputStreamReader(new FileInputStream(dateiname)));
+		} else {
+			throw new IOException("Modus wurde nicht definiert!");
+		}
 	}
 	
 	/**
-	 * die methode speichern aus dem interface iDatenzugriff wurde ï¿½berschrieben und neu implementiert
-	 * eine csv datei wird ausgelesen
+	 * Diese Datei schreibt in die CSV
+
 	 */
-
 	@Override
-	public void speichern(Object spiel, String filename) {
+	public void schreiben(Object object) throws IOException {
+		if (bw == null) {
+			throw new RuntimeException("Der Reader ist nicht offen");
+		}
 		
-		FileWriter fileWriter = null;
-
+			bw.write((String) object);
+			
+		
+	}
+	
+	/**
+	 * Diese Methode liest aus der Datei
+	
+	 */
+	@Override
+	public Object lesen() throws IOException {
+		if (br == null) {
+			throw new RuntimeException("Der Reader ist nicht offen");
+		}
 		try {
-			fileWriter = new FileWriter(filename);
+			return br.readLine();
+		} catch (IOException e) {
+			System.err.println("Fehler bei Ein-/Ausgabe: "+e);
+			return null;
+		}
+	}
+	
+	/**
+	 * Diese Methode schließt die CSV - Datei
 
-			// Write the CSV file header
-			fileWriter.append(FILE_HEADER.toString());
-
-			// Add a new line separator after the header
-			fileWriter.append(NEW_LINE_SEPARATOR);
-
-			System.out.println("CSV file was created successfully !!!");
-
-		} catch (Exception e) {
-
-			System.out.println("Error in CsvFileWriter !!!");
-
-			e.printStackTrace();
-
-		} finally {
-
-			try {
-
-				fileWriter.flush();
-				fileWriter.close();
-
-			} catch (IOException e) {
-				System.out.println("Error while flushing/closing fileWriter !!!");
-				e.printStackTrace();
-
-			}
-
+	 */
+	@Override
+	public void schliessen(Object object) throws IOException {
+		if(bw != null) {
+			bw.close();
+			bw = null;
+		}
+		
+		if(br != null) {
+			br.close();
+			br = null;
 		}
 	}
 
