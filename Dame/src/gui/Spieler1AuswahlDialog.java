@@ -71,7 +71,7 @@ public class Spieler1AuswahlDialog {
 
 		spielerText = new JLabel("Spieler 1");
 		spielerText.setBounds(30, 0, 250, 30);
-		spielerText.setForeground(Color.magenta);
+		spielerText.setForeground(Color.BLUE);
 		spielerText.setFont(spielerText.getFont().deriveFont(
 				Font.ROMAN_BASELINE + Font.ITALIC, 15));
 		//
