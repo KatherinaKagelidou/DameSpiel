@@ -22,7 +22,7 @@ public class StartGui {
     
     public StartGui(){
     
-    	fra=new JFrame("Mensch ärgere dich nicht");
+    	fra=new JFrame("Game Dame");
     	 fra.setSize(500, 500);
          fra.setLocationRelativeTo(null);
          fra.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
