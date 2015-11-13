@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
@@ -21,7 +22,7 @@ import javax.swing.SwingConstants;
 import klassen.FarbEnum;
 import klassen.Spieler;
 
-public class Spieler2AuswahlDialog {
+public class Spieler2AuswahlDialog extends JOptionPane {
 
 	JFrame frame;
 	JButton spielStarten;
@@ -156,7 +157,7 @@ public class Spieler2AuswahlDialog {
 
 	private void addListener() {
 		spielStarten.addActionListener(event);
-		spielStarten.setActionCommand("spielStarten");
+		spielStarten.setActionCommand("spielStarten1");
 	}
 
 	public JButton getSpielStarten() {
