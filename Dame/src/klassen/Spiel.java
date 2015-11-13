@@ -1,6 +1,6 @@
 package klassen;
 
-import java.io.File;
+
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,7 +14,6 @@ import daten.DatenzugriffSerialisiert;
 import daten.iDatenzugriff;
 
 public class Spiel implements iBediener, Serializable {
-
 	private final static int spielerMax = 2;
 	// private Spieler[] Spieler = new Spieler[spielerMax];
 	private Spieler spieler1;
@@ -339,37 +338,69 @@ public class Spiel implements iBediener, Serializable {
 	}
 
 	@Override
-	public void schlagen(Spielfeld aktPos, Spielfeld zielPos,
+	public void schlagen(Spielfeld aktPos, Spielfeld gegnerPos,
 			Spielfigur spielfigur) {
 
 		aktPos.removeSpielfigur(aktPos.getFigur());
-		zielPos.setFigur(spielfigur);
+		gegnerPos.setFigur(spielfigur);
 		String aktFeld = aktPos.getId();
 
 		if (spielfigur.getFarbe().equals(FarbEnum.SCHWARZ)) {
 
-			if (kannSchlagenRechtsSchwarz()) {
+			if (kannSchlagenRechtsSchwarz(aktPos)) {
 
-				Spielfeld feld = this.getNachbar(aktFeld, rechts);
-				feld.removeSpielfigur(feld.getFigur());
+				Spielfeld zielPos = this.getNachbar(gegnerPos.getId(), rechts);
+				// setzt figur, die schlägt auf neue pos
+				moveFigur(spielfigur, aktPos, zielPos);
+				// löscht geschlagene figur
+				for (int i = 0; i < spielbrett.getFelder().length; i++) {
+					for (int j = 0; j < spielbrett.getFelder()[i].length;) {
+						spielbrett.getFelder()[i][j].setFigur(null);
+						gegnerPos.removeSpielfigur(gegnerPos.getFigur());
+					}
+				}
 
-			} else if (kannSchlagenLinksSchwarz()) {
-				Spielfeld feld = this.getNachbar(aktFeld, !rechts);
-				feld.removeSpielfigur(feld.getFigur());
+			} else if (kannSchlagenLinksSchwarz(aktPos)) {
+
+				Spielfeld zielPos = this.getNachbar(gegnerPos.getId(), !rechts);
+
+				moveFigur(spielfigur, aktPos, zielPos);
+
+				for (int i = 0; i < spielbrett.getFelder().length; i++) {
+					for (int j = 0; j < spielbrett.getFelder()[i].length;) {
+						spielbrett.getFelder()[i][j].setFigur(null);
+						gegnerPos.removeSpielfigur(gegnerPos.getFigur());
+					}
+				}
 			}
-
 		} else {
 
-			if (kannSchlagenRechtsWeiss()) {
+			if (kannSchlagenRechtsWeiss(aktPos)) {
 
-				Spielfeld feld = this.getNachbar(aktFeld, rechts);
-				feld.removeSpielfigur(feld.getFigur());
+				Spielfeld zielPos = this.getNachbar(gegnerPos.getId(), rechts);
 
-			} else if (kannSchlagenLinksWeiss()) {
-				Spielfeld feld = this.getNachbar(aktFeld, !rechts);
-				feld.removeSpielfigur(feld.getFigur());
+				moveFigur(spielfigur, aktPos, zielPos);
+
+				for (int i = 0; i < spielbrett.getFelder().length; i++) {
+					for (int j = 0; j < spielbrett.getFelder()[i].length;) {
+						spielbrett.getFelder()[i][j].setFigur(null);
+						gegnerPos.removeSpielfigur(gegnerPos.getFigur());
+					}
+				}
+
+			} else if (kannSchlagenLinksWeiss(aktPos)) {
+				Spielfeld zielPos = this.getNachbar(gegnerPos.getId(), !rechts);
+
+				moveFigur(spielfigur, aktPos, zielPos);
+
+				for (int i = 0; i < spielbrett.getFelder().length; i++) {
+					for (int j = 0; j < spielbrett.getFelder()[i].length;) {
+						spielbrett.getFelder()[i][j].setFigur(null);
+						gegnerPos.removeSpielfigur(gegnerPos.getFigur());
+					}
+				}
+
 			}
-
 		}
 	}
 
@@ -407,12 +438,13 @@ public class Spiel implements iBediener, Serializable {
 			Spielfeld zielFeld) {
 		for (int i = 0; i < spielbrett.getFelder().length; i++) {
 			for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
+				// sucht aktFeld
 				if (spielbrett.getFelder()[i][j].equals(aktFeld)) {
+					// löscht figur auf aktFeld
 					spielbrett.getFelder()[i][j].setFigur(null);
 					aktFeld.removeSpielfigur(figur);
-
+					// setzt figur auf zielfeld
 					figur.setSpielfeld(spielbrett.getFeld(zielFeld.getId()));
-
 					zielFeld.setFigur(figur);
 				}
 
@@ -435,8 +467,7 @@ public class Spiel implements iBediener, Serializable {
 
 		if (spielerAmZug.getFarbe().equals(FarbEnum.SCHWARZ)) {
 
-			if (kannSchlagenRechtsSchwarz() == false
-					|| kannSchlagenLinksSchwarz() == false) {
+			if (!kannSchlagen()) {
 				// wenn figur schwarz ist
 				if (figur.getFarbe().equals(FarbEnum.SCHWARZ)) {
 					if (this.spielbrett.getPositionen().get(1) < this.spielbrett
@@ -466,8 +497,7 @@ public class Spiel implements iBediener, Serializable {
 
 			}
 		} else if (spielerAmZug.getFarbe().equals(FarbEnum.WEISS)) {
-			if (kannSchlagenRechtsWeiss() == false
-					|| kannSchlagenLinksWeiss() == false) {
+			if (!kannSchlagen()) {
 				// wenn figur weiss ist
 				if (figur.getFarbe().equals(FarbEnum.WEISS)) {
 					if (this.spielbrett.getPositionen().get(1) > this.spielbrett
@@ -529,6 +559,7 @@ public class Spiel implements iBediener, Serializable {
 					for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
 						if (spielbrett.getFelder()[i][j].getId().equals(feld)) {
 							fe = spielbrett.getFelder()[i + 1][j + 1];
+							return fe;
 						}
 					}
 				}
@@ -539,6 +570,7 @@ public class Spiel implements iBediener, Serializable {
 
 						if (spielbrett.getFelder()[i][j].getId().equals(feld)) {
 							fe = spielbrett.getFelder()[i + 1][j - 1];
+							return fe;
 						}
 					}
 				}
@@ -548,21 +580,28 @@ public class Spiel implements iBediener, Serializable {
 			// laufe rechts weiss
 			if (figur.getFarbe().equals(FarbEnum.WEISS)) {
 				if (rechts) {
-					for (int i = 0; i < spielbrett.getFelder().length; i++) {
-						for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
+					for (int i = spielbrett.getFelder().length - 1; i < spielbrett
+							.getFelder().length; i--) {
+						for (int j = spielbrett.getFelder().length - 1; j < spielbrett
+								.getFelder()[i].length; j--) {
 							if (spielbrett.getFelder()[i][j].getId().equals(
 									feld)) {
 								fe = spielbrett.getFelder()[i - 1][j - 1];
+								return fe;
 							}
 						}
 					}
 				} else {
 					// laufe links weiss
-					for (int i = 0; i < spielbrett.getFelder().length; i++) {
-						for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
+					for (int i = spielbrett.getFelder().length - 1; i < spielbrett
+							.getFelder().length; i--) {
+						for (int j = spielbrett.getFelder().length - 1; j < spielbrett
+								.getFelder()[i].length; j--) {
 							if (spielbrett.getFelder()[i][j].getId().equals(
 									feld)) {
+								
 								fe = spielbrett.getFelder()[i - 1][j + 1];
+								return fe;
 							}
 						}
 					}
@@ -604,43 +643,27 @@ public class Spiel implements iBediener, Serializable {
 		}
 	}
 
-	public boolean kannSchlagenRechtsSchwarz() {
+	public boolean kannSchlagenRechtsSchwarz(Spielfeld feld) {
 
-		boolean kannSchlagen = false;
-
-		if (spielerAmZug.getFarbe().equals(FarbEnum.SCHWARZ)) {
-			for (int i = spielbrett.getFelder().length - 1; i < spielbrett
-					.getFelder().length; i++) {
-				for (int j = spielbrett.getFelder()[i].length - 1; j < spielbrett
-						.getFelder()[i].length; j++) {
-
-					if (spielbrett.getFelder()[i][j].getFarbeFeld().equals(
-							FarbEnum.SCHWARZ)) {
-						if (spielbrett.getFelder()[i][j].getFigur() == null) {
-							continue;
-						}
-						if (spielbrett.getFelder()[i][j].getFarbeFeld().equals(
-								FarbEnum.SCHWARZ)) {
-							if (spielbrett.getFelder()[i][j].getFigur()
-									.getFarbe().equals(FarbEnum.SCHWARZ)) {
-								if (spielbrett.getFelder()[i + 1][j + 1]
-										.getFigur() != null) {
-									if ((spielbrett.getFelder()[i + 1][j + 1]
-											.getFigur().getFarbe()
-											.equals(FarbEnum.WEISS) && (spielbrett
-											.getFelder()[i + 2][j + 2]
-											.getFigur() == null))) {
-										kannSchlagen = true;
-									} else {
-										kannSchlagen = false;
-									}
-								} else {
-									kannSchlagen = false;
-								}
-
-							}
-						}
+		kannSchlagen = false;
+		if (feld.getFarbeFeld().equals(FarbEnum.SCHWARZ)) {
+			while (feld.getFigur() == null) {
+				continue;
+			}
+			if (pruefeID2(feld)) {
+				return kannSchlagen = false;
+			} else if (feld.getFigur().getFarbe().equals(FarbEnum.SCHWARZ)) {
+				Spielfeld feld2 = getNachbar(feld.getId(), rechts);
+				if ((feld2.getFigur() != null)
+						&& (feld2.getFigur().getFarbe().equals(FarbEnum.WEISS))) {
+					Spielfeld feld3 = getNachbar(feld2.getId(), rechts);
+					if (feld3 == null) {
+						kannSchlagen = true;
+					} else {
+						kannSchlagen = false;
 					}
+				} else {
+					kannSchlagen = false;
 				}
 			}
 		}
@@ -648,137 +671,125 @@ public class Spiel implements iBediener, Serializable {
 
 	}
 
-	public boolean kannSchlagenLinksSchwarz() {
+	public boolean kannSchlagenLinksSchwarz(Spielfeld feld) {
 
-		boolean kannSchlagen = false;
+		kannSchlagen = false;
+		if (feld.getFarbeFeld().equals(FarbEnum.SCHWARZ)) {
+			while (feld.getFigur() == null) {
+				continue;
+			}
+			if (pruefeID1(feld)) {
+				return kannSchlagen = false;
+			} else if (feld.getFigur().getFarbe().equals(FarbEnum.SCHWARZ)) {
+				Spielfeld feld2 = getNachbar(feld.getId(), !rechts);
+				if ((feld2.getFigur() != null)
+						&& (feld2.getFigur().getFarbe().equals(FarbEnum.WEISS))) {
+					Spielfeld feld3 = getNachbar(feld2.getId(), !rechts);
+					if (feld3 == null) {
+						kannSchlagen = true;
+					} else {
+						kannSchlagen = false;
+					}
+				} else {
+					kannSchlagen = false;
+				}
+			}
+		}
+		return kannSchlagen;
 
-		if (spielerAmZug.getFarbe().equals(FarbEnum.SCHWARZ)) {
+	}
+
+	public boolean kannSchlagenRechtsWeiss(Spielfeld feld) {
+
+		kannSchlagen = false;
+		if (feld.getFarbeFeld().equals(FarbEnum.SCHWARZ)) {
+			while (feld.getFigur() == null) {
+				continue;
+			}
+			if (pruefeID1(feld)) {
+				return kannSchlagen = false;
+			} else if (feld.getFigur().getFarbe().equals(FarbEnum.WEISS)) {
+				Spielfeld feld2 = getNachbar(feld.getId(), rechts);
+				if ((feld2.getFigur() != null)
+						&& (feld2.getFigur().getFarbe()
+								.equals(FarbEnum.SCHWARZ))) {
+					Spielfeld feld3 = getNachbar(feld2.getId(), rechts);
+					if (feld3 == null) {
+						kannSchlagen = true;
+					} else {
+						kannSchlagen = false;
+					}
+				} else {
+					kannSchlagen = false;
+				}
+			}
+		}
+		return kannSchlagen;
+
+	}
+
+	public boolean kannSchlagenLinksWeiss(Spielfeld feld) {
+
+		kannSchlagen = false;
+
+		if (feld.getFarbeFeld().equals(FarbEnum.SCHWARZ)) {
+			while (feld.getFigur() == null) {
+				continue;
+			}
+			if (pruefeID2(feld)) {
+				return kannSchlagen = false;
+			} else if (feld.getFigur().getFarbe().equals(FarbEnum.WEISS)) {
+				Spielfeld feld2 = getNachbar(feld.getId(), !rechts);
+				if ((feld2.getFigur() != null)
+						&& (feld2.getFigur().getFarbe()
+								.equals(FarbEnum.SCHWARZ))) {
+					Spielfeld feld3 = getNachbar(feld2.getId(), !rechts);
+					if (feld3 == null) {
+						kannSchlagen = true;
+					} else {
+						kannSchlagen = false;
+					}
+				} else {
+					kannSchlagen = false;
+				}
+			}
+		}
+		return kannSchlagen;
+
+	}
+
+	private boolean kannSchlagen() {
+		FarbEnum farbe = spielerAmZug.getFarbe();
+		switch (farbe) {
+		case WEISS:
+			for (int i = spielbrett.getFelder().length - 1; i < spielbrett
+					.getFelder().length; i--) {
+				for (int j = spielbrett.getFelder().length - 1; j >= 0; j--) {
+					
+					if((!pruefeID1(spielbrett.getFelder()[i][j])
+							&& (!pruefeUnten(spielbrett.getFelder()[i][j])))){
+					if (kannSchlagenLinksWeiss(spielbrett.getFelder()[i][j])){
+					// || kannSchlagenRechtsWeiss(spielbrett.getFelder()[i][j]))
+					// {
+					
+						return true;
+					}}
+
+				}
+			}
+			break;
+		case SCHWARZ:
 			for (int i = 0; i < spielbrett.getFelder().length; i++) {
 				for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
-
-					if (spielbrett.getFelder()[i][j].getFarbeFeld().equals(
-							FarbEnum.SCHWARZ)) {
-						if (spielbrett.getFelder()[i][j].getFigur() == null) {
-							continue;
-						}
-
-						if (spielbrett.getFelder()[i][j].getFarbeFeld().equals(
-								FarbEnum.SCHWARZ)) {
-							if (spielbrett.getFelder()[i][j].getFigur()
-									.getFarbe().equals(FarbEnum.SCHWARZ)) {
-								if (spielbrett.getFelder()[i + 1][j - 1]
-										.getFigur() != null) {
-									if ((spielbrett.getFelder()[i + 1][j - 1]
-											.getFigur().getFarbe()
-											.equals(FarbEnum.WEISS) && (spielbrett
-											.getFelder()[i + 2][j - 2]
-											.getFigur() == null))) {
-										kannSchlagen = true;
-									} else {
-										kannSchlagen = false;
-									}
-								} else {
-									kannSchlagen = false;
-								}
-
-							}
-						}
+					if (kannSchlagenLinksSchwarz(spielbrett.getFelder()[i][j])
+							|| kannSchlagenRechtsSchwarz(spielbrett.getFelder()[i][j])) {
+						return true;
 					}
 				}
 			}
+			break;
 		}
-
-		return kannSchlagen;
-
-	}
-
-	public boolean kannSchlagenRechtsWeiss() {
-
-		boolean kannSchlagen = false;
-
-		if (spielerAmZug.getFarbe().equals(FarbEnum.WEISS)) {
-			for (int i = spielbrett.getFelder().length - 1; i > spielbrett
-					.getFelder().length; i--) {
-				for (int j = spielbrett.getFelder()[i].length - 1; j > spielbrett
-						.getFelder()[i].length; j--) {
-
-					if (spielbrett.getFelder()[i][j].getFarbeFeld().equals(
-							FarbEnum.SCHWARZ)) {
-						if (spielbrett.getFelder()[i][j].getFigur() == null) {
-							continue;
-						}
-						if (spielbrett.getFelder()[i][j].getFarbeFeld().equals(
-								FarbEnum.SCHWARZ)) {
-							if (spielbrett.getFelder()[i][j].getFigur()
-									.getFarbe().equals(FarbEnum.WEISS)) {
-
-								if (spielbrett.getFelder()[i - 1][j - 1]
-										.getFigur() != null) {
-									if ((spielbrett.getFelder()[i - 1][j - 1]
-											.getFigur().getFarbe()
-											.equals(FarbEnum.SCHWARZ) && (spielbrett
-											.getFelder()[i - 2][j - 2]
-											.getFigur() == null))) {
-										kannSchlagen = true;
-									} else {
-										kannSchlagen = false;
-									}
-								} else {
-									kannSchlagen = false;
-								}
-							}
-
-						}
-					}
-				}
-			}
-		}
-
-		return kannSchlagen;
-
-	}
-
-	public boolean kannSchlagenLinksWeiss() {
-
-		boolean kannSchlagen = false;
-
-		if (spielerAmZug.getFarbe().equals(FarbEnum.WEISS)) {
-			for (int i = spielbrett.getFelder().length - 1; i < spielbrett
-					.getFelder().length; i--) {
-				for (int j = spielbrett.getFelder().length - 1; j < spielbrett
-						.getFelder()[i].length; j--) {
-
-					if (spielbrett.getFelder()[i][j].getFarbeFeld().equals(
-							FarbEnum.SCHWARZ)) {
-						if (spielbrett.getFelder()[i][j].getFigur() == null) {
-							continue;
-						}
-						if (spielbrett.getFelder()[i][j].getFarbeFeld().equals(
-								FarbEnum.SCHWARZ)) {
-							if (spielbrett.getFelder()[i][j].getFigur()
-									.getFarbe().equals(FarbEnum.WEISS)) {
-								if (spielbrett.getFelder()[i - 1][j + 1]
-										.getFigur() != null) {
-									if ((spielbrett.getFelder()[i - 1][j + 1]
-											.getFigur().getFarbe()
-											.equals(FarbEnum.SCHWARZ) && (spielbrett
-											.getFelder()[i - 2][j + 2]
-											.getFigur() == null))) {
-										kannSchlagen = true;
-									} else {
-										kannSchlagen = false;
-									}
-								} else {
-									kannSchlagen = false;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-		return kannSchlagen;
+		return false;
 
 	}
 
@@ -849,6 +860,115 @@ public class Spiel implements iBediener, Serializable {
 		}
 
 	}
+	public boolean pruefeOben(Spielfeld feld) {
+		boolean a = false;
+		switch (feld.getId()) {
+		case "L2":
+			a = true;
+			break;
+		case "L4":
+			a = true;
+			break;
+		case "L6":
+			a = true;
+			break;
+		case "L8":
+			a = true;
+			break;
+		case "L10":
+			a = true;
+			break;
+		case "L12":
+			a = true;
+			break;
+		default:
+			return false;
+		}
+		return a;
+	}
+	
+	public boolean pruefeUnten(Spielfeld feld) {
+		boolean a = false;
+		switch (feld.getId()) {
+		case "A1":
+			a = true;
+			break;
+		case "A3":
+			a = true;
+			break;
+		case "A5":
+			a = true;
+			break;
+		case "A7":
+			a = true;
+			break;
+		case "A9":
+			a = true;
+			break;
+		case "A11":
+			a = true;
+			break;
+		default:
+			return false;
+		}
+		return a;
+	}
+
+
+
+	public boolean pruefeID1(Spielfeld feld) {
+		boolean a = false;
+		switch (feld.getId()) {
+		case "A1":
+			a = true;
+			break;
+		case "C1":
+			a = true;
+			break;
+		case "E1":
+			a = true;
+			break;
+		case "G1":
+			a = true;
+			break;
+		case "I1":
+			a = true;
+			break;
+		case "K1":
+			a = true;
+			break;
+		default:
+			return false;
+		}
+		return a;
+	}
+
+	public boolean pruefeID2(Spielfeld feld) {
+		boolean a = false;
+		switch (feld.getId()) {
+		case "B12":
+			a = true;
+			break;
+		case "D12":
+			a = true;
+			break;
+		case "F12":
+			a = true;
+			break;
+		case "H12":
+			a = true;
+			break;
+		case "J12":
+			a = true;
+			break;
+		case "L12":
+			a = true;
+			break;
+		default:
+			return false;
+		}
+		return a;
+	}
 
 	/**
 	 * Speichert die aktuelle Belegung des Spielbretts in CSV-Notation.
@@ -915,8 +1035,9 @@ public class Spiel implements iBediener, Serializable {
 
 			String s = "";
 			s += "Spieler: " + spieler1.getName() + " mit der Farbe "
-					+ spieler1.getFarbe() + " \n" + "Spieler: " + spieler2.getName() + " mit der Farbe "
-					+ spieler2.getFarbe()+ "";
+					+ spieler1.getFarbe() + " \n" + "Spieler: "
+					+ spieler2.getName() + " mit der Farbe "
+					+ spieler2.getFarbe() + "";
 			daten.schreiben(s + "\n");
 
 			for (int i = 0; i < spielbrett.getFelder().length; i++) {

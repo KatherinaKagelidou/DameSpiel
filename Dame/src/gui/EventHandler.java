@@ -41,7 +41,9 @@ public class EventHandler implements ActionListener {
 			spieler1AuswahlDialog.frame.dispose();
 			new Spieler2AuswahlDialog();
 		}
+		
 
+		
 	}
 
 }

@@ -24,7 +24,7 @@ public class TestSpiel {
 		
 	
 	
-		i.laufen("G3", "F2", "white 30");
+		i.laufen("G3", "F4", "white 30");
 		
 
 
