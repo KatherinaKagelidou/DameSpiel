@@ -9,7 +9,6 @@ public interface iBediener {
 
 
 	public void figurSetzen();
-	void werdeDame(Spielfigur figur);
 
 
 	void gibKoordinate(String s);

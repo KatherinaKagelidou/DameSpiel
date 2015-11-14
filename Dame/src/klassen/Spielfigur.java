@@ -38,8 +38,20 @@ public class Spielfigur {
 
 	}
 
-	public boolean getDame(Spielfigur fig) {
-		return this.istDame;
+	public boolean getDame(Spielfigur figur) {
+		if (figur.getId().startsWith("w")) {
+		if (figur.getPosition().contains("A")) {
+			istDame = true;
+		}
+	}
+	if (figur.getId().startsWith("b")) {
+		if (figur.getPosition().contains("L")) {
+			istDame = true;
+
+		}
+
+	}
+	return istDame;
 	}
 	
 	public String getId(){
@@ -160,7 +172,8 @@ public class Spielfigur {
 	@Override
 	public String toString() {
 
-		return "Spielfigur: ID " + this.getId()+ " mit pos: " + this.getPosition() + " mit der Farbe " + this.getFarbe();
+		return "Spielfigur " + this.getId()+ " mit der Farbe " + 
+		this.getFarbe() + " auf Feld " + this.getPosition() +  " ist Dame " + getDame(this);
 
 	}
 

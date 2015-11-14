@@ -317,25 +317,7 @@ public class Spiel implements iBediener, Serializable {
 		return s;
 	}
 
-	@Override
-	public void werdeDame(Spielfigur figur) {
-
-		if (figur.getId().contains("W")) {
-			if (figur.getPosition().contains("A")) {
-
-				istDame = true;
-			}
-
-		}
-		if (figur.getId().contains("S")) {
-			if (figur.getPosition().contains("L")) {
-				istDame = true;
-
-			}
-
-		}
-
-	}
+	
 
 	@Override
 	public void schlagen(Spielfeld aktPos, Spielfeld gegnerPos,
@@ -458,6 +440,14 @@ public class Spiel implements iBediener, Serializable {
 		Spielfigur figur = this.gebeFigur(figurId);
 		Spielfeld aktFeld = this.gebeFeld(aktPos);
 		Spielfeld zielFeld = this.gebeFeld(zielPos);
+		
+		if((figur.getFarbe().equals(FarbEnum.SCHWARZ)&&this.figur.getDame(figur))){
+			laufeDameSchwarz(aktPos,zielPos,figurId);
+			return;
+		}else if((figur.getFarbe().equals(FarbEnum.WEISS)&&this.figur.getDame(figur))){
+			laufeDameWeiss(aktPos,zielPos,figurId);
+			return;
+		}
 
 		if (figur.getId().equals(aktFeld.getFigur().getId())) {
 			figur = aktFeld.getFigur();
@@ -476,8 +466,7 @@ public class Spiel implements iBediener, Serializable {
 						Spielfeld f = getNachbar(aktPos, true);
 						if (f.equals(zielFeld) && zielFeld.getFigur() == null) {
 							moveFigur(figur, aktFeld, zielFeld);
-							System.out.println("Figur " + figur);
-							System.out.println(aktFeld);
+							System.out.println(figur);
 						}
 
 					} else {
@@ -485,8 +474,7 @@ public class Spiel implements iBediener, Serializable {
 						Spielfeld f = getNachbar(aktPos, false);
 						if (f.equals(zielFeld) && zielFeld.getFigur() == null) {
 							moveFigur(figur, aktFeld, zielFeld);
-							System.out.println("Figur " + figur);
-							System.out.println(aktFeld);
+							System.out.println(figur);
 						}
 					}
 				}
@@ -506,8 +494,7 @@ public class Spiel implements iBediener, Serializable {
 						Spielfeld f = getNachbar(aktPos, true);
 						if (f.equals(zielFeld) && zielFeld.getFigur() == null) {
 							moveFigur(figur, aktFeld, zielFeld);
-							System.out.println("Figur " + figur);
-							System.out.println(aktFeld);
+							System.out.println(figur);
 						}
 
 					} else {
@@ -515,8 +502,7 @@ public class Spiel implements iBediener, Serializable {
 						Spielfeld f = getNachbar(aktPos, false);
 						if (f.equals(zielFeld) && zielFeld.getFigur() == null) {
 							moveFigur(figur, aktFeld, zielFeld);
-							System.out.println("Figur " + figur);
-							System.out.println(aktFeld);
+							System.out.println(figur);
 						}
 					}
 				}
@@ -611,37 +597,324 @@ public class Spiel implements iBediener, Serializable {
 		return fe;
 	}
 
-	public void laufeDame(String aktPos, String zielPos, String figurId) {
+	public void laufeDameSchwarz(String aktPos, String zielPos, String figurId) {
 
 		Spielfeld aktFeld = this.gebeFeld(aktPos);
 		Spielfeld zielFeld = this.gebeFeld(zielPos);
 		Spielfigur figur = this.gebeFigur(figurId);
+		Spielfeld nachbar=null;
+		Spielfeld nachbar2=null;
 
 		spielbrett.Umwandler(aktPos);
 		spielbrett.Umwandler(zielPos);
 
-		// ObenRechts
-
+		
 		for (int i = 0; i < spielbrett.getFelder().length; i++) {
 			for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
 
-				if (figur.getFarbe().equals(FarbEnum.SCHWARZ)) {
-					if ((this.spielbrett.getPositionen().get(0) < this.spielbrett
-							.getPositionen().get(2))
-							&& (this.spielbrett.getPositionen().get(1) < this.spielbrett
-									.getPositionen().get(3))) {
-						while (aktFeld.getId() != zielPos) {
-							aktFeld = spielbrett.getFelder()[i++][j++];
+					// ObenRechts
+					if ((this.spielbrett.getPositionen().get(0) < this.spielbrett.getPositionen().get(2)) 
+							&& (this.spielbrett.getPositionen().get(1) < this.spielbrett.getPositionen().get(3))) {
+						while (aktFeld.getId() != zielFeld.getId()) {
+							nachbar = getNachbarDame(aktPos, true, true);
+							if((nachbar.getFigur()!=null)&&(nachbar.getFigur().getFarbe().equals(FarbEnum.SCHWARZ))){
+								System.out.println("Du kannst nicht weiter laufen weil die Spielfigur " + nachbar.getFigur().getId() + 
+										" auf dem Feld "+nachbar.getId() + " deinen weg kreuzt.");
+								return;
+							}else if((nachbar.getFigur()!=null)&&(nachbar.getFigur().getFarbe().equals(FarbEnum.WEISS))){
+								nachbar2=getNachbarDame(nachbar.getId(),true,true);
+								if(nachbar2.getFigur()==null){
+									aktPos=nachbar2.getId();
+									moveFigur(figur, aktFeld, nachbar2);
+									aktFeld=nachbar2;
+									nachbar.setFigur(null);
+									return;
+									}else{
+										System.out.println("Du kannst nicht schlagen weil die Figur " 
+									+ nachbar2.getFigur().getId() + " dir im Weg steht.");
+										return;
+									}
+							}
+							aktPos=nachbar.getId();
+							moveFigur(figur, aktFeld, nachbar);
+							aktFeld=nachbar;
 						}
-						aktFeld.removeSpielfigur(figur);
-						figur.setSpielfeld(zielFeld);
-						aktFeld.setFigur(figur);
+						
+						//ObenLinks
+					}else if ((this.spielbrett.getPositionen().get(0) < this.spielbrett.getPositionen().get(2)) 
+							&& (this.spielbrett.getPositionen().get(1) > this.spielbrett.getPositionen().get(3))) {
+						while (aktFeld.getId() != zielFeld.getId()) {
+							nachbar =getNachbarDame(aktPos, false, true);
+							if((nachbar.getFigur()!=null)&&(nachbar.getFigur().getFarbe().equals(FarbEnum.SCHWARZ))){
+								System.out.println("Du kannst nicht weiter laufen weil die Spielfigur " + nachbar.getFigur().getId() + 
+										" auf dem Feld "+nachbar.getId() + " deinen weg kreuzt.");
+								return;
+							}else if((nachbar.getFigur()!=null)&&(nachbar.getFigur().getFarbe().equals(FarbEnum.WEISS))){
+								nachbar2=getNachbarDame(nachbar.getId(),false,true);
+								if(nachbar2.getFigur()==null){
+									aktPos=nachbar2.getId();
+									moveFigur(figur, aktFeld, nachbar2);
+									aktFeld=nachbar2;
+									nachbar.setFigur(null);
+									return;
+									}else{
+										System.out.println("Du kannst nicht schlagen weil die Figur " 
+									+ nachbar2.getFigur().getId() + " dir im Weg steht.");
+										return;
+									}
+							}
+							aktPos=nachbar.getId();
+							moveFigur(figur, aktFeld, nachbar);
+							aktFeld=nachbar;
+						}
+						
+						//UntenRechts
+					}else if ((this.spielbrett.getPositionen().get(0) > this.spielbrett.getPositionen().get(2)) 
+							&& (this.spielbrett.getPositionen().get(1) < this.spielbrett.getPositionen().get(3))) {
+						while (aktFeld.getId() != zielFeld.getId()) {
+							nachbar = getNachbarDame(aktPos, true, false);
+							if((nachbar.getFigur()!=null)&&(nachbar.getFigur().getFarbe().equals(FarbEnum.SCHWARZ))){
+								System.out.println("Du kannst nicht weiter laufen weil die Spielfigur " + nachbar.getFigur().getId() + 
+										" auf dem Feld "+nachbar.getId() + " deinen weg kreuzt.");
+								return;
+							}else if((nachbar.getFigur()!=null)&&(nachbar.getFigur().getFarbe().equals(FarbEnum.WEISS))){
+								nachbar2=getNachbarDame(nachbar.getId(),true,false);
+								if(nachbar2.getFigur()==null){
+								aktPos=nachbar2.getId();
+								moveFigur(figur, aktFeld, nachbar2);
+								aktFeld=nachbar2;
+								nachbar.setFigur(null);
+								System.out.println(nachbar.getFigur());
+								System.out.println(nachbar2.getFigur());
+								return;
+								}else{
+									System.out.println("Du kannst nicht schlagen weil die Figur " 
+								+ nachbar2.getFigur().getId() + " dir im Weg steht.");
+									return;
+								}
+							}
+							aktPos=nachbar.getId();
+							moveFigur(figur, aktFeld, nachbar);
+							aktFeld=nachbar;
+						}
+						
+						//UntenLinks
+					}else if ((this.spielbrett.getPositionen().get(0) > this.spielbrett.getPositionen().get(2)) 
+							&& (this.spielbrett.getPositionen().get(1) > this.spielbrett.getPositionen().get(3))) {
+						while (aktFeld.getId() != zielFeld.getId()) {
+							nachbar = getNachbarDame(aktPos, false, false);
+							if((nachbar.getFigur()!=null)&&(nachbar.getFigur().getFarbe().equals(FarbEnum.SCHWARZ))){
+								System.out.println("Du kannst nicht weiter laufen weil die Spielfigur " + nachbar.getFigur().getId() + 
+										" auf dem Feld "+nachbar.getId() + " deinen weg kreuzt.");
+								return;
+							}else if((nachbar.getFigur()!=null)&&(nachbar.getFigur().getFarbe().equals(FarbEnum.WEISS))){
+								nachbar2=getNachbarDame(nachbar.getId(),false,false);
+								if(nachbar2.getFigur()==null){
+									aktPos=nachbar2.getId();
+									moveFigur(figur, aktFeld, nachbar2);
+									aktFeld=nachbar2;
+									nachbar.setFigur(null);
+									return;
+									}else{
+										System.out.println("Du kannst nicht schlagen weil die Figur " 
+									+ nachbar2.getFigur().getId() + " dir im Weg steht.");
+										return;
+									}
+							}
+							aktPos=nachbar.getId();
+							moveFigur(figur, aktFeld, nachbar);
+							aktFeld=nachbar;
+						}
+						
 					}
 				}
-
 			}
 		}
+	
+public void laufeDameWeiss(String aktPos, String zielPos, String figurId) {
+		
+		Spielfeld aktFeld = this.gebeFeld(aktPos);
+		Spielfeld zielFeld = this.gebeFeld(zielPos);
+		Spielfigur figur = this.gebeFigur(figurId);
+		Spielfeld nachbar=null;
+		Spielfeld nachbar2=null;
+
+		spielbrett.Umwandler(aktPos);
+		spielbrett.Umwandler(zielPos);
+
+		
+		for (int i = 0; i < spielbrett.getFelder().length; i++) {
+			for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
+
+					// ObenRechts
+					if ((this.spielbrett.getPositionen().get(0) < this.spielbrett.getPositionen().get(2)) 
+							&& (this.spielbrett.getPositionen().get(1) < this.spielbrett.getPositionen().get(3))) {
+						while (aktFeld.getId() != zielFeld.getId()) {
+							nachbar = getNachbarDame(aktPos, false, false);
+							if((nachbar.getFigur()!=null)&&(nachbar.getFigur().getFarbe().equals(FarbEnum.WEISS))){
+								System.out.println("Du kannst nicht weiter laufen weil die Spielfigur " + nachbar.getFigur().getId() + 
+										" auf dem Feld "+nachbar.getId() + " deinen weg kreuzt.");
+								return;
+							}else if((nachbar.getFigur()!=null)&&(nachbar.getFigur().getFarbe().equals(FarbEnum.SCHWARZ))){
+								nachbar2=getNachbarDame(nachbar.getId(),false,false);
+								if(nachbar2.getFigur()==null){
+									aktPos=nachbar2.getId();
+									moveFigur(figur, aktFeld, nachbar2);
+									aktFeld=nachbar2;
+									nachbar.setFigur(null);
+									return;
+									}else{
+										System.out.println("Du kannst nicht schlagen weil die Figur " 
+									+ nachbar2.getFigur().getId() + " dir im Weg steht.");
+										return;
+									}
+							}
+							aktPos=nachbar.getId();
+							moveFigur(figur, aktFeld, nachbar);
+							aktFeld=nachbar;
+						}
+						
+						//ObenLinks
+					}else if ((this.spielbrett.getPositionen().get(0) < this.spielbrett.getPositionen().get(2)) 
+							&& (this.spielbrett.getPositionen().get(1) > this.spielbrett.getPositionen().get(3))) {
+						while (aktFeld.getId() != zielFeld.getId()) {
+							nachbar = getNachbarDame(aktPos, true, false);
+							if((nachbar.getFigur()!=null)&&(nachbar.getFigur().getFarbe().equals(FarbEnum.WEISS))){
+								System.out.println("Du kannst nicht weiter laufen weil die Spielfigur " + nachbar.getFigur().getId() + 
+										" auf dem Feld "+nachbar.getId() + " deinen weg kreuzt.");
+								return;
+							}else if((nachbar.getFigur()!=null)&&(nachbar.getFigur().getFarbe().equals(FarbEnum.SCHWARZ))){
+								nachbar2=getNachbarDame(nachbar.getId(),true, false);
+								if(nachbar2.getFigur()==null){
+									aktPos=nachbar2.getId();
+									moveFigur(figur, aktFeld, nachbar2);
+									aktFeld=nachbar2;
+									nachbar.setFigur(null);
+									return;
+									}else{
+										System.out.println("Du kannst nicht schlagen weil die Figur " 
+									+ nachbar2.getFigur().getId() + " dir im Weg steht.");
+										return;
+									}
+							}
+							aktPos=nachbar.getId();
+							moveFigur(figur, aktFeld, nachbar);
+							aktFeld=nachbar;
+						}
+						
+						//UntenRechts
+					}else if ((this.spielbrett.getPositionen().get(0) > this.spielbrett.getPositionen().get(2)) 
+							&& (this.spielbrett.getPositionen().get(1) < this.spielbrett.getPositionen().get(3))) {
+						while (aktFeld.getId() != zielFeld.getId()) {
+							nachbar = getNachbarDame(aktPos, false, true);
+							if((nachbar.getFigur()!=null)&&(nachbar.getFigur().getFarbe().equals(FarbEnum.WEISS))){
+								System.out.println("Du kannst nicht weiter laufen weil die Spielfigur " + nachbar.getFigur().getId() + 
+										" auf dem Feld " + nachbar.getId() + " deinen weg kreuzt.");
+								return;
+							}else if((nachbar.getFigur()!=null)&&(nachbar.getFigur().getFarbe().equals(FarbEnum.SCHWARZ))){
+								nachbar2=getNachbarDame(nachbar.getId(),false, true);
+								if(nachbar2.getFigur()==null){
+									aktPos=nachbar2.getId();
+									moveFigur(figur, aktFeld, nachbar2);
+									aktFeld=nachbar2;
+									nachbar.setFigur(null);
+									return;
+									}else{
+										System.out.println("Du kannst nicht schlagen weil die Figur " 
+									+ nachbar2.getFigur().getId() + " dir im Weg steht.");
+										return;
+									}
+							}
+							aktPos=nachbar.getId();
+							moveFigur(figur, aktFeld, nachbar);
+							aktFeld=nachbar;
+						}
+						
+						//UntenLinks
+					}else if ((this.spielbrett.getPositionen().get(0) > this.spielbrett.getPositionen().get(2)) 
+							&& (this.spielbrett.getPositionen().get(1) > this.spielbrett.getPositionen().get(3))) {
+						while (aktFeld.getId() != zielFeld.getId()) {
+							nachbar = getNachbarDame(aktPos, true, true);
+							if((nachbar.getFigur()!=null)&&(nachbar.getFigur().getFarbe().equals(FarbEnum.WEISS))){
+								System.out.println("Du kannst nicht weiter laufen weil die Spielfigur " + nachbar.getFigur().getId() + 
+										" auf dem Feld "+nachbar.getId() + " deinen weg kreuzt.");
+								return;
+							}else if((nachbar.getFigur()!=null)&&(nachbar.getFigur().getFarbe().equals(FarbEnum.SCHWARZ))){
+								nachbar2=getNachbarDame(nachbar.getId(),true,true);
+								if(nachbar2.getFigur()==null){
+									aktPos=nachbar2.getId();
+									moveFigur(figur, aktFeld, nachbar2);
+									aktFeld=nachbar2;
+									nachbar.setFigur(null);
+									return;
+									}else{
+										System.out.println("Du kannst nicht schlagen weil die Figur " 
+									+ nachbar2.getFigur().getId() + " dir im Weg steht.");
+										return;
+									}
+							}
+							aktPos=nachbar.getId();
+							moveFigur(figur, aktFeld, nachbar);
+							aktFeld=nachbar;
+						}
+						
+					}
+				}
+			}
+		}
+
+public Spielfeld getNachbarDame(String feld, boolean rechts,boolean oben) {
+	Spielfeld fe = null;
+	Spielfeld spielfeld = this.gebeFeld(feld);
+	
+	//rechtsOben
+	if((rechts)&&(oben)){
+		for (int i = 0; i < spielbrett.getFelder().length; i++) {
+			for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
+				if (spielbrett.getFelder()[i][j].getId().equals(feld)) {
+					fe = spielbrett.getFelder()[i + 1][j + 1];
+					return fe;
+				}
+			}
+		}
+		
+	//rechtsUnten
+	}else if((rechts)&&((!oben))){
+		for (int i = 0; i < spielbrett.getFelder().length; i++) {
+			for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
+				if (spielbrett.getFelder()[i][j].getId().equals(feld)) {
+					fe = spielbrett.getFelder()[i - 1][j + 1];
+					return fe;
+				}
+			}
+		}
+		
+	//linksOben
+	}else if((!(rechts))&&(oben)){
+		for (int i = 0; i < spielbrett.getFelder().length; i++) {
+			for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
+
+				if (spielbrett.getFelder()[i][j].getId().equals(feld)) {
+					fe = spielbrett.getFelder()[i + 1][j - 1];
+					return fe;
+				}
+			}
+		}
+		
+	//linksUnten
+	}else if((!(rechts))&&(!(oben))){
+		for (int i = 0; i < spielbrett.getFelder().length; i++) {
+			for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
+				if (spielbrett.getFelder()[i][j].getId().equals(feld)) {
+					fe = spielbrett.getFelder()[i - 1][j - 1];
+					return fe;
+				}
+			}
+		}
+		
 	}
+	return fe;
+}
 
 	public boolean kannSchlagenRechtsSchwarz(Spielfeld feld) {
 

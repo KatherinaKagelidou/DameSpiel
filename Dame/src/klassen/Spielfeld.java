@@ -95,10 +95,8 @@ public class Spielfeld implements Serializable{
 	 */
 
 	public void removeSpielfigur(Spielfigur figur) {
-		System.out
-		.println("Die Figur "+ this.getFigur()+"auf Feld " + this.getId() + " wurde entfernt!");
-	
-			this.setFigur(null);
+		System.out.println("Die Figur auf Feld " + this.getId() + " wurde entfernt!");
+		this.setFigur(null);
 	}
 
 	/**
@@ -150,7 +148,7 @@ public class Spielfeld implements Serializable{
 	@Override
 	public String toString() {
 		String s = "";
-		s += "Spielfeld+ " + this.getId() + " - Farbe " + this.getFarbeFeld() ;
+		s += "Spielfeld " + this.getId() + " - Farbe " + this.getFarbeFeld() ;
 		if (figur != null) {
 			s += " - Figur" + getFigur() +"\n";
 			s+="\n";
