@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -91,11 +92,28 @@ public class GuiSpielbrett extends JOptionPane {
 		pnlRight = new JPanel();
 		pnlAdd = new JPanel();
 		pnlText = new JPanel();
+		ImageIcon icon = new ImageIcon("schwarzFigur.png");
+		ImageIcon icon2 = new ImageIcon("weissFigur.png");
+		
+		icon.setImage(icon.getImage().getScaledInstance(60, 60, Image.SCALE_DEFAULT));
+		icon2.setImage(icon2.getImage().getScaledInstance(60, 60, Image.SCALE_DEFAULT));
+	
+		text = new JTextField();
+		
 		imageBrett = new JLabel(new ImageIcon("Brett.jpg"));
-		figurSchwarz = new JLabel(new ImageIcon("schwarzFigur.png"));
-		figurWeiss = new JLabel(new ImageIcon("weissFigur.png"));
+//		figurSchwarz = new JLabel(new ImageIcon("schwarzFigur.png"));
+		
+		figurSchwarz = new JLabel();
+		figurWeiss = new JLabel();
+		
+		figurSchwarz.setIcon(icon);
+		figurWeiss.setIcon(icon2);
+		
+		
+		
+//		figurWeiss = new JLabel(new ImageIcon("weissFigur.png"));
 		fertig = new JButton("Zug beenden");
-		text = new JTextField(" z.B E1 - H2");
+		text = new JTextField(" E1 - H2");
 
 		textArea = new JTextArea();
 		textArea.setFont(textArea.getFont().deriveFont(Font.BOLD + Font.ITALIC,
@@ -143,7 +161,7 @@ public class GuiSpielbrett extends JOptionPane {
 		message.redirectErr(Color.red, null);
 		message.setMessageLines(1000);
 		
-		nameOfIcon();
+//		nameOfIcon();
 
 	}
 
@@ -174,32 +192,19 @@ public class GuiSpielbrett extends JOptionPane {
 	/**
 	 * Methode setzt Namen des Spielers auf das jeweilige Icon
 	 */
-	public void nameOfIcon() {
-
-		if (spieler2 != null) {
-			Color farbe1 = spieler2.farbAuswahl((String) spieler2
-					.getFarbAuswahl().getSelectedItem());
-
-			if (farbe1 == Color.BLACK) {
-				figurSchwarz
-						.setToolTipText(spieler2.getNameEingabe().getText());
-			} else if (farbe1 == Color.WHITE) {
-				figurWeiss.setToolTipText(spieler2.getNameEingabe().getText());
-
-			}
-		}
+//	public void nameOfIcon() {
+//
 //		if (spieler2 != null) {
-//			Color farbe2 = spieler2.farbAuswahl((String) spieler2
+//			Color farbe1 = spieler2.farbAuswahl((String) spieler2
 //					.getFarbAuswahl().getSelectedItem());
 //
-//			if (farbe2 == Color.BLACK) {
+//			if (farbe1 == Color.BLACK) {
 //				figurSchwarz
 //						.setToolTipText(spieler2.getNameEingabe().getText());
-//			} else if (farbe2 == Color.WHITE) {
+//			} else if (farbe1 == Color.WHITE) {
 //				figurWeiss.setToolTipText(spieler2.getNameEingabe().getText());
 //
-//			}
-//		}
-	}
-
+//			
+//	}
+//		}}
 }
