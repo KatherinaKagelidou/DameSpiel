@@ -23,6 +23,7 @@ public interface iBediener {
 	Spiel ladenCSV(String s);
 	void speichernSerial(String s);
 	Spiel ladenSerial(String s);
+	boolean hatGewonnen();
 
 	
 

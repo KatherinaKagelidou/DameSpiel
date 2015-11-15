@@ -48,6 +48,8 @@ public class TestSpiel {
 //				i.laufen("I5","H6","white 22");//um zu pruefen ob eine Dame schlagen kann wenn 1 weisse Figur vor ihr steht.
 				i.laufen("L2","I5","black 25");
 				
+				i.hatGewonnen();
+				
 				
 
 

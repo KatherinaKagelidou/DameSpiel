@@ -25,6 +25,8 @@ public class Spiel implements iBediener, Serializable {
 	private Spieler sp;// greift nicht auf die Spielerklasse zu
 	private boolean istDame = false;
 	private Spielfigur figur;
+	private int weissAnzahl=0;
+	private int schwarzAnzahl=0;
 	private Spielfigur[] figurWeiss = new Spielfigur[31];
 	private Spielfigur[] figurSchwarz = new Spielfigur[31];
 	private ArrayList<Spielfigur> figurenListe = new ArrayList<Spielfigur>();
@@ -162,6 +164,7 @@ public class Spiel implements iBediener, Serializable {
 
 						figur.setSpielfeld(spielbrett.getFeld(str));
 						spielbrett.getFelder()[i][j].setFigur(figur);
+						schwarzAnzahl++;
 
 						spieler2.setFigurArray(figurSchwarz);
 
@@ -200,6 +203,8 @@ public class Spiel implements iBediener, Serializable {
 							count--;
 							figur.setSpielfeld(spielbrett.getFeld(str));
 							spielbrett.getFelder()[i][j].setFigur(figur);
+							weissAnzahl++;
+							
 							spieler1.setFigurArray(figurWeiss);
 							System.out.println(figur);
 						}
@@ -308,10 +313,12 @@ public class Spiel implements iBediener, Serializable {
 
 				Spielfeld feld = this.getNachbar(aktFeld, rechts);
 				feld.removeSpielfigur(feld.getFigur());
+				weissAnzahl--;
 
 			} else if (kannSchlagenLinksSchwarz()) {
 				Spielfeld feld = this.getNachbar(aktFeld, !rechts);
 				feld.removeSpielfigur(feld.getFigur());
+				weissAnzahl--;
 			}
 
 		} else {
@@ -320,10 +327,12 @@ public class Spiel implements iBediener, Serializable {
 
 				Spielfeld feld = this.getNachbar(aktFeld, rechts);
 				feld.removeSpielfigur(feld.getFigur());
+				schwarzAnzahl--;
 
 			} else if (kannSchlagenLinksWeiss()) {
 				Spielfeld feld = this.getNachbar(aktFeld, !rechts);
 				feld.removeSpielfigur(feld.getFigur());
+				schwarzAnzahl--;
 			}
 
 		}
@@ -1123,6 +1132,24 @@ public class Spiel implements iBediener, Serializable {
 
 		return true;
 
+	}
+	/**
+	 * Methode, die zurück gibt, welcher Spieler gewonnen hat
+	 * @return
+	 */
+	@Override
+	public boolean hatGewonnen(){
+		if (weissAnzahl==0){
+			System.out.println("Schwarz gewonnen!");
+			return true;
+		}
+		
+		if(schwarzAnzahl ==0){
+			System.out.println("Weiss gewonnen!");
+			return true;
+		}
+		System.out.println("Noch keiner hat gewonnen!!!");
+		return false;
 	}
 
 	public boolean getZugBeginn() {
