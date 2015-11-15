@@ -19,10 +19,11 @@ public class Spielfigur {
 	/**
 	 * Konstruktor
 	 * @param farbe der Spielfigur
+	 * @param istDame 
 	 * @param position der Figur
 	 */
 	
-	public Spielfigur(Spielfeld feld, FarbEnum farbe){
+	public Spielfigur(Spielfeld feld, FarbEnum farbe, boolean istDame){
 //		this.setPosition(position);
 		if(counter>30){
 			counter=1;
