@@ -9,6 +9,7 @@ public interface iBediener {
 
 
 	public void figurSetzen();
+	void werdeDame(Spielfigur figur);
 
 
 	void gibKoordinate(String s);
@@ -23,7 +24,6 @@ public interface iBediener {
 	Spiel ladenCSV(String s);
 	void speichernSerial(String s);
 	Spiel ladenSerial(String s);
-	boolean hatGewonnen();
 
 	
 

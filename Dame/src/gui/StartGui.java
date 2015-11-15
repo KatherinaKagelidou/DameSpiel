@@ -11,8 +11,7 @@ public class StartGui {
 
 	private JButton button = new JButton("Jetzt spielen");
 	JFrame fra;
-	private JLabel backImgPanel = new JLabel(new ImageIcon("startbildNeu.jpg"));
-	private JLabel krone = new JLabel(new ImageIcon("kroneEinzeln.png"));
+	private JLabel backImgPanel = new JLabel(new ImageIcon("startbildNeu.png"));
 	private EventHandler event;
 
 	MenuDialogLaden laden;
@@ -43,13 +42,12 @@ public class StartGui {
 		backImgPanel.setOpaque(false);
 		backImgPanel.add(button);
 		backImgPanel.add(laden.pnlOben);
-		backImgPanel.add(krone);
 		button.setBounds(70, 410, 110, 30);
 		button.setBackground(new Color(153, 102, 0));
 		backImgPanel.setBounds(0, 0, 400, 300);
 
 		laden.pnlOben.setBounds(1, 1, 640, 20);
-		krone.setBounds(250, 100, 240, 230);
+	
 
 	}
 

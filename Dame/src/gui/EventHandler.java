@@ -11,14 +11,14 @@ import javax.swing.JOptionPane;
 public class EventHandler implements ActionListener {
 
 	private JFrame frame;
-	private StartGui dialogFenster;
+	private StartGui startGui;
 	private Spieler1AuswahlDialog spieler1AuswahlDialog;
 	private Spieler2AuswahlDialog spieler2AuswahlDialog;
 	private GuiSpielbrett guiSpielbrett;
 	private MenuDialogLaden menuDialog;
 
-	public EventHandler(StartGui dialogFenster) {
-		this.dialogFenster = dialogFenster;
+	public EventHandler(StartGui startGui) {
+		this.startGui = startGui;
 	}
 
 	public EventHandler(Spieler1AuswahlDialog spieler1AuswahlDialog) {
@@ -43,8 +43,8 @@ public class EventHandler implements ActionListener {
 
 		// ------------Start--------------
 		if (cmd.equals("button")) {
-			dialogFenster.fra.setVisible(false);
-			dialogFenster.fra.dispose();
+			startGui.fra.setVisible(false);
+			startGui.fra.dispose();
 			new Spieler1AuswahlDialog();
 		}
 		if (cmd.equals("spielStarten")) {
@@ -76,7 +76,7 @@ public class EventHandler implements ActionListener {
 
 				spieler2AuswahlDialog.frame.setVisible(false);
 				spieler2AuswahlDialog.frame.dispose();
-				new GuiSpielbrett();
+				new GuiSpielbrett(spieler1AuswahlDialog, spieler2AuswahlDialog);
 			}
 
 		}

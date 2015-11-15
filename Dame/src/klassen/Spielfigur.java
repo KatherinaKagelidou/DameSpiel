@@ -19,11 +19,10 @@ public class Spielfigur {
 	/**
 	 * Konstruktor
 	 * @param farbe der Spielfigur
-	 * @param istDame 
 	 * @param position der Figur
 	 */
 	
-	public Spielfigur(Spielfeld feld, FarbEnum farbe, boolean istDame){
+	public Spielfigur(Spielfeld feld, FarbEnum farbe){
 //		this.setPosition(position);
 		if(counter>30){
 			counter=1;
@@ -39,20 +38,8 @@ public class Spielfigur {
 
 	}
 
-	public boolean getDame(Spielfigur figur) {
-		if (figur.getId().startsWith("w")) {
-		if (figur.getPosition().contains("A")) {
-			istDame = true;
-		}
-	}
-	if (figur.getId().startsWith("b")) {
-		if (figur.getPosition().contains("L")) {
-			istDame = true;
-
-		}
-
-	}
-	return istDame;
+	public boolean getDame(Spielfigur fig) {
+		return this.istDame;
 	}
 	
 	public String getId(){
@@ -173,8 +160,7 @@ public class Spielfigur {
 	@Override
 	public String toString() {
 
-		return "Spielfigur " + this.getId()+ " mit der Farbe " + 
-		this.getFarbe() + " auf Feld " + this.getPosition() +  " ist Dame " + getDame(this);
+		return "Spielfigur: ID " + this.getId()+ " mit pos: " + this.getPosition() + " mit der Farbe " + this.getFarbe();
 
 	}
 
