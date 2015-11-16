@@ -6,30 +6,36 @@ import java.awt.Component;
 import java.io.IOException;
 
 public interface iBediener {
-	
-	public void addSpieler(String name, FarbEnum farbe,KI ki);
-	public void starteSpiel();
+    
+    public void addSpieler(String name, FarbEnum farbe,KI ki);
+    public void starteSpiel();
 
 
-	public void figurSetzen();
+    public void figurSetzen();
 
 
-	void gibKoordinate(String s);
-	void laufen(String aktPos, String zielPos, String figurId);
-	Spielfigur gebeFigur(String figurId);
-	void belegungCSV();
+    void gibKoordinate(String s);
+    void laufen(String aktPos, String zielPos, String figurId);
+    Spielfigur gebeFigur(String figurId);
+    void belegungCSV();
 
-	
-	void zugBeenden();
-	void schlagen(Spielfeld aktPos, Spielfeld zielPos, Spielfigur spielfigur);
-	void speichernCSV(String dateiname);
-	Spiel ladenCSV(String s);
-	void speichernSerial(String s);
-	Spiel ladenSerial(String s);
-	boolean hatGewonnen();
-	public Spieler getSpieler1();
-	public Spieler getSpieler2();
+    
+    void zugBeenden();
+    
+    void speichernCSV(String dateiname);
+    Spiel lesenCSV(String s);
+    void speichernSerial(String s);
+    Spiel ladenSerial(String s);
 
-	
+    void schlagen(String aktPos, String gegnerPos, String zielPos);
+//    void testen();
+
+
+    boolean hatGewonnen();
+    public Spieler getSpieler1();
+    public Spieler getSpieler2();
+
+
+    
 
 }
