@@ -29,6 +29,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
+import klassen.FarbEnum;
 import klassen.Spiel;
 import klassen.iBediener;
 
@@ -54,6 +55,8 @@ public class GuiSpielbrett extends JOptionPane {
 	private JPanel pnlRight;
 	private JPanel pnlText;
 	private JTextField text;
+	private String textSchwarz="";
+	private String textWeiss="";
 
 	public GuiSpielbrett(Spieler1AuswahlDialog spieler1,
 			Spieler2AuswahlDialog spieler2) {
@@ -107,6 +110,17 @@ public class GuiSpielbrett extends JOptionPane {
 		figurWeiss = new JLabel();
 		
 		figurSchwarz.setIcon(icon);
+//		System.out.println(spiel.getSpieler1());
+//		if(spiel.getSpieler1().getFarbe().equals(FarbEnum.SCHWARZ)){
+//			textSchwarz=spiel.getSpieler1().getName();
+//			textWeiss=spiel.getSpieler2().getName();
+//		}
+//		else{
+//			textSchwarz=spiel.getSpieler2().getName();
+//			textWeiss=spiel.getSpieler1().getName();
+//		}
+		figurSchwarz.setText(textSchwarz);
+		figurWeiss.setText(textWeiss);
 		figurWeiss.setIcon(icon2);
 		
 		
@@ -161,7 +175,7 @@ public class GuiSpielbrett extends JOptionPane {
 		message.redirectErr(Color.red, null);
 		message.setMessageLines(1000);
 		
-//		nameOfIcon();
+		nameOfIcon();
 
 	}
 
@@ -192,19 +206,19 @@ public class GuiSpielbrett extends JOptionPane {
 	/**
 	 * Methode setzt Namen des Spielers auf das jeweilige Icon
 	 */
-//	public void nameOfIcon() {
-//
-//		if (spieler2 != null) {
-//			Color farbe1 = spieler2.farbAuswahl((String) spieler2
-//					.getFarbAuswahl().getSelectedItem());
-//
-//			if (farbe1 == Color.BLACK) {
-//				figurSchwarz
-//						.setToolTipText(spieler2.getNameEingabe().getText());
-//			} else if (farbe1 == Color.WHITE) {
-//				figurWeiss.setToolTipText(spieler2.getNameEingabe().getText());
-//
-//			
-//	}
-//		}}
+	public void nameOfIcon() {
+
+		if (spieler2 != null) {
+			Color farbe1 = spieler2.farbAuswahl((String) spieler2
+					.getFarbAuswahl().getSelectedItem());
+
+			if (farbe1 == Color.BLACK) {
+				figurSchwarz
+						.setToolTipText(spieler2.getNameEingabe().getText());
+			} else if (farbe1 == Color.WHITE) {
+				figurWeiss.setToolTipText(spieler1.getNameEingabe().getText());
+
+			
+	}
+		}}
 }

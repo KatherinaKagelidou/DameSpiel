@@ -1154,6 +1154,12 @@ public class Spiel implements iBediener, Serializable {
 	public void merkeBeginn() {
 		istZugbeginn = false;
 	}
+	public Spieler getSpieler1(){
+		return spieler1;
+	}
+	public Spieler getSpieler2(){
+		return spieler2;
+	}
 
 	/**
 	 * Speichert die aktuelle Belegung des Spielbretts in CSV-Notation.

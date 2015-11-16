@@ -1,5 +1,8 @@
 package klassen;
 
+import gui.Spieler1AuswahlDialog;
+
+import java.awt.Component;
 import java.io.IOException;
 
 public interface iBediener {
@@ -24,6 +27,8 @@ public interface iBediener {
 	void speichernSerial(String s);
 	Spiel ladenSerial(String s);
 	boolean hatGewonnen();
+	public Spieler getSpieler1();
+	public Spieler getSpieler2();
 
 	
 
