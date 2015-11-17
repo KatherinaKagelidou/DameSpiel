@@ -103,8 +103,8 @@ public class GuiSpielbrett extends JOptionPane {
 		pnlAdd = new JPanel();
 		pnlLeft = new JPanel();
 		imageBrett = new JLabel(new ImageIcon("brettNeu.png"));
-		figurSchwarz = new JLabel(new ImageIcon("schwarzFigur.png"));
-		figurWeiss = new JLabel(new ImageIcon("weissFigur.png"));
+		figurSchwarz = new JLabel(new ImageIcon("weissStein100.png"));
+		figurWeiss = new JLabel(new ImageIcon("schwarzStein100.png"));
 		fertig = new JButton("Zug beenden");
 		text = new JTextField(" E1 - H2");
 
@@ -130,13 +130,13 @@ public class GuiSpielbrett extends JOptionPane {
 		// auf das Brett zu setzen
 		schwarz = new ArrayList<ImageIcon>();
 		for (int i = 1; i <= 30; i++) {
-			schwarz.add(new ImageIcon("schwarz.png"));
+			schwarz.add(new ImageIcon("schwarzerStein60.png"));
 		}
 		//liste fuer fie weissen figuren um diese in einer schleife
 		// auf das Brett zu setzen
 		weiss = new ArrayList<ImageIcon>();
 		for (int i = 1; i <= 30; i++) {
-			weiss.add(new ImageIcon("weiss.png"));
+			weiss.add(new ImageIcon("weissStein60.png"));
 		}
 
 	}
