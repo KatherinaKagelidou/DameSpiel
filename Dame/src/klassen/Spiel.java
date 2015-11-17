@@ -316,7 +316,7 @@ public class Spiel implements iBediener, Serializable {
                 System.out.println("Figur "+gegner.getFigur().getId() +" auf Feld " + gegner.getId()+ " wurde von Spieler " +spielerAmZug.getName()+" geschlagen!");
 
                 for (int i = 0; i < spielbrett.getFelder().length; i++) {
-                    for (int j = 0; j < spielbrett.getFelder()[i].length;) {
+                    for (int j = 0; j < spielbrett.getFelder()[i].length;j++) {
                         if(spielbrett.getFelder()[i][j].equals(gegner)){
                         spielbrett.getFelder()[i][j].setFigur(null);
                         gegner.removeSpielfigur(gegner.getFigur());
