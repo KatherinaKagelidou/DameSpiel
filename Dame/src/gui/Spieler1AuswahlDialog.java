@@ -44,7 +44,7 @@ public class Spieler1AuswahlDialog extends JOptionPane {
 	String[] art = { "Mensch", "KI" };
 	String[] farbe = { "Weiss", "Schwarz" };
 
-	public Spieler1AuswahlDialog() {
+	public Spieler1AuswahlDialog(StartGui startGui) {
 
 		frame = new JFrame("Game Dame");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -186,6 +186,9 @@ public class Spieler1AuswahlDialog extends JOptionPane {
 
 	public EventHandler getEvent() {
 		return event;
+	}
+	public StartGui getStartGui(){
+		return startGui;
 	}
 
 }

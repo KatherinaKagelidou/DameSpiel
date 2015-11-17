@@ -45,7 +45,7 @@ public class EventHandler implements ActionListener {
 		if (cmd.equals("button")) {
 			startGui.fra.setVisible(false);
 			startGui.fra.dispose();
-			new Spieler1AuswahlDialog();
+			new Spieler1AuswahlDialog(startGui);
 		}
 		if (cmd.equals("spielStarten")) {
 
@@ -58,7 +58,7 @@ public class EventHandler implements ActionListener {
 			} else {
 				spieler1AuswahlDialog.frame.setVisible(false);
 				spieler1AuswahlDialog.frame.dispose();
-				new Spieler2AuswahlDialog();
+				new Spieler2AuswahlDialog(spieler1AuswahlDialog);
 
 			}
 

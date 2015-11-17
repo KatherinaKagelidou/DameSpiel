@@ -40,17 +40,18 @@ public class Spieler2AuswahlDialog extends JOptionPane {
 
 	private StartGui startGui;
 	private EventHandler event;
+	private Spieler1AuswahlDialog spieler1AuswahlDialog;
 
 	String[] art = { "Mensch", "KI" };
 	String[] farbe = { "Weiss", "Schwarz" };
 
-	public Spieler2AuswahlDialog() {
+	public Spieler2AuswahlDialog(Spieler1AuswahlDialog spieler1AuswahlDialog) {
 
 		frame = new JFrame("Game Dame");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(500, 290);
 
-		this.startGui = startGui;
+		this.spieler1AuswahlDialog= spieler1AuswahlDialog;
 		event = new EventHandler(this);
 		erstelle();
 		hinzufuegen();
@@ -102,6 +103,9 @@ public class Spieler2AuswahlDialog extends JOptionPane {
 		spielStarten.setFont(new Font("Arial", Font.BOLD, 12));
 		spielStarten.setBackground(Color.WHITE);
 		spielStarten.setBounds(300, 220, 120, 30);
+		
+		int remove = spieler1AuswahlDialog.getFarbAuswahl().getSelectedIndex();
+		farbAuswahl.removeItemAt(remove);
 
 	}
 
@@ -188,4 +192,7 @@ public class Spieler2AuswahlDialog extends JOptionPane {
 		return event;
 	}
 
+	public Spieler1AuswahlDialog getSpieler1() {
+		return spieler1AuswahlDialog;
+	}
 }
