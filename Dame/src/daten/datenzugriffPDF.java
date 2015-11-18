@@ -120,8 +120,12 @@ private void PDFexport(String DateiName, int x, int y,GuiSpielbrett g ){
 			
 			// Die Map wird durchlaufen und auf die Pdf erzeugt
 		
-			Spiel s= (Spiel) g.gibSpielZurueck();
-			s.ladenCSV(DateiName+".map");
+			//nachträglich eingefügt--------------------------------------------------------
+			//hier ist noch ein Fehler da man einen getter für die Methode machen muss aber wei auch nicht 
+			//ob das stimmt muss ich mir noch genau ansehen was hier genau geladen werden soll. Peace
+			
+			//Spiel s = gui.getSpielErstellen();
+			//s.ladenCSV(DateiName+".map");
 		
 			
             try {
@@ -210,6 +214,13 @@ public Object lesen() throws IOException {
 public void schliessen(Object object) throws IOException {
 	// TODO Auto-generated method stub
 	
+}
+
+
+@Override
+public Object laden(String name, String typ) throws IOException {
+	// TODO Auto-generated method stub
+	return null;
 }
 
 

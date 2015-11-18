@@ -4,11 +4,13 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import klassen.Spiel;
@@ -71,10 +73,33 @@ public class DatenzugriffCSV implements iDatenzugriff {
 		}
 	}
 	
+	//nachtr�glich eingef�gt--------------------------------------------
+	@Override
+	public Object laden(String name, String typ) {
+		try {
+			String line;
+			ArrayList<String> feld = new ArrayList<String>();
+			// hier wird die .csv Datei ganz eingelesen und in feld ÃƒÆ’Ã‚Â¼bergeben
+			br= new BufferedReader(new FileReader(name + "." + typ));
+			while ((line = br.readLine()) != null) {
+				feld.add(line);
+			}
+			return feld;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	
+	
 	/**
 	 * Diese Methode schlie�t die CSV - Datei
 
 	 */
+	
+	
 	@Override
 	public void schliessen(Object object) throws IOException {
 		if(bw != null) {

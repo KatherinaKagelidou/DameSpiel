@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.Scanner;
 
 import daten.DatenzugriffCSV;
 import daten.DatenzugriffSerialisiert;
@@ -1213,7 +1214,6 @@ public class Spiel implements iBediener, Serializable {
 
     /**
      * Speichert die aktuelle Belegung des Spielbretts in CSV-Notation.
-     * Speicherort: savegame/savegame.csv
      */
     @Override
     public void belegungCSV() {
@@ -1366,6 +1366,85 @@ public Spiel ladenSerial(String s) {
 //        }
 //
 //    }
+@Override
+public Object laden(String name, String typ) throws IOException {
+	typ = typ.toLowerCase();
+	switch (typ) {
+	case ("csv"):
+		ladenCSV(name);
+		break;
+	default:
+		throw new RuntimeException("Dateityp nicht existent");
+	}
+	return null;
+}
+
+@SuppressWarnings("unchecked")
+public void ladenCSV(String filename) {
+	iDatenzugriff load = new DatenzugriffCSV();
+	Spiel s = new Spiel();
+	
+	
+//	spielbrett = new Spielbrett();
+//	try {
+//		ArrayList<String> s = (ArrayList<String>) load.laden(filename, "csv");
+//		for (int i = 0; i < s.size() - 1; i++) {
+//			String[] args = s.get(i).split(";");
+//			// i an der Stelle 0 und 1 sind Spieler
+//			if (i == 0) {
+//			
+//				FarbEnum farbe;
+//				if (args[1].equals("Schwarz")) {
+//					farbe = FarbEnum.SCHWARZ;
+//				} else {
+//					farbe = FarbEnum.WEISS;
+//				}
+//				Spieler s1 = new Spieler(args[0], farbe, null);
+//				this.addSpieler(s1.getName(), FarbEnum.WEISS, null);
+//				
+//			} else if (i == 1) {
+//				
+//				FarbEnum farbe;
+//				if (args[1].equals("Schwarz")) {
+//					farbe = FarbEnum.SCHWARZ;
+//				} else {
+//					farbe = FarbEnum.WEISS;
+//				}
+//				Spieler s2 = new Spieler(args[0], farbe, null);
+//				this.addSpieler(s2.getName(), FarbEnum.WEISS, null);
+//				// i an der Stelle 2 ist ActiveSpieler
+//			} 
+//
+//			}
+//		
+	
+//		spielbrett.getSb();
+		System.out.println("lalalallaa so siehts aus");
+
+//		if (this.spieler[0] == this.getActiveSpieler()) {
+//			this.playerRotation(this.getActiveSpieler(), this.spieler[1]);
+//		} else {
+//			this.playerRotation(this.getActiveSpieler(), this.spieler[0]);
+//		}
+
+//	} catch (IOException e) {
+//		e.printStackTrace();
+//	}
+
+}
+@Override
+public void speichern(Object obj, String name) throws IOException {
+	Scanner s = new Scanner(System.in);
+	String typ = s.next();
+	switch (typ) {
+	case ("csv"):
+		speichernCSV(name);
+		break;
+	
+	default:
+		throw new RuntimeException("Dateityp " + " nicht existent");
+	}
+}
 
 
 }

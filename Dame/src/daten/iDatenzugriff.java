@@ -12,6 +12,9 @@ public void oeffnen(Properties p) throws IOException;
 	public Object lesen() throws IOException;
     
 	public void schliessen(Object object)throws IOException;
+	
+	//nachträglich eingefügt----------------------------------------------
+	public Object laden(String name, String typ) throws IOException;
 }
 
 

@@ -34,6 +34,8 @@ public interface iBediener {
     boolean hatGewonnen();
     public Spieler getSpieler1();
     public Spieler getSpieler2();
+	Object laden(String name, String typ) throws IOException;
+	void speichern(Object obj, String name) throws IOException;
 
 
     
