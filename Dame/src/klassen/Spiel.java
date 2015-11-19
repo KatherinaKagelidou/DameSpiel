@@ -285,18 +285,24 @@ public class Spiel implements iBediener, Serializable {
     }
 
 
+//    @Override
+//    public String toString() {
+//        String s = "";
+//        s += "Es sind folgende Spieler im Spiel: \n";
+//        s += "\n";
+//        if (spieler1 != null) {
+//            s += spieler1.toString() + " | ";
+//        }
+//        if (spieler2 != null) {
+//            s += spieler2.toString();
+//        }
+//        return s;
+//    }
+    
     @Override
     public String toString() {
-        String s = "";
-        s += "Es sind folgende Spieler im Spiel: \n";
-        s += "\n";
-        if (spieler1 != null) {
-            s += spieler1.toString() + " | ";
-        }
-        if (spieler2 != null) {
-            s += spieler2.toString();
-        }
-        return s;
+       
+        return "";
     }
 
     

@@ -141,6 +141,9 @@ public class Spieler1AuswahlDialog extends JOptionPane {
 		}
 		return getFarbe;
 	}
+	
+
+
 
 	public Color farbAuswahl(String farbe) {
 		Color getFarbe = null;

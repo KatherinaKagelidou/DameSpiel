@@ -5,6 +5,7 @@ import klassen.iBediener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -16,6 +17,8 @@ public class EventHandler implements ActionListener {
 	private Spieler2AuswahlDialog spieler2AuswahlDialog;
 	private GuiSpielbrett guiSpielbrett;
 	private MenuDialogLaden menuDialog;
+
+	private iBediener i;
 
 	public EventHandler(StartGui startGui) {
 		this.startGui = startGui;
@@ -46,10 +49,12 @@ public class EventHandler implements ActionListener {
 			startGui.fra.setVisible(false);
 			startGui.fra.dispose();
 			new Spieler1AuswahlDialog(startGui);
+			
 		}
 		if (cmd.equals("spielStarten")) {
 
 			String name = spieler1AuswahlDialog.getNameEingabe().getText();
+		
 
 			if (name == null || name.length() < 2) {
 				JOptionPane.showMessageDialog(spieler1AuswahlDialog,
@@ -59,6 +64,7 @@ public class EventHandler implements ActionListener {
 				spieler1AuswahlDialog.frame.setVisible(false);
 				spieler1AuswahlDialog.frame.dispose();
 				new Spieler2AuswahlDialog(spieler1AuswahlDialog);
+			
 
 			}
 
@@ -76,11 +82,28 @@ public class EventHandler implements ActionListener {
 
 				spieler2AuswahlDialog.frame.setVisible(false);
 				spieler2AuswahlDialog.frame.dispose();
-				new GuiSpielbrett(spieler1AuswahlDialog, spieler2AuswahlDialog);
+				new GuiSpielbrett(spieler2AuswahlDialog.getSpieler1(), spieler2AuswahlDialog);
 			}
 
 		}
+//		if (cmd.equals("ziehen")){
+		
+		if(guiSpielbrett!=null){
+		for (JButton b:guiSpielbrett.getFelder()) {
+			if (cmd.equals(b.getText())&& guiSpielbrett.hatIcon(e)==true) {
+				System.out.println("Das Feld mit der ID "
+						+ b.getText());
+				//hier jetzt die laufMethode aufrufen 
+				// guiSpielbrett.lauf(e);
+				
+				
+		
+			}
+				
+				
 
-	}
+			}}
+		}
+//	}
 
 }

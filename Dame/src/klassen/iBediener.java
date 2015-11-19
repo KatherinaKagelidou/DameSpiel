@@ -36,6 +36,7 @@ public interface iBediener {
     public Spieler getSpieler2();
 	Object laden(String name, String typ) throws IOException;
 	void speichern(Object obj, String name) throws IOException;
+	
 
 
     
