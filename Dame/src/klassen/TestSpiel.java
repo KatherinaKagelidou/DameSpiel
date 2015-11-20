@@ -30,7 +30,9 @@ public class TestSpiel {
         i.laufen("E5", "F4", "black 27");
         i.laufen("G5", "F4", "white 29");
         i.laufen("E7", "F6", "black 28");
-        i.laufen("H6", "G7", "white 28");
+//        i.laufen("H6", "G7", "white 28");
+        
+       System.out.println("farbe2: "+i.farbePlayer()); 
 
 //        i.laufen("G3", "F2", "white 30");
 //        i.laufen("E3", "F4", "black 26");

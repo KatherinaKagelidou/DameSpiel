@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -32,6 +33,7 @@ import javax.swing.ScrollPaneConstants;
 
 import klassen.FarbEnum;
 import klassen.Spiel;
+import klassen.Spielbrett;
 import klassen.iBediener;
 
 public class GuiSpielbrett extends JOptionPane {
@@ -45,7 +47,7 @@ public class GuiSpielbrett extends JOptionPane {
 	private JTextArea textArea;
 	private JScrollPane scrollPane;
 	private GuiSpielbrett guiSpielbrett;
-	private Spiel spiel;
+	private iBediener spiel;
 	private StartGui startGui;
 	private Spieler1AuswahlDialog spieler1;
 	private Spieler2AuswahlDialog spieler2;
@@ -57,27 +59,31 @@ public class GuiSpielbrett extends JOptionPane {
 	private JPanel pnlRight;
 	private JPanel pnlLeft;
 	private JTextField text;
-	
 
 	private ArrayList<JButton> felder;
 	private ArrayList<ImageIcon> weiss;
 	private ArrayList<ImageIcon> schwarz;
 
-	private String [] wert;
+	private int[] wert;
+	private ArrayList<String>posZiel=new ArrayList<String>(2);
 	
+	private Spielbrett brett;
+
 	public GuiSpielbrett(Spieler1AuswahlDialog spieler1,
 			Spieler2AuswahlDialog spieler2) {
 
 		frame.setTitle("Game Dame");
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
 		this.spieler1 = spieler1;
 		this.spieler2 = spieler2;
-        
+//		this.spieler();
+		this.spielErstellen();
+		
+
 		createWidgets();
 		addWidgets();
 		addListener();
-		wert = new String[1];
+		wert = new int[1];
 
 		frame.pack();
 		frame.setLocationRelativeTo(null);
@@ -108,8 +114,8 @@ public class GuiSpielbrett extends JOptionPane {
 		pnlAdd = new JPanel();
 		pnlLeft = new JPanel();
 		imageBrett = new JLabel(new ImageIcon("brettNeu.png"));
-		figurSchwarz = new JLabel(new ImageIcon("weissStein100.png"));
-		figurWeiss = new JLabel(new ImageIcon("schwarzStein100.png"));
+		figurSchwarz = new JLabel(new ImageIcon("schwarzStein100.png"));
+		figurWeiss = new JLabel(new ImageIcon("weissStein100.png"));
 		fertig = new JButton("Zug beenden");
 		text = new JTextField(" E1 - H2");
 
@@ -135,14 +141,14 @@ public class GuiSpielbrett extends JOptionPane {
 		// auf das Brett zu setzen
 		schwarz = new ArrayList<ImageIcon>();
 		for (int i = 1; i <= 30; i++) {
-			schwarz.add(new ImageIcon("schwarzerStein60."+i+".png"));
+			schwarz.add(new ImageIcon("schwarzerStein60.png"));
 		}
 		// liste fuer fie weissen figuren um diese in einer schleife
 		// auf das Brett zu setzen
 
 		weiss = new ArrayList<ImageIcon>();
 		for (int i = 1; i <= 30; i++) {
-			weiss.add(new ImageIcon("weissStein60."+i+".png"));
+			weiss.add(new ImageIcon("weissStein60.png"));
 
 		}
 
@@ -173,15 +179,15 @@ public class GuiSpielbrett extends JOptionPane {
 
 		pnlAdd.add(text);
 		pnlRight.add(fertig);
-
-		Message message = new Message(textArea);
-		message.redirectOut();
-		message.redirectErr(Color.red, null);
-		message.setMessageLines(1000);
+//
+//		Message message = new Message(textArea);
+//		message.redirectOut();
+//		message.redirectErr(Color.red, null);
+//		message.setMessageLines(1000);
 
 		// this.getSpiel().starteSpiel();
-		this.spielErstellen();
-		this.spieler();
+		
+		
 
 		// liste der Buttons durchgegangen und diese nicht sichtbar gemacht
 		felder = new ArrayList<JButton>();
@@ -193,28 +199,21 @@ public class GuiSpielbrett extends JOptionPane {
 			felder.get(i).setContentAreaFilled(false);
 			felder.get(i).addActionListener(new EventHandler(this));
 			felder.get(i).setActionCommand("feld");
-			if (i <= 29) {
-				felder.get(i).setIcon(schwarz.get(i));
-
-			}
-
+			
 		}
-
-		for (int i = 0; i <= 71; i++) {
-
-			felder.add(new JButton());
-			imageBrett.add(felder.get(i));
-			felder.get(i).setBorderPainted(true);
-			felder.get(i).setContentAreaFilled(false);
-			// felder.get(i).addActionListener(new EventHandler(this));
-			felder.get(i).setActionCommand("feld");
-			if (i >= 42) {
-				for (int j = 0; j <= 29; j++) {
-					felder.get(i).setIcon(weiss.get(j));
-
-				}
-			}
+		
+		for(int i = 0; i <= 29; i++) {
+			felder.get(i).setIcon(schwarz.get(i));			
 		}
+		
+		int count=0;
+		for(int i = 42; i <=71; i++)  {		
+			felder.get(i).setIcon(weiss.get(count));
+			count++;
+		}
+//		felder.get(42).setIcon(weiss.get(0));
+//		felder.get(43).setIcon(weiss.get(1));
+//		felder.get(44).setIcon(weiss.get(2));
 
 		// setzt die buttons auf ihre Position auf dem Spielbrett
 		felder.get(0).setBounds(9, 513, 36, 36);
@@ -394,6 +393,7 @@ public class GuiSpielbrett extends JOptionPane {
 	 */
 	public void spielErstellen() {
 		spiel = new Spiel();
+		this.spieler();
 		spiel.starteSpiel();
 	}
 
@@ -438,7 +438,7 @@ public class GuiSpielbrett extends JOptionPane {
 	 */
 	public void nameOfIcon() {
 
-		if (spieler1 != null) {
+		if (this != null) {
 
 			Color farbe1 = spieler1.farbAuswahl((String) spieler1
 					.getFarbAuswahl().getSelectedItem());
@@ -488,8 +488,7 @@ public class GuiSpielbrett extends JOptionPane {
 
 		String name1 = spieler1.getNameEingabe().getText();
 		String farbe1 = (String) spieler1.getFarbAuswahl().getSelectedItem();
-		
-		
+
 		// String ki1 = (String)spieler1.getArtAuswahl().getSelectedItem();
 
 		String name2 = spieler2.getNameEingabe().getText();
@@ -501,7 +500,6 @@ public class GuiSpielbrett extends JOptionPane {
 
 	}
 
-	
 	public boolean hatIcon(ActionEvent e) {
 
 		JButton feld = (JButton) e.getSource();
@@ -511,11 +509,7 @@ public class GuiSpielbrett extends JOptionPane {
 		}
 		return false;
 	}
-	
-	public String [] getWert(){
-		return wert;
-	}
-	
+
 
 
 	public ArrayList<ImageIcon> getWeiss() {
@@ -533,9 +527,159 @@ public class GuiSpielbrett extends JOptionPane {
 	public void setSchwarz(ArrayList<ImageIcon> schwarz) {
 		this.schwarz = schwarz;
 	}
-
-	public static void main(String[] args) {
-		new GuiSpielbrett(null, null);
+	/**
+	 * prueft ob die Figuren gleich sind
+	 * @param i1
+	 * @param i2
+	 * @return gibt den Wahrheitswert zurueck
+	 */
+	public boolean figurGleich(ImageIcon i1, Icon i2){
+		
+		
+		for(ImageIcon b:weiss){
+			if(b==i1){
+				for(Icon c:weiss){
+					if(c==i2){
+						return true;
+					}
+				}
+			}
+		}
+		
+		for(ImageIcon b:schwarz){
+			if(b==i1){
+				for(Icon c:schwarz){
+					if(c==i2){
+						return true;
+					}
+				}
+			}
+		}
+		
+		
+		
+		return false;
 	}
+	/*
+	 * Die Methode laeuft mit den Icons anstatt figur
+	 */
+	public void lauf(ActionEvent e) {
 
+		ImageIcon figur = null;
+		JButton feld = (JButton) e.getSource();
+
+		if (this.istSourceDrin(this.getFelder(), e) == true) {
+			for (JButton button : this.getFelder()) {
+				if (button==(feld)) {
+					if (button.getIcon() != null) {
+						
+						this.getWert()[0]=this.farbeIcon(spiel.farbePlayer()).indexOf(button.getIcon());
+						figur=(ImageIcon)this.farbeIcon(spiel.farbePlayer()).get(this.getWert()[0]);
+//						spiel.laufen(this.getWert()[0]);
+						
+						for (JButton b:getFelder()) { 
+							if(feld==b&&posZiel.size()<3){
+								posZiel.add(b.getText());
+							
+								if(b.getText()!=posZiel.get(0)){
+//									posZiel.remove(1);
+									posZiel.add(b.getText());
+								}
+								if(posZiel.size()>2){
+									posZiel.clear();
+								}
+							
+							}
+							if(feld==b){
+								
+								System.out.println(b.getText());
+								System.out.println(posZiel);
+							}
+							
+						}
+//						this.getWert()[0]=this.farbeIcon(spiel.farbePlayer()).indexOf(button.getIcon());
+//						System.out.println("fddgdfgdfd");
+
+//			for (JButton b:getFelder()) {
+//					
+//				for(int i=0; i<brett.getFelder().length;i++){
+//					for (int j=0; j< brett.getFelder()[i].length;j++){
+//						spiel.laufen(b.getText(),b.getText(),brett.getFelder()[i][j].getFigur().getId());
+//						}
+//					}
+//				this.getFelder().get(this.getFelder().indexOf(button)).setIcon(null);
+//				
+//
+//				
+//			}
+		
+//						
+					}
+					}
+				}
+			}
+		
+
+	}
+	/**
+	 * prueft ob der wert enthalten ist
+	 * @param liste 
+	 * @param e
+	 * @return gibt den Wahrheitswert zurueck
+	 */
+	public boolean istSourceDrin(ArrayList<JButton> liste,ActionEvent e){
+		JButton feld = (JButton)e.getSource();
+		for(JButton b:liste){
+			if(b==feld){
+				return true;
+			}
+		}
+		return false;
+	}
+	/**
+	 * die Methode gibt die Farbe zurueck die man gewaehlt hat
+	 * @param farbe
+	 * @return
+	 */
+	public ArrayList<ImageIcon>farbeIcon(String farbe){
+		ArrayList<ImageIcon>l=null;
+		switch(farbe){
+		case "Weiss":
+			l=weiss;
+			return l;
+		case "Schwarz":
+			l=schwarz;
+			return l;
+		
+		}
+		
+		return l;
+		
+	}
+	
+	public int[] getWert() {
+		return wert;
+	}
+	
+	//weiﬂ nicht ob das richtig ist 
+//	public int[]convertWert(String [] stringArray){
+//	  stringArray=wert;
+//		int intArray[]= new int[stringArray.length];
+//		for(int i=0;i<stringArray.length;i++)
+//			intArray[i]=Integer.parseInt(stringArray[i]);
+//		return intArray;
+//	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+

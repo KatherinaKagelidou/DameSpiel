@@ -68,7 +68,7 @@ public class Spielbrett implements Serializable {
 //				felder[i][j].setFarbeFeld(FarbEnum.SCHWARZ);
 			
 		
-				felder[i][j]=new Spielfeld(this, str, schwarz,i,j);
+				felder[i][j]=new Spielfeld(this, str, schwarz);
 				felder[i][j].setX(j);
 				felder[i][j].setY(i);
 				

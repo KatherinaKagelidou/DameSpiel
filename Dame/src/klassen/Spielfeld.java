@@ -25,7 +25,7 @@ public class Spielfeld implements Serializable{
 	 * @param id
 	 *            ist das Feld auf dem sich die einzelnen Spielfiguren befinden
 	 */
-	public Spielfeld(Spielbrett brett, String id, boolean schwarz, int x , int y) {
+	public Spielfeld(Spielbrett brett, String id, boolean schwarz) {
 		setId(id);
 		if (schwarz) {
 			setFarbeFeld(FarbEnum.SCHWARZ);
@@ -34,8 +34,7 @@ public class Spielfeld implements Serializable{
 		}
 		this.istSchwarz = schwarz;
 		this.spielbrett = brett;
-		this.x=x;
-		this.y=y;
+	
 		// this.setFigur(figur);
 	}
 
@@ -137,6 +136,29 @@ public class Spielfeld implements Serializable{
 		return figur=null;
 	}
 
+	
+	public int farbe(){
+		int zahl=0;
+		if(this.getFigur()!=null){
+			if(this.getFigur().getFarbe().equals(FarbEnum.SCHWARZ)){
+			zahl=FarbEnum.SCHWARZ.ordinal();
+			}else{
+				if(this.getFigur().getFarbe().equals(FarbEnum.WEISS)){
+					zahl= FarbEnum.WEISS.ordinal();
+					}
+			}
+			
+		}
+		return zahl;
+	}
+	
+	public void getF(){
+	 System.out.println(farbe());
+		
+	}
+	
+	
+	
 	/**
 	 * Setzt eine Spielfigur auf ein Spielfeld
 	 * 
@@ -161,5 +183,15 @@ public class Spielfeld implements Serializable{
 
 		}
 		return s;
+	}
+	public static void main(String[] args) {
+		
+		Spielbrett brett =new Spielbrett();
+		Spielfeld  f = new Spielfeld(brett, "A2",false);
+		Spielfeld  f1 = new Spielfeld(brett, "A1",true);
+		f.getF();
+		System.out.println(f);
+		f1.getF();
+		System.out.println(f1);
 	}
 }

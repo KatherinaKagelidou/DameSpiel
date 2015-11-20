@@ -42,7 +42,7 @@ public class Spiel implements iBediener, Serializable {
     private PrintWriter pw;
 
     public Spiel() {
-
+//    	this.starteSpiel();
     }
 
     /**
@@ -61,6 +61,7 @@ public class Spiel implements iBediener, Serializable {
 
     @Override
     public void addSpieler(String name, FarbEnum farbe, KI ki) {
+    	
         if (spielerAnz == 2) {
 
             throw new RuntimeException(
@@ -383,6 +384,7 @@ public class Spiel implements iBediener, Serializable {
 
     @Override
     public void laufen(String aktPos, String zielPos, String figurId) {
+    	
         spielbrett.getPositionen().clear();
         this.datenSchlagen.clear();
         Spielfigur figur = this.gebeFigur(figurId);
@@ -1217,6 +1219,27 @@ public class Spiel implements iBediener, Serializable {
     public Spieler getSpieler2(){
         return spieler2;
     }
+    
+    @Override
+	public String farbePlayer(){
+		System.out.println("spieler: "+spielerAmZug);
+		System.out.println("farbe: "+spielerAmZug.getFarbe());
+		FarbEnum player=spielerAmZug.getFarbe();
+		
+		String pl=null;
+		switch(player){
+		case SCHWARZ:
+			pl="Schwarz";
+			return pl;
+		case WEISS:
+			pl="Weiss";
+			return pl;
+		}
+		
+		return pl;
+		
+	}
+    
 
     /**
      * Speichert die aktuelle Belegung des Spielbretts in CSV-Notation.
@@ -1246,7 +1269,7 @@ public class Spiel implements iBediener, Serializable {
                 x++;
 
                 pw.print(belegung[i][j] = new Spielfeld(spielbrett, str,
-                        schwarz, i, j));
+                        schwarz));
 
                 schwarz = !schwarz;
 

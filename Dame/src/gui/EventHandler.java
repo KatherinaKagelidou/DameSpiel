@@ -43,6 +43,7 @@ public class EventHandler implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String cmd = e.getActionCommand();
+		System.out.println(cmd);
 
 		// ------------Start--------------
 		if (cmd.equals("button")) {
@@ -93,6 +94,7 @@ public class EventHandler implements ActionListener {
 			if (cmd.equals(b.getText())&& guiSpielbrett.hatIcon(e)==true) {
 				System.out.println("Das Feld mit der ID "
 						+ b.getText());
+				guiSpielbrett.lauf(e);
 				//hier jetzt die laufMethode aufrufen 
 				// guiSpielbrett.lauf(e);
 				
