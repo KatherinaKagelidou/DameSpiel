@@ -578,11 +578,12 @@ public class GuiSpielbrett extends JOptionPane {
 //						spiel.laufen(this.getWert()[0]);
 						
 						for (JButton b:getFelder()) { 
+							
 							if(feld==b&&posZiel.size()<3){
 								posZiel.add(b.getText());
-							
+							  
 								if(b.getText()!=posZiel.get(0)){
-//									posZiel.remove(1);
+									posZiel.remove(1);
 									posZiel.add(b.getText());
 								}
 								if(posZiel.size()>2){
