@@ -65,8 +65,9 @@ public class GuiSpielbrett extends JOptionPane {
 	private ArrayList<ImageIcon> schwarz;
 
 	private int[] wert;
-	private ArrayList<String> posZiel = new ArrayList<String>(2);
-
+	private ArrayList<String>posZiel=new ArrayList<String>();
+	private ArrayList<JButton>posZielButton=new ArrayList<JButton>();
+	
 	private Spielbrett brett;
 
 	public GuiSpielbrett(Spieler1AuswahlDialog spieler1,
@@ -76,8 +77,6 @@ public class GuiSpielbrett extends JOptionPane {
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.spieler1 = spieler1;
 		this.spieler2 = spieler2;
-		// this.spieler();
-		
 
 		createWidgets();
 		addWidgets();
@@ -93,7 +92,7 @@ public class GuiSpielbrett extends JOptionPane {
 		WindowListener winListener = new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				int antw = JOptionPane.showConfirmDialog(GuiSpielbrett.this,
-						"Möchtst du " + " das Spiel wirklich verlassen?",
+						"Möchtest du " + " das Spiel wirklich verlassen?",
 						"Spiel verlassen?", JOptionPane.YES_NO_OPTION);
 				if (antw == JOptionPane.YES_NO_OPTION) {
 					System.exit(0);
@@ -179,13 +178,15 @@ public class GuiSpielbrett extends JOptionPane {
 
 		pnlAdd.add(text);
 		pnlRight.add(fertig);
-		
-		 Message message = new Message(textArea);
-		 message.redirectOut();
-		 message.redirectErr(Color.red, null);
-		 message.setMessageLines(1000);
+//
+		Message message = new Message(textArea);
+		message.redirectOut();
+		message.redirectErr(Color.red, null);
+		message.setMessageLines(1000);
 
 		// this.getSpiel().starteSpiel();
+		
+		
 
 		// liste der Buttons durchgegangen und diese nicht sichtbar gemacht
 		felder = new ArrayList<JButton>();
@@ -197,21 +198,21 @@ public class GuiSpielbrett extends JOptionPane {
 			felder.get(i).setContentAreaFilled(false);
 			felder.get(i).addActionListener(new EventHandler(this));
 			felder.get(i).setActionCommand("feld");
-
+			
 		}
-
-		for (int i = 0; i <= 29; i++) {
-			felder.get(i).setIcon(schwarz.get(i));
+		
+		for(int i = 0; i <= 29; i++) {
+			felder.get(i).setIcon(schwarz.get(i));			
 		}
-
-		int count = 0;
-		for (int i = 42; i <= 71; i++) {
+		
+		int count=0;
+		for(int i = 42; i <=71; i++)  {		
 			felder.get(i).setIcon(weiss.get(count));
 			count++;
 		}
-		// felder.get(42).setIcon(weiss.get(0));
-		// felder.get(43).setIcon(weiss.get(1));
-		// felder.get(44).setIcon(weiss.get(2));
+//		felder.get(42).setIcon(weiss.get(0));
+//		felder.get(43).setIcon(weiss.get(1));
+//		felder.get(44).setIcon(weiss.get(2));
 
 		// setzt die buttons auf ihre Position auf dem Spielbrett
 		felder.get(0).setBounds(9, 513, 36, 36);
@@ -508,6 +509,8 @@ public class GuiSpielbrett extends JOptionPane {
 		return false;
 	}
 
+
+
 	public ArrayList<ImageIcon> getWeiss() {
 		return weiss;
 	}
@@ -523,177 +526,457 @@ public class GuiSpielbrett extends JOptionPane {
 	public void setSchwarz(ArrayList<ImageIcon> schwarz) {
 		this.schwarz = schwarz;
 	}
-
 	/**
 	 * prueft ob die Figuren gleich sind
-	 * 
 	 * @param i1
 	 * @param i2
 	 * @return gibt den Wahrheitswert zurueck
 	 */
-	public boolean figurGleich(ImageIcon i1, Icon i2) {
-
-		for (ImageIcon b : weiss) {
-			if (b == i1) {
-				for (Icon c : weiss) {
-					if (c == i2) {
+	public boolean figurGleich(ImageIcon i1, Icon i2){
+		
+		
+		for(ImageIcon b:weiss){
+			if(b==i1){
+				for(Icon c:weiss){
+					if(c==i2){
 						return true;
 					}
 				}
 			}
 		}
-
-		for (ImageIcon b : schwarz) {
-			if (b == i1) {
-				for (Icon c : schwarz) {
-					if (c == i2) {
+		
+		for(ImageIcon b:schwarz){
+			if(b==i1){
+				for(Icon c:schwarz){
+					if(c==i2){
 						return true;
 					}
 				}
 			}
 		}
-
+		
+		
+		
 		return false;
 	}
-
 	/*
 	 * Die Methode laeuft mit den Icons anstatt figur
 	 */
 	public void lauf(ActionEvent e) {
-
 		ImageIcon figur = null;
 		JButton feld = (JButton) e.getSource();
-
-		if (this.istSourceDrin(this.getFelder(), e) == true) {
-			for (JButton button : this.getFelder()) {
-				if (button == (feld)) {
-					if (button.getIcon() != null) {
-
-						this.getWert()[0] = this.farbeIcon(spiel.farbePlayer())
-								.indexOf(button.getIcon());
-						figur = (ImageIcon) this.farbeIcon(spiel.farbePlayer())
-								.get(this.getWert()[0]);
-						// spiel.laufen(this.getWert()[0]);
-
-						for (JButton b : getFelder()) {
-
-							if (feld == b && posZiel.size() < 3) {
-								posZiel.add(b.getText());
-
-								if (b.getText() != posZiel.get(0)) {
-									posZiel.remove(1);
-									posZiel.add(b.getText());
-								}
-								if (posZiel.size() > 2) {
-									posZiel.clear();
-								}
-							
-							
-							}
-						// weiss nicht ob das ab hier stimmt 
-							figur = (ImageIcon) this.weiss
-									.get(this.getWert()[0]);
-							
-							if (feld == b) {
-
-								System.out.println(b.getText());
-								System.out.println(posZiel);
-								if (feld == b) {
-									if (posZiel.get(0).equals(b.getText()))
-										this.getFelder()
-												.get(this.getFelder().indexOf(
-														button)).setIcon(null);
-//									if(posZiel.get(1).equals(b.getText())){
-//										this.getFelder()
-//										.get(this.getFelder().indexOf(
-//												button)).setIcon(figur);
-//										
-//									}
-//							}
-							
-							
-//								if (posZiel.get(1).equals(b.getText())) {
-//									this.getFelder()
-//											.get(this.getFelder().indexOf(
-//													button)).setIcon(figur);
-//								}
-//							}
-//						}
-//					}
-
-					// this.getWert()[0]=this.farbeIcon(spiel.farbePlayer()).indexOf(button.getIcon());
-					// System.out.println("fddgdfgdfd");
-
-					// for (JButton b:getFelder()) {
-					//
-					// for(int i=0; i<brett.getFelder().length;i++){
-					// for (int j=0; j< brett.getFelder()[i].length;j++){
-					// spiel.laufen(b.getText(),b.getText(),brett.getFelder()[i][j].getFigur().getId());
-					// }
-					// }
-					// this.getFelder().get(this.getFelder().indexOf(button)).setIcon(null);
-					//
-					//
-					//
-					// }
-
-					//
+		
+		for (JButton button : this.getFelder()) {
+			if (button==feld) {
+				
+				if (button.getIcon() != null) {
+					this.getWert()[0]=this.farbeIcon(spiel.farbePlayer()).indexOf(button.getIcon());
+					System.out.println("WERT: "+this.getWert()[0]);
 				}
-							}}}}}}}
-//			}
-//		}
-//	}
+				
 
+				
+				if(posZielButton.size()<2){
+					posZiel.add(button.getText());
+					posZielButton.add(feld);
+//					System.out.println("SIZE---->"+posZiel.size());
+//					System.out.println(posZiel);
+					if(posZielButton.size()==2){	
+						if(posZielButton.get(0).getIcon()!=null&&posZielButton.get(1).getIcon()==null){
+							System.out.println("ein icon");
+							
+							System.out.println("POSITION: "+posZiel.get(0));
+							System.out.println("ZIEL: "+posZiel.get(1));
+							System.out.println("FIGUR: "+this.farbeFigur(spiel.farbePlayer())+this.zahlFigur2(this.getWert()[0]));
+							
+							figur=(ImageIcon)this.farbeIcon(spiel.farbePlayer()).get(this.getWert()[0]);
+							spiel.laufen(posZiel.get(0),posZiel.get(1),this.farbeFigur(spiel.farbePlayer())+this.zahlFigur2(this.getWert()[0]));
+							System.out.println("ZAHL: "+this.getFelder().indexOf(button));
+							this.getFelder().get(this.feld(posZiel.get(0))).setIcon(null);
+							this.getFelder().get(this.feld(posZiel.get(1))).setIcon(figur);
+							
+						}
+						else if(posZielButton.get(0).getIcon()!=null&&posZielButton.get(1).getIcon()!=null){
+							System.out.println("beide icon");
+							posZielButton.remove(1);
+							posZiel.remove(1);
+						}
+						else{
+							System.out.println("ohne icon");
+							posZielButton.clear();
+							posZiel.clear();
+						}
+						
+						
+						
+					}
+					
+					
+				}	
+			}
+		}
+	}
+	
+	public int feld(String ziel){
+		int a=0;
+		switch(ziel){
+			case "A1":
+				return a=0;
+			case "A3":
+				return a=1;
+			case "A5":
+				return a=2;
+			case "A7":
+				return a=3;
+			case "A9":
+				return a=4;
+			case "A11":
+				return a=5;
+			case "B2":
+				return a=6;
+			case "B4":
+				return a=7;
+			case "B6":
+				return a=8;
+			case "B8":
+				return a=9;
+			case "B10":
+				return a=10;
+			case "B12":
+				return a=11;
+			case "C1":
+				return a=12;
+			case "C3":
+				return a=13;
+			case "C5":
+				return a=14;
+			case "C7":
+				return a=15;
+			case "C9":
+				return a=16;
+			case "C11":
+				return a=17;
+			case "D2":
+				return a=18;
+			case "D4":
+				return a=19;
+			case "D6":
+				return a=20;
+			case "D8":
+				return a=21;
+			case "D10":
+				return a=22;
+			case "D12":
+				return a=23;
+			case "E1":
+				return a=24;
+			case "E3":
+				return a=25;
+			case "E5":
+				return a=26;
+			case "E7":
+				return a=27;
+			case "E9":
+				return a=28;
+			case "E11":
+				return a=29;
+			case "F2":
+				return a=30;
+			case "F4":
+				return a=31;
+			case "F6":
+				return a=32;
+			case "F8":
+				return a=33;
+			case "F10":
+				return a=34;
+			case "F12":
+				return a=35;
+			case "G1":
+				return a=36;
+			case "G3":
+				return a=37;
+			case "G5":
+				return a=38;
+			case "G7":
+				return a=39;
+			case "G9":
+				return a=40;
+			case "G11":
+				return a=41;
+			case "H2":
+				return a=42;
+			case "H4":
+				return a=43;
+			case "H6":
+				return a=44;
+			case "H8":
+				return a=45;
+			case "H10":
+				return a=46;
+			case "H12":
+				return a=47;
+			case "I1":
+				return a=48;
+			case "I3":
+				return a=49;
+			case "I5":
+				return a=50;
+			case "I7":
+				return a=51;
+			case "I9":
+				return a=52;
+			case "I11":
+				return a=53;
+			case "J2":
+				return a=54;
+			case "J4":
+				return a=55;
+			case "J6":
+				return a=56;
+			case "J8":
+				return a=57;
+			case "J10":
+				return a=58;
+			case "J12":
+				return a=59;
+			case "K1":
+				return a=60;
+			case "K3":
+				return a=61;
+			case "K5":
+				return a=61;
+			case "K7":
+				return a=62;
+			case "K9":
+				return a=63;
+			case "K11":
+				return a=64;
+			case "L2":
+				return a=65;
+			case "L4":
+				return a=66;
+			case "L6":
+				return a=67;
+			case "L8":
+				return a=68;
+			case "L10":
+				return a=69;
+			case "L12":
+				return a=70;
+		}
+		return a;
+		
+	}
+
+	
+	public String zahlFigur(int zahl){
+		String a=null;
+		switch(zahl){
+			case 0:
+				return a="1";
+			case 1:
+				return a="2";
+			case 2:
+				return a="3";
+			case 3:
+				return a="4";
+			case 4:
+				return a="5";
+			case 5:
+				return a="6";
+			case 6:
+				return a="7";
+			case 7:
+				return a="8";
+			case 8:
+				return a="9";
+			case 9:
+				return a="10";
+			case 10:
+				return a="11";
+			case 11:
+				return a="12";
+			case 12:
+				return a="13";
+			case 13:
+				return a="14";
+			case 14:
+				return a="15";
+			case 15:
+				return a="16";
+			case 16:
+				return a="17";
+			case 17:
+				return a="18";
+			case 18:
+				return a="19";
+			case 19:
+				return a="20";
+			case 20:
+				return a="21";
+			case 21:
+				return a="22";
+			case 22:
+				return a="23";
+			case 23:
+				return a="24";
+			case 24:
+				return a="25";
+			case 25:
+				return a="26";
+			case 26:
+				return a="27";
+			case 27:
+				return a="28";
+			case 28:
+				return a="29";
+			case 29:
+				return a="30";			
+			
+		}
+		return a;
+	}
+	
+	public String zahlFigur2(int zahl){
+		String a=null;
+		switch(zahl){
+			case 0:
+				return a="30";
+			case 1:
+				return a="29";
+			case 2:
+				return a="28";
+			case 3:
+				return a="27";
+			case 4:
+				return a="26";
+			case 5:
+				return a="25";
+			case 6:
+				return a="24";
+			case 7:
+				return a="23";
+			case 8:
+				return a="22";
+			case 9:
+				return a="21";
+			case 10:
+				return a="20";
+			case 11:
+				return a="19";
+			case 12:
+				return a="18";
+			case 13:
+				return a="17";
+			case 14:
+				return a="16";
+			case 15:
+				return a="15";
+			case 16:
+				return a="14";
+			case 17:
+				return a="13";
+			case 18:
+				return a="12";
+			case 19:
+				return a="11";
+			case 20:
+				return a="10";
+			case 21:
+				return a="9";
+			case 22:
+				return a="8";
+			case 23:
+				return a="7";
+			case 24:
+				return a="6";
+			case 25:
+				return a="5";
+			case 26:
+				return a="4";
+			case 27:
+				return a="3";
+			case 28:
+				return a="2";
+			case 29:
+				return a="1";			
+			
+		}
+		return a;
+	}
+	
+	public String farbeFigur(String farbe){
+		String l=null;
+		switch(farbe){
+		case "Weiss":
+			l="white ";
+			return l;
+		case "Schwarz":
+			l="black ";
+			return l;
+		}
+		return l;	
+	}
+	
 	/**
 	 * prueft ob der wert enthalten ist
-	 * 
-	 * @param liste
+	 * @param liste 
 	 * @param e
 	 * @return gibt den Wahrheitswert zurueck
 	 */
-	public boolean istSourceDrin(ArrayList<JButton> liste, ActionEvent e) {
-		JButton feld = (JButton) e.getSource();
-		for (JButton b : liste) {
-			if (b == feld) {
+	public boolean istSourceDrin(ArrayList<JButton> liste,ActionEvent e){
+		JButton feld = (JButton)e.getSource();
+		for(JButton b:liste){
+			if(b==feld){
 				return true;
 			}
 		}
 		return false;
 	}
-
 	/**
 	 * die Methode gibt die Farbe zurueck die man gewaehlt hat
-	 * 
 	 * @param farbe
 	 * @return
 	 */
-	public ArrayList<ImageIcon> farbeIcon(String farbe) {
-		ArrayList<ImageIcon> l = null;
-		switch (farbe) {
+	public ArrayList<ImageIcon>farbeIcon(String farbe){
+		ArrayList<ImageIcon>l=null;
+		switch(farbe){
 		case "Weiss":
-			l = weiss;
+			l=weiss;
 			return l;
 		case "Schwarz":
-			l = schwarz;
+			l=schwarz;
 			return l;
-
 		}
-
+		
 		return l;
-
+		
 	}
-
+	
 	public int[] getWert() {
 		return wert;
 	}
-
-	// weiß nicht ob das richtig ist
-	// public int[]convertWert(String [] stringArray){
-	// stringArray=wert;
-	// int intArray[]= new int[stringArray.length];
-	// for(int i=0;i<stringArray.length;i++)
-	// intArray[i]=Integer.parseInt(stringArray[i]);
-	// return intArray;
-	// }
-
+	
+	//weiï¿½ nicht ob das richtig ist 
+//	public int[]convertWert(String [] stringArray){
+//	  stringArray=wert;
+//		int intArray[]= new int[stringArray.length];
+//		for(int i=0;i<stringArray.length;i++)
+//			intArray[i]=Integer.parseInt(stringArray[i]);
+//		return intArray;
+//	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
