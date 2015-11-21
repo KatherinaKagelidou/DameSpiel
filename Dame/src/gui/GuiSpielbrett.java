@@ -77,11 +77,12 @@ public class GuiSpielbrett extends JOptionPane {
 		this.spieler1 = spieler1;
 		this.spieler2 = spieler2;
 		// this.spieler();
-		this.spielErstellen();
+		
 
 		createWidgets();
 		addWidgets();
 		addListener();
+		this.spielErstellen();
 		wert = new int[1];
 
 		frame.pack();
@@ -178,11 +179,11 @@ public class GuiSpielbrett extends JOptionPane {
 
 		pnlAdd.add(text);
 		pnlRight.add(fertig);
-		//
-		// Message message = new Message(textArea);
-		// message.redirectOut();
-		// message.redirectErr(Color.red, null);
-		// message.setMessageLines(1000);
+		
+		 Message message = new Message(textArea);
+		 message.redirectOut();
+		 message.redirectErr(Color.red, null);
+		 message.setMessageLines(1000);
 
 		// this.getSpiel().starteSpiel();
 

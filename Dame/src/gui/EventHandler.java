@@ -91,7 +91,8 @@ public class EventHandler implements ActionListener {
 		
 		if(guiSpielbrett!=null){
 		for (JButton b:guiSpielbrett.getFelder()) {
-			if (cmd.equals(b.getText())&& guiSpielbrett.hatIcon(e)==true) {
+//			if (cmd.equals(b.getText())&& guiSpielbrett.hatIcon(e)==true) {
+			if (cmd.equals(b.getText())) {
 				System.out.println("Das Feld mit der ID "
 						+ b.getText());
 				guiSpielbrett.lauf(e);
