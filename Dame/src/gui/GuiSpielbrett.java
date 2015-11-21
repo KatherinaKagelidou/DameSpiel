@@ -564,6 +564,7 @@ public class GuiSpielbrett extends JOptionPane {
 	 */
 	public void lauf(ActionEvent e) {
 		ImageIcon figur = null;
+		ImageIcon figur2=null;
 		JButton feld = (JButton) e.getSource();
 		
 		for (JButton button : this.getFelder()) {
@@ -588,13 +589,30 @@ public class GuiSpielbrett extends JOptionPane {
 							System.out.println("POSITION: "+posZiel.get(0));
 							System.out.println("ZIEL: "+posZiel.get(1));
 							System.out.println("FIGUR: "+this.farbeFigur(spiel.farbePlayer())+this.zahlFigur2(this.getWert()[0]));
-							
+//-----------------------weiss button --------------------------------							
+							if(spiel.farbePlayer().startsWith("W")){
+							System.out.println(spiel.farbePlayer());
 							figur=(ImageIcon)this.farbeIcon(spiel.farbePlayer()).get(this.getWert()[0]);
 							spiel.laufen(posZiel.get(0),posZiel.get(1),this.farbeFigur(spiel.farbePlayer())+this.zahlFigur2(this.getWert()[0]));
 							System.out.println("ZAHL: "+this.getFelder().indexOf(button));
 							this.getFelder().get(this.feld(posZiel.get(0))).setIcon(null);
 							this.getFelder().get(this.feld(posZiel.get(1))).setIcon(figur);
+							posZielButton.clear();
+							posZiel.clear();
 							
+// ---------------------------------scharz button------------------------							
+							}else if(spiel.farbePlayer().startsWith("S")){
+							//zum testen fuer den schwarzen spieler
+							System.out.println(spiel.farbePlayer());
+							figur2=(ImageIcon)this.farbeIcon(spiel.farbePlayer()).get(this.getWert()[0]);
+							spiel.laufen(posZiel.get(0),posZiel.get(1),this.farbeFigur(spiel.farbePlayer())+this.zahlFigur(this.getWert()[0]));
+							System.out.println("ZAHL: "+this.getFelder().indexOf(button));
+							this.getFelder().get(this.feld(posZiel.get(0))).setIcon(null);
+							this.getFelder().get(this.feld(posZiel.get(1))).setIcon(figur2);
+							posZielButton.clear();
+							posZiel.clear();
+							
+							}
 						}
 						else if(posZielButton.get(0).getIcon()!=null&&posZielButton.get(1).getIcon()!=null){
 							System.out.println("beide icon");
