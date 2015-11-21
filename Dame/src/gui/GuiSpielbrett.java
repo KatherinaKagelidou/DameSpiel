@@ -65,8 +65,8 @@ public class GuiSpielbrett extends JOptionPane {
 	private ArrayList<ImageIcon> schwarz;
 
 	private int[] wert;
-	private ArrayList<String>posZiel=new ArrayList<String>(2);
-	
+	private ArrayList<String> posZiel = new ArrayList<String>(2);
+
 	private Spielbrett brett;
 
 	public GuiSpielbrett(Spieler1AuswahlDialog spieler1,
@@ -76,9 +76,8 @@ public class GuiSpielbrett extends JOptionPane {
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.spieler1 = spieler1;
 		this.spieler2 = spieler2;
-//		this.spieler();
+		// this.spieler();
 		this.spielErstellen();
-		
 
 		createWidgets();
 		addWidgets();
@@ -179,15 +178,13 @@ public class GuiSpielbrett extends JOptionPane {
 
 		pnlAdd.add(text);
 		pnlRight.add(fertig);
-//
-//		Message message = new Message(textArea);
-//		message.redirectOut();
-//		message.redirectErr(Color.red, null);
-//		message.setMessageLines(1000);
+		//
+		// Message message = new Message(textArea);
+		// message.redirectOut();
+		// message.redirectErr(Color.red, null);
+		// message.setMessageLines(1000);
 
 		// this.getSpiel().starteSpiel();
-		
-		
 
 		// liste der Buttons durchgegangen und diese nicht sichtbar gemacht
 		felder = new ArrayList<JButton>();
@@ -199,21 +196,21 @@ public class GuiSpielbrett extends JOptionPane {
 			felder.get(i).setContentAreaFilled(false);
 			felder.get(i).addActionListener(new EventHandler(this));
 			felder.get(i).setActionCommand("feld");
-			
+
 		}
-		
-		for(int i = 0; i <= 29; i++) {
-			felder.get(i).setIcon(schwarz.get(i));			
+
+		for (int i = 0; i <= 29; i++) {
+			felder.get(i).setIcon(schwarz.get(i));
 		}
-		
-		int count=0;
-		for(int i = 42; i <=71; i++)  {		
+
+		int count = 0;
+		for (int i = 42; i <= 71; i++) {
 			felder.get(i).setIcon(weiss.get(count));
 			count++;
 		}
-//		felder.get(42).setIcon(weiss.get(0));
-//		felder.get(43).setIcon(weiss.get(1));
-//		felder.get(44).setIcon(weiss.get(2));
+		// felder.get(42).setIcon(weiss.get(0));
+		// felder.get(43).setIcon(weiss.get(1));
+		// felder.get(44).setIcon(weiss.get(2));
 
 		// setzt die buttons auf ihre Position auf dem Spielbrett
 		felder.get(0).setBounds(9, 513, 36, 36);
@@ -510,8 +507,6 @@ public class GuiSpielbrett extends JOptionPane {
 		return false;
 	}
 
-
-
 	public ArrayList<ImageIcon> getWeiss() {
 		return weiss;
 	}
@@ -527,39 +522,39 @@ public class GuiSpielbrett extends JOptionPane {
 	public void setSchwarz(ArrayList<ImageIcon> schwarz) {
 		this.schwarz = schwarz;
 	}
+
 	/**
 	 * prueft ob die Figuren gleich sind
+	 * 
 	 * @param i1
 	 * @param i2
 	 * @return gibt den Wahrheitswert zurueck
 	 */
-	public boolean figurGleich(ImageIcon i1, Icon i2){
-		
-		
-		for(ImageIcon b:weiss){
-			if(b==i1){
-				for(Icon c:weiss){
-					if(c==i2){
+	public boolean figurGleich(ImageIcon i1, Icon i2) {
+
+		for (ImageIcon b : weiss) {
+			if (b == i1) {
+				for (Icon c : weiss) {
+					if (c == i2) {
 						return true;
 					}
 				}
 			}
 		}
-		
-		for(ImageIcon b:schwarz){
-			if(b==i1){
-				for(Icon c:schwarz){
-					if(c==i2){
+
+		for (ImageIcon b : schwarz) {
+			if (b == i1) {
+				for (Icon c : schwarz) {
+					if (c == i2) {
 						return true;
 					}
 				}
 			}
 		}
-		
-		
-		
+
 		return false;
 	}
+
 	/*
 	 * Die Methode laeuft mit den Icons anstatt figur
 	 */
@@ -570,117 +565,134 @@ public class GuiSpielbrett extends JOptionPane {
 
 		if (this.istSourceDrin(this.getFelder(), e) == true) {
 			for (JButton button : this.getFelder()) {
-				if (button==(feld)) {
+				if (button == (feld)) {
 					if (button.getIcon() != null) {
-						
-						this.getWert()[0]=this.farbeIcon(spiel.farbePlayer()).indexOf(button.getIcon());
-						figur=(ImageIcon)this.farbeIcon(spiel.farbePlayer()).get(this.getWert()[0]);
-//						spiel.laufen(this.getWert()[0]);
-						
-						for (JButton b:getFelder()) { 
-							
-							if(feld==b&&posZiel.size()<3){
+
+						this.getWert()[0] = this.farbeIcon(spiel.farbePlayer())
+								.indexOf(button.getIcon());
+						figur = (ImageIcon) this.farbeIcon(spiel.farbePlayer())
+								.get(this.getWert()[0]);
+						// spiel.laufen(this.getWert()[0]);
+
+						for (JButton b : getFelder()) {
+
+							if (feld == b && posZiel.size() < 3) {
 								posZiel.add(b.getText());
-							  
-								if(b.getText()!=posZiel.get(0)){
+
+								if (b.getText() != posZiel.get(0)) {
 									posZiel.remove(1);
 									posZiel.add(b.getText());
 								}
-								if(posZiel.size()>2){
+								if (posZiel.size() > 2) {
 									posZiel.clear();
 								}
 							
+							
 							}
-							if(feld==b){
-								
+						// weiss nicht ob das ab hier stimmt 
+							figur = (ImageIcon) this.weiss
+									.get(this.getWert()[0]);
+							
+							if (feld == b) {
+
 								System.out.println(b.getText());
 								System.out.println(posZiel);
-							}
+								if (feld == b) {
+									if (posZiel.get(0).equals(b.getText()))
+										this.getFelder()
+												.get(this.getFelder().indexOf(
+														button)).setIcon(null);
+//									if(posZiel.get(1).equals(b.getText())){
+//										this.getFelder()
+//										.get(this.getFelder().indexOf(
+//												button)).setIcon(figur);
+//										
+//									}
+//							}
 							
-						}
-//						this.getWert()[0]=this.farbeIcon(spiel.farbePlayer()).indexOf(button.getIcon());
-//						System.out.println("fddgdfgdfd");
-
-//			for (JButton b:getFelder()) {
-//					
-//				for(int i=0; i<brett.getFelder().length;i++){
-//					for (int j=0; j< brett.getFelder()[i].length;j++){
-//						spiel.laufen(b.getText(),b.getText(),brett.getFelder()[i][j].getFigur().getId());
+							
+//								if (posZiel.get(1).equals(b.getText())) {
+//									this.getFelder()
+//											.get(this.getFelder().indexOf(
+//													button)).setIcon(figur);
+//								}
+//							}
 //						}
 //					}
-//				this.getFelder().get(this.getFelder().indexOf(button)).setIcon(null);
-//				
-//
-//				
-//			}
-		
-//						
-					}
-					}
-				}
-			}
-		
 
-	}
+					// this.getWert()[0]=this.farbeIcon(spiel.farbePlayer()).indexOf(button.getIcon());
+					// System.out.println("fddgdfgdfd");
+
+					// for (JButton b:getFelder()) {
+					//
+					// for(int i=0; i<brett.getFelder().length;i++){
+					// for (int j=0; j< brett.getFelder()[i].length;j++){
+					// spiel.laufen(b.getText(),b.getText(),brett.getFelder()[i][j].getFigur().getId());
+					// }
+					// }
+					// this.getFelder().get(this.getFelder().indexOf(button)).setIcon(null);
+					//
+					//
+					//
+					// }
+
+					//
+				}
+							}}}}}}}
+//			}
+//		}
+//	}
+
 	/**
 	 * prueft ob der wert enthalten ist
-	 * @param liste 
+	 * 
+	 * @param liste
 	 * @param e
 	 * @return gibt den Wahrheitswert zurueck
 	 */
-	public boolean istSourceDrin(ArrayList<JButton> liste,ActionEvent e){
-		JButton feld = (JButton)e.getSource();
-		for(JButton b:liste){
-			if(b==feld){
+	public boolean istSourceDrin(ArrayList<JButton> liste, ActionEvent e) {
+		JButton feld = (JButton) e.getSource();
+		for (JButton b : liste) {
+			if (b == feld) {
 				return true;
 			}
 		}
 		return false;
 	}
+
 	/**
 	 * die Methode gibt die Farbe zurueck die man gewaehlt hat
+	 * 
 	 * @param farbe
 	 * @return
 	 */
-	public ArrayList<ImageIcon>farbeIcon(String farbe){
-		ArrayList<ImageIcon>l=null;
-		switch(farbe){
+	public ArrayList<ImageIcon> farbeIcon(String farbe) {
+		ArrayList<ImageIcon> l = null;
+		switch (farbe) {
 		case "Weiss":
-			l=weiss;
+			l = weiss;
 			return l;
 		case "Schwarz":
-			l=schwarz;
+			l = schwarz;
 			return l;
-		
+
 		}
-		
+
 		return l;
-		
+
 	}
-	
+
 	public int[] getWert() {
 		return wert;
 	}
-	
-	//weiﬂ nicht ob das richtig ist 
-//	public int[]convertWert(String [] stringArray){
-//	  stringArray=wert;
-//		int intArray[]= new int[stringArray.length];
-//		for(int i=0;i<stringArray.length;i++)
-//			intArray[i]=Integer.parseInt(stringArray[i]);
-//		return intArray;
-//	}
-	
+
+	// weiﬂ nicht ob das richtig ist
+	// public int[]convertWert(String [] stringArray){
+	// stringArray=wert;
+	// int intArray[]= new int[stringArray.length];
+	// for(int i=0;i<stringArray.length;i++)
+	// intArray[i]=Integer.parseInt(stringArray[i]);
+	// return intArray;
+	// }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
