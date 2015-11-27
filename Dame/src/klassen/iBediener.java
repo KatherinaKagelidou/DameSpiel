@@ -15,7 +15,7 @@ public interface iBediener {
 
 
     void gibKoordinate(String s);
-    void laufen(String aktPos, String zielPos, String figurId);
+//    void laufen(String aktPos, String zielPos, String figurId);
     Spielfigur gebeFigur(String figurId);
     void belegungCSV();
 
@@ -38,6 +38,9 @@ public interface iBediener {
 	void speichern(Object obj, String name) throws IOException;
 	
 	String farbePlayer();
+	void laufen(String aktPos, String zielPos);
+	Spieler getSpielerAmZug();
+	boolean getZugOk();
 	
 
 

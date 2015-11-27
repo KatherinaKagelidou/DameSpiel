@@ -21,7 +21,8 @@ public class Spiel implements iBediener, Serializable {
     private Spieler spieler1;
     private Spieler spieler2;
     private Spieler spielerAmZug;
-    private int spielerAnz = 0;
+    
+	private int spielerAnz = 0;
     private Spielbrett spielbrett;
     private Spieler sp;// greift nicht auf die Spielerklasse zu
     private boolean istDame = false;
@@ -35,7 +36,7 @@ public class Spiel implements iBediener, Serializable {
     private boolean kannSchlagen;
     private boolean rechts = false;
     private ArrayList<String> datenSchlagen = new ArrayList<String>();
-
+    private boolean zugOk =false;
     private static final long SerialVersion = 1l;
     private static iDatenzugriff daten;
 
@@ -44,6 +45,11 @@ public class Spiel implements iBediener, Serializable {
     public Spiel() {
 //    	this.starteSpiel();
     }
+    
+    @Override
+    public Spieler getSpielerAmZug() {
+		return spielerAmZug;
+	}
 
     /**
      * 
@@ -383,101 +389,141 @@ public class Spiel implements iBediener, Serializable {
     }
 
     @Override
-    public void laufen(String aktPos, String zielPos, String figurId) {
+//    public void laufen(String aktPos, String zielPos, String figurId) {
+    public void laufen(String aktPos, String zielPos) {
     	
         spielbrett.getPositionen().clear();
         this.datenSchlagen.clear();
-        Spielfigur figur = this.gebeFigur(figurId);
+        
         Spielfeld aktFeld = this.gebeFeld(aktPos);
         Spielfeld zielFeld = this.gebeFeld(zielPos);
+        Spielfigur figur = this.gebeFigur(aktFeld.getFigur().getId());
+
+      
+      if(figur==null){
+      	System.out.println("Du bist nicht dran !");
+      }
+      else if(aktFeld.getFigur()==null&&zielFeld.getFigur()==null){
+    	  System.out.println("Das Feld ist leer !");
+      }
+      else{
+    	  if((figur.getFarbe().equals(FarbEnum.SCHWARZ)&& this.figur.getDame(figur))){
+              laufeDameSchwarz(aktPos, zielPos);
+              return;
+          }
+          else if((figur.getFarbe().equals(FarbEnum.WEISS)&& this.figur.getDame(figur))){
+              laufeDameWeiss(aktPos, zielPos);
+              return;
+          }
+          if (figur.getId().equals(aktFeld.getFigur().getId())) {
+              figur = aktFeld.getFigur();
+          }else{
+              System.out.println("Du kannst mit dieser Figur nicht laufen!!!");
+              return;
+          }
+          spielbrett.Umwandler(aktPos);
+          spielbrett.Umwandler(zielPos);
+
+         
+          if (spielerAmZug.getFarbe().equals(FarbEnum.SCHWARZ)) {
+
+              if (!kannSchlagen()) {
+                  // wenn figur schwarz ist
+                  if (figur.getFarbe().equals(FarbEnum.SCHWARZ)) {
+                      if (this.spielbrett.getPositionen().get(1) < this.spielbrett
+                              .getPositionen().get(3)) {
+                          this.rechts = true;
+                          Spielfeld f = getNachbar(aktPos, true);
+                          if (f.equals(zielFeld) && zielFeld.getFigur() == null) {
+                              moveFigur(figur, aktFeld, zielFeld);
+                              System.out.println(figur);
+                              zugOk=true;
+                          }
+
+                      } else {
+                          this.rechts = false;
+                          Spielfeld f = getNachbar(aktPos, false);
+                          if (f.equals(zielFeld) && zielFeld.getFigur() == null) {
+                              moveFigur(figur, aktFeld, zielFeld);
+                              System.out.println(figur);
+                              zugOk=true;
+                          }
+                      }
+                  }
+              } else {
+                  System.out.println(spielerAmZug.getName()
+                          + " du musst schlagen!!!");
+                  if((datenSchlagen.get(0).equals(aktPos)&&(zielFeld.getFigur()!=null))){
+                      schlagen(datenSchlagen.get(0), datenSchlagen.get(1),datenSchlagen.get(2));
+                      }else{
+                    	  System.out.println("Die Figur "+aktFeld.getFigur().getId()+" wurde weggepustet!!!");
+                    	  aktFeld.setFigur(null);
+                    	  
+                      }
+
+              }
+          } else if (spielerAmZug.getFarbe().equals(FarbEnum.WEISS)) {
+              if (!kannSchlagen()) {
+                  // wenn figur weiss ist
+                  if (figur.getFarbe().equals(FarbEnum.WEISS)) {
+                      if (this.spielbrett.getPositionen().get(1) > this.spielbrett
+                              .getPositionen().get(3)) {
+                          this.rechts = true;
+                          Spielfeld f = getNachbar(aktPos, true);
+                          if (f.equals(zielFeld) && zielFeld.getFigur() == null) {
+                              moveFigur(figur, aktFeld, zielFeld);
+                              System.out.println(figur);
+                              zugOk=true;
+                          }
+
+                      } else {
+                          this.rechts = false;
+                          Spielfeld f = getNachbar(aktPos, false);
+                          if (f.equals(zielFeld) && zielFeld.getFigur() == null) {
+                              moveFigur(figur, aktFeld, zielFeld);
+                              System.out.println(figur);
+                              zugOk=true;
+                          }
+                      }
+                  }
+
+              } else {
+                  System.out.println(spielerAmZug.getName()
+                          + " du musst schlagen!!!");
+                  if((datenSchlagen.get(0).equals(aktPos)&&(zielFeld.getFigur()!=null))){
+                      schlagen(datenSchlagen.get(0), datenSchlagen.get(1),datenSchlagen.get(2));
+                      }else{
+                    	  System.out.println("Die Figur "+aktFeld.getFigur().getId()+" wurde weggepustet!!!");
+                    	  aktFeld.setFigur(null);
+                    	  
+                      }
+              }
+
+          }
+
+          
+          if(zugOk==true){
+          	 zugBeenden();
+          }
+//          else{
+//          	System.out.println("");
+//          }
+    	  
+      }
         
-        
-        
-        if((figur.getFarbe().equals(FarbEnum.SCHWARZ)&& this.figur.getDame(figur))){
-            laufeDameSchwarz(aktPos, zielPos, figurId);
-            return;
-        }
-        else if((figur.getFarbe().equals(FarbEnum.WEISS)&& this.figur.getDame(figur))){
-            laufeDameWeiss(aktPos, zielPos, figurId);
-            return;
-        }
-        if (figur.getId().equals(aktFeld.getFigur().getId())) {
-            figur = aktFeld.getFigur();
-        }else{
-            System.out.println("Du kannst mit dieser Figur nicht laufen!!!");
-            return;
-        }
-        spielbrett.Umwandler(aktPos);
-        spielbrett.Umwandler(zielPos);
-
-        if (spielerAmZug.getFarbe().equals(FarbEnum.SCHWARZ)) {
-
-            if (!kannSchlagen()) {
-                // wenn figur schwarz ist
-                if (figur.getFarbe().equals(FarbEnum.SCHWARZ)) {
-                    if (this.spielbrett.getPositionen().get(1) < this.spielbrett
-                            .getPositionen().get(3)) {
-                        this.rechts = true;
-                        Spielfeld f = getNachbar(aktPos, true);
-                        if (f.equals(zielFeld) && zielFeld.getFigur() == null) {
-                            moveFigur(figur, aktFeld, zielFeld);
-                            System.out.println(figur);
-                        }
-
-                    } else {
-                        this.rechts = false;
-                        Spielfeld f = getNachbar(aktPos, false);
-                        if (f.equals(zielFeld) && zielFeld.getFigur() == null) {
-                            moveFigur(figur, aktFeld, zielFeld);
-                            System.out.println(figur);
-                        }
-                    }
-                }
-            } else {
-                System.out.println(spielerAmZug.getName()
-                        + " du musst schlagen!!!");
-                schlagen(datenSchlagen.get(0), datenSchlagen.get(1),datenSchlagen.get(2));
-
-            }
-        } else if (spielerAmZug.getFarbe().equals(FarbEnum.WEISS)) {
-            if (!kannSchlagen()) {
-                // wenn figur weiss ist
-                if (figur.getFarbe().equals(FarbEnum.WEISS)) {
-                    if (this.spielbrett.getPositionen().get(1) > this.spielbrett
-                            .getPositionen().get(3)) {
-                        this.rechts = true;
-                        Spielfeld f = getNachbar(aktPos, true);
-                        if (f.equals(zielFeld) && zielFeld.getFigur() == null) {
-                            moveFigur(figur, aktFeld, zielFeld);
-                            System.out.println(figur);
-                        }
-
-                    } else {
-                        this.rechts = false;
-                        Spielfeld f = getNachbar(aktPos, false);
-                        if (f.equals(zielFeld) && zielFeld.getFigur() == null) {
-                            moveFigur(figur, aktFeld, zielFeld);
-                            System.out.println(figur);
-                        }
-                    }
-                }
-
-            } else {
-                System.out.println(spielerAmZug.getName()
-                        + " du musst schlagen!!!");
-                schlagen(datenSchlagen.get(0),datenSchlagen.get(1),datenSchlagen.get(2));
-            }
-
-        }
-
-        zugBeenden();
+      
+       
 
     }
 
 
     
-
     @Override
+    public boolean getZugOk() {
+		return zugOk;
+	}
+
+	@Override
     public void zugBeenden() {
         if (this.spielerAmZug.equals(spieler1)) {
             SpielerAmZug(spieler2);
@@ -552,11 +598,11 @@ public class Spiel implements iBediener, Serializable {
     }
 
 
-    public void laufeDameSchwarz(String aktPos, String zielPos, String figurId) {
+    public void laufeDameSchwarz(String aktPos, String zielPos) {
 
         Spielfeld aktFeld = this.gebeFeld(aktPos);
         Spielfeld zielFeld = this.gebeFeld(zielPos);
-        Spielfigur figur = this.gebeFigur(figurId);
+        Spielfigur figur = this.gebeFigur(aktFeld.getFigur().getId());
         Spielfeld nachbar=null;
         Spielfeld nachbar2=null;
 
@@ -686,11 +732,11 @@ public class Spiel implements iBediener, Serializable {
             }
         }
     
-    public void laufeDameWeiss(String aktPos, String zielPos, String figurId) {
+    public void laufeDameWeiss(String aktPos, String zielPos) {
         
         Spielfeld aktFeld = this.gebeFeld(aktPos);
         Spielfeld zielFeld = this.gebeFeld(zielPos);
-        Spielfigur figur = this.gebeFigur(figurId);
+        Spielfigur figur = this.gebeFigur(aktFeld.getFigur().getId());
         Spielfeld nachbar=null;
         Spielfeld nachbar2=null;
 
@@ -1222,8 +1268,8 @@ public class Spiel implements iBediener, Serializable {
     
     @Override
 	public String farbePlayer(){
-		System.out.println("spieler: "+spielerAmZug);
-		System.out.println("farbe: "+spielerAmZug.getFarbe());
+//		System.out.println("spieler: "+spielerAmZug);
+//		System.out.println("farbe: "+spielerAmZug.getFarbe());
 		FarbEnum player=spielerAmZug.getFarbe();
 		
 		String pl=null;

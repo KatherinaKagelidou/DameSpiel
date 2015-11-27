@@ -1,5 +1,6 @@
 package gui;
 
+import klassen.Spiel;
 import klassen.iBediener;
 
 import java.awt.event.ActionEvent;
@@ -19,6 +20,7 @@ public class EventHandler implements ActionListener {
 	private MenuDialogLaden menuDialog;
 
 	private iBediener i;
+	private Spiel spiel;
 
 	public EventHandler(StartGui startGui) {
 		this.startGui = startGui;
@@ -87,25 +89,21 @@ public class EventHandler implements ActionListener {
 			}
 
 		}
-//		if (cmd.equals("ziehen")){
-		
-		if(guiSpielbrett!=null){
-		for (JButton b:guiSpielbrett.getFelder()) {
-//			if (cmd.equals(b.getText())&& guiSpielbrett.hatIcon(e)==true) {
-			if (cmd.equals(b.getText())) {
-				System.out.println("Das Feld mit der ID "
-						+ b.getText());
-				guiSpielbrett.lauf(e);
-				//hier jetzt die laufMethode aufrufen 
-				// guiSpielbrett.lauf(e);
-				
-				
-		
-			}
-				
-				
 
-			}}
+		if(guiSpielbrett!=null){
+//		for (JButton b:guiSpielbrett.getFelder()) {
+////			if (cmd.equals(b.getText())&& guiSpielbrett.hatIcon(e)==true) {
+//			if (cmd.equals(b.getText())) {
+//				System.out.println("Das Feld mit der ID "
+//						+ b.getText());
+//				
+//				guiSpielbrett.lauf(e);
+//			}
+//		}
+			if (cmd.equals("ziehen")) {
+				guiSpielbrett.laufText();
+			}
+		}
 		}
 //	}
 

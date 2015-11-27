@@ -34,6 +34,8 @@ import javax.swing.ScrollPaneConstants;
 import klassen.FarbEnum;
 import klassen.Spiel;
 import klassen.Spielbrett;
+import klassen.Spielfeld;
+import klassen.Spielfigur;
 import klassen.iBediener;
 
 public class GuiSpielbrett extends JOptionPane {
@@ -47,7 +49,7 @@ public class GuiSpielbrett extends JOptionPane {
 	private JTextArea textArea;
 	private JScrollPane scrollPane;
 	private GuiSpielbrett guiSpielbrett;
-	private iBediener spiel;
+	private Spiel spiel;
 	private StartGui startGui;
 	private Spieler1AuswahlDialog spieler1;
 	private Spieler2AuswahlDialog spieler2;
@@ -70,6 +72,12 @@ public class GuiSpielbrett extends JOptionPane {
 	
 	private Spielbrett brett;
 
+	/**
+	 * Konstruktor der Klasse GuiSpielbrett
+	 * Methodenaufrufe und Eigenschaften des Frames werden hier uebergeben
+	 * @param spieler1
+	 * @param spieler2
+	 */
 	public GuiSpielbrett(Spieler1AuswahlDialog spieler1,
 			Spieler2AuswahlDialog spieler2) {
 
@@ -77,7 +85,7 @@ public class GuiSpielbrett extends JOptionPane {
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.spieler1 = spieler1;
 		this.spieler2 = spieler2;
-
+		event = new EventHandler(this);
 		createWidgets();
 		addWidgets();
 		addListener();
@@ -116,7 +124,7 @@ public class GuiSpielbrett extends JOptionPane {
 		figurSchwarz = new JLabel(new ImageIcon("schwarzStein100.png"));
 		figurWeiss = new JLabel(new ImageIcon("weissStein100.png"));
 		fertig = new JButton("Zug beenden");
-		text = new JTextField(" E1 - H2");
+		text = new JTextField();
 
 		textArea = new JTextArea();
 		textArea.setFont(textArea.getFont().deriveFont(Font.BOLD + Font.ITALIC,
@@ -179,10 +187,10 @@ public class GuiSpielbrett extends JOptionPane {
 		pnlAdd.add(text);
 		pnlRight.add(fertig);
 //
-		Message message = new Message(textArea);
-		message.redirectOut();
-		message.redirectErr(Color.red, null);
-		message.setMessageLines(1000);
+//		Message message = new Message(textArea);
+//		message.redirectOut();
+//		message.redirectErr(Color.red, null);
+//		message.setMessageLines(1000);
 
 		// this.getSpiel().starteSpiel();
 		
@@ -465,11 +473,12 @@ public class GuiSpielbrett extends JOptionPane {
 	}
 
 	private void addListener() {
-		for (int i = 0; i < felder.size(); i++) {
-			felder.get(i).addActionListener(event);
-			felder.get(i).setActionCommand(felder.get(i).getText());
-			fertig.setActionCommand("ziehen");
-		}
+//		for (int i = 0; i < felder.size(); i++) {
+//			felder.get(i).addActionListener(event);
+//			felder.get(i).setActionCommand(felder.get(i).getText());
+//		}
+		fertig.addActionListener(event);
+		fertig.setActionCommand("ziehen");
 
 	}
 
@@ -559,8 +568,60 @@ public class GuiSpielbrett extends JOptionPane {
 		
 		return false;
 	}
-	/*
-	 * Die Methode laeuft mit den Icons anstatt figur
+	
+	public void laufText() {
+		String []parts=text.getText().split("-");
+		String pos=parts[0];
+		String ziel=parts[1];
+		Spielfeld aktFeld1 = spiel.gebeFeld(pos);
+		Spielfigur fig=aktFeld1.getFigur();
+		
+		if(fig!=null){
+			if(spiel.farbePlayer().startsWith("W")){
+				if(spiel.getSpielerAmZug().getFarbe()==fig.getFarbe()){
+					ImageIcon figur=(ImageIcon)this.farbeIcon(spiel.farbePlayer()).get(this.figurStringWeiss(fig.getId()));
+					spiel.laufen(pos,ziel);
+					if(spiel.getZugOk()==true){
+						this.getFelder().get(this.feld(pos)).setIcon(null);
+						this.getFelder().get(this.feld(ziel)).setIcon(figur);
+						parts=null;
+					}else{
+						System.out.println("Zug nicht korrekt !");
+					}
+					
+				}else{
+					System.out.println("Du bist nicht dran !");
+				}
+				
+			}
+			
+			else if(spiel.farbePlayer().startsWith("S")){
+				if(spiel.getSpielerAmZug().getFarbe()==fig.getFarbe()){
+					ImageIcon figur=(ImageIcon)this.farbeIcon(spiel.farbePlayer()).get(this.figurStringSchwarz(fig.getId()));
+					spiel.laufen(pos,ziel);
+					if(spiel.getZugOk()==true){
+						this.getFelder().get(this.feld(pos)).setIcon(null);
+						this.getFelder().get(this.feld(ziel)).setIcon(figur);
+						parts=null;
+					}else{
+						System.out.println("Zug nicht korrekt !");
+					}
+					
+				}else{
+					System.out.println("Du bist nicht dran !");
+				}
+				
+			}
+		}else{
+			System.out.println("Da ist keine Figur drauf !");
+		}
+		
+		
+		
+	}
+	/**
+	 * Die Methode laufen fuer die Icons anstatt der Figur vom Backend
+	 * @param e
 	 */
 	public void lauf(ActionEvent e) {
 		ImageIcon figur = null;
@@ -593,19 +654,19 @@ public class GuiSpielbrett extends JOptionPane {
 							if(spiel.farbePlayer().startsWith("W")){
 							System.out.println(spiel.farbePlayer());
 							figur=(ImageIcon)this.farbeIcon(spiel.farbePlayer()).get(this.getWert()[0]);
-							spiel.laufen(posZiel.get(0),posZiel.get(1),this.farbeFigur(spiel.farbePlayer())+this.zahlFigur2(this.getWert()[0]));
+//							spiel.laufen(posZiel.get(0),posZiel.get(1),this.farbeFigur(spiel.farbePlayer())+this.zahlFigur2(this.getWert()[0]));
 							System.out.println("ZAHL: "+this.getFelder().indexOf(button));
 							this.getFelder().get(this.feld(posZiel.get(0))).setIcon(null);
 							this.getFelder().get(this.feld(posZiel.get(1))).setIcon(figur);
 							posZielButton.clear();
 							posZiel.clear();
 							
-// ---------------------------------scharz button------------------------							
+// ---------------------------------schwarz button------------------------							
 							}else if(spiel.farbePlayer().startsWith("S")){
 							//zum testen fuer den schwarzen spieler
 							System.out.println(spiel.farbePlayer());
 							figur2=(ImageIcon)this.farbeIcon(spiel.farbePlayer()).get(this.getWert()[0]);
-							spiel.laufen(posZiel.get(0),posZiel.get(1),this.farbeFigur(spiel.farbePlayer())+this.zahlFigur(this.getWert()[0]));
+//							spiel.laufen(posZiel.get(0),posZiel.get(1),this.farbeFigur(spiel.farbePlayer())+this.zahlFigur(this.getWert()[0]));
 							System.out.println("ZAHL: "+this.getFelder().indexOf(button));
 							this.getFelder().get(this.feld(posZiel.get(0))).setIcon(null);
 							this.getFelder().get(this.feld(posZiel.get(1))).setIcon(figur2);
@@ -635,6 +696,11 @@ public class GuiSpielbrett extends JOptionPane {
 		}
 	}
 	
+	/**
+	 * Methode Feld gibt uns fuer jeden String einen int Wert zurueck
+	 * @param ziel
+	 * @return a , einen int Wert
+	 */
 	public int feld(String ziel){
 		int a=0;
 		switch(ziel){
@@ -788,6 +854,12 @@ public class GuiSpielbrett extends JOptionPane {
 	}
 
 	
+	/**
+	 * Methode zahlFigur gibt der FigurenID einen String 
+	 * Das ist jetzt fuer die schwarzen Figuren
+	 * @param zahl
+	 * @return a , einen String
+	 */
 	public String zahlFigur(int zahl){
 		String a=null;
 		switch(zahl){
@@ -856,6 +928,12 @@ public class GuiSpielbrett extends JOptionPane {
 		return a;
 	}
 	
+	/**
+	 * Methode zahlFigur gibt der FigurenID einen String 
+	 * Das ist jetzt fuer die weissen Figuren
+	 * @param zahl
+	 * @return a , einen String
+	 */
 	public String zahlFigur2(int zahl){
 		String a=null;
 		switch(zahl){
@@ -976,15 +1054,150 @@ public class GuiSpielbrett extends JOptionPane {
 		return wert;
 	}
 	
-	//wei� nicht ob das richtig ist 
-//	public int[]convertWert(String [] stringArray){
-//	  stringArray=wert;
-//		int intArray[]= new int[stringArray.length];
-//		for(int i=0;i<stringArray.length;i++)
-//			intArray[i]=Integer.parseInt(stringArray[i]);
-//		return intArray;
-//	}
 	
+	
+	/**
+	 * Methode zahlFigur gibt der FigurenID einen String 
+	 * Das ist jetzt fuer die schwarzen Figuren
+	 * @param zahl
+	 * @return a , einen String
+	 */
+	public int figurStringWeiss(String zahl){
+		int a=0;
+		switch(zahl){
+			case "white 30":
+				return a=0;
+			case "white 29":
+				return a=1;
+			case "white 28":
+				return a=2;
+			case "white 27":
+				return a=3;
+			case "white 26":
+				return a=4;
+			case "white 25":
+				return a=5;
+			case "white 24":
+				return a=6;
+			case "white 23":
+				return a=7;
+			case "white 22":
+				return a=8;
+			case "white 21":
+				return a=9;
+			case "white 20":
+				return a=10;
+			case "white 19":
+				return a=11;
+			case "white 18":
+				return a=12;
+			case "white 17":
+				return a=13;
+			case "white 16":
+				return a=14;
+			case "white 15":
+				return a=15;
+			case "white 14":
+				return a=16;
+			case "white 13":
+				return a=17;
+			case "white 12":
+				return a=18;
+			case "white 11":
+				return a=19;
+			case "white 10":
+				return a=20;
+			case "white 9":
+				return a=21;
+			case "white 8":
+				return a=22;
+			case "white 7":
+				return a=23;
+			case "white 6":
+				return a=24;
+			case "white 5":
+				return a=25;
+			case "white 4":
+				return a=26;
+			case "white 3":
+				return a=27;
+			case "white 2":
+				return a=28;
+			case "white 1":
+				return a=29;			
+			
+		}
+		return a;
+	}
+	
+	public int figurStringSchwarz(String zahl){
+		int a=0;
+		switch(zahl){
+			case "black 30":
+				return a=29;
+			case "black 29":
+				return a=28;
+			case "black 28":
+				return a=27;
+			case "black 27":
+				return a=26;
+			case "black 26":
+				return a=25;
+			case "black 25":
+				return a=24;
+			case "black 24":
+				return a=23;
+			case "black 23":
+				return a=22;
+			case "black 22":
+				return a=21;
+			case "black 21":
+				return a=20;
+			case "black 20":
+				return a=19;
+			case "black 19":
+				return a=18;
+			case "black 18":
+				return a=17;
+			case "black 17":
+				return a=16;
+			case "black 16":
+				return a=15;
+			case "black 15":
+				return a=14;
+			case "black 14":
+				return a=13;
+			case "black 13":
+				return a=12;
+			case "black 12":
+				return a=11;
+			case "black 11":
+				return a=10;
+			case "black 10":
+				return a=9;
+			case "black 9":
+				return a=8;
+			case "black 8":
+				return a=7;
+			case "black 7":
+				return a=6;
+			case "black 6":
+				return a=5;
+			case "black 5":
+				return a=4;
+			case "black 4":
+				return a=3;
+			case "black 3":
+				return a=2;
+			case "black 2":
+				return a=1;
+			case "black 1":
+				return a=0;			
+			
+		}
+		return a;
+	}
+
 }
 
 
