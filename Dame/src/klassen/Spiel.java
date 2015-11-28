@@ -453,11 +453,18 @@ public class Spiel implements iBediener, Serializable {
               } else {
                   System.out.println(spielerAmZug.getName()
                           + " du musst schlagen!!!");
+//                  if((kannSchlagenLinksSchwarz(aktFeld)&&(zielFeld.getFigur()!=null))){
+//                	  schlagen(aktFeld.getId(),zielFeld.getId(),getNachbar(aktPos, false).getId());
+//                  }else if((kannSchlagenRechtsSchwarz(aktFeld)&&(zielFeld.getFigur()!=null))){
+//                	  schlagen(aktFeld.getId(),zielFeld.getId(),getNachbar(aktPos, true).getId());
+//                  }else
                   if((datenSchlagen.get(0).equals(aktPos)&&(zielFeld.getFigur()!=null))){
                       schlagen(datenSchlagen.get(0), datenSchlagen.get(1),datenSchlagen.get(2));
+                      zugOk=true;
                       }else{
                     	  System.out.println("Die Figur "+aktFeld.getFigur().getId()+" wurde weggepustet!!!");
                     	  aktFeld.setFigur(null);
+//                    	  zugOk=true;
                     	  
                       }
 
@@ -490,29 +497,41 @@ public class Spiel implements iBediener, Serializable {
               } else {
                   System.out.println(spielerAmZug.getName()
                           + " du musst schlagen!!!");
-                  if((datenSchlagen.get(0).equals(aktPos)&&(zielFeld.getFigur()!=null))){
+//                  if((kannSchlagenLinksWeiss(aktFeld)&&(zielFeld.getFigur()!=null))){
+//                	  schlagen(aktFeld.getId(),zielFeld.getId(),getNachbar(aktPos, false).getId());
+//                  }else if((kannSchlagenRechtsWeiss(aktFeld)&&(zielFeld.getFigur()!=null))){
+//                	  schlagen(aktFeld.getId(),zielFeld.getId(),getNachbar(aktPos, true).getId());
+//                  }else 
+                	  if((datenSchlagen.get(0).equals(aktPos)&&(zielFeld.getFigur()!=null))){
                       schlagen(datenSchlagen.get(0), datenSchlagen.get(1),datenSchlagen.get(2));
+                      zugOk=true;
+                      
                       }else{
                     	  System.out.println("Die Figur "+aktFeld.getFigur().getId()+" wurde weggepustet!!!");
                     	  aktFeld.setFigur(null);
+//                    	  zugOk=true;
                     	  
                       }
+              
               }
 
           }
 
           
           if(zugOk==true){
-          	 zugBeenden();
+        	 zugBeenden();
+          	 zugOk=false;
+          	
           }
 //          else{
-//          	System.out.println("");
+//          	System.out.println("Zug nicht korrekt !");
 //          }
-    	  
+     	 
       }
         
       
-       
+      
+    
 
     }
 
@@ -1520,6 +1539,41 @@ public void speichern(Object obj, String name) throws IOException {
 		throw new RuntimeException("Dateityp " + " nicht existent");
 	}
 }
+
+@Override
+public Spielfeld gibFeld(String figur){
+	Spielfeld feld=null;
+	for (int i = 0; i < spielbrett.getFelder().length; i++) {
+        for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
+        	if(spielbrett.getFelder()[i][j].getFigur()!=null){
+        		if(spielbrett.getFelder()[i][j].getFigur().getId().equals(figur)){
+            		feld=spielbrett.getFelder()[i][j];
+            	}
+        	}
+        }
+	}
+	return feld;
+}
+
+@Override
+public Spielfigur gibFigur(String feld){
+	Spielfigur f=null;
+
+	for (int i = 0; i < spielbrett.getFelder().length; i++) {
+        for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
+        	if(spielbrett.getFelder()[i][j].getFigur()==null){
+        		continue;
+        	}else{
+        		if(spielbrett.getFelder()[i][j].getId().equals(feld)){
+        			f=spielbrett.getFelder()[i][j].getFigur();
+        		}
+        	}
+        }
+	}
+	return f;
+}
+
+
 
 
 }

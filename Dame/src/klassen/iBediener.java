@@ -41,6 +41,8 @@ public interface iBediener {
 	void laufen(String aktPos, String zielPos);
 	Spieler getSpielerAmZug();
 	boolean getZugOk();
+	Spielfeld gibFeld(String figur);
+	Spielfigur gibFigur(String feld);
 	
 
 

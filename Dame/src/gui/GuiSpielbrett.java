@@ -186,7 +186,7 @@ public class GuiSpielbrett extends JOptionPane {
 
 		pnlAdd.add(text);
 		pnlRight.add(fertig);
-//
+
 //		Message message = new Message(textArea);
 //		message.redirectOut();
 //		message.redirectErr(Color.red, null);
@@ -569,56 +569,78 @@ public class GuiSpielbrett extends JOptionPane {
 		return false;
 	}
 	
+	
 	public void laufText() {
 		String []parts=text.getText().split("-");
 		String pos=parts[0];
 		String ziel=parts[1];
-		Spielfeld aktFeld1 = spiel.gebeFeld(pos);
-		Spielfigur fig=aktFeld1.getFigur();
+		Spielfeld aktFeld = spiel.gebeFeld(pos);
+		Spielfeld zielFeld = spiel.gebeFeld(ziel);
+		Spielfigur fig=aktFeld.getFigur();
 		
 		if(fig!=null){
 			if(spiel.farbePlayer().startsWith("W")){
 				if(spiel.getSpielerAmZug().getFarbe()==fig.getFarbe()){
 					ImageIcon figur=(ImageIcon)this.farbeIcon(spiel.farbePlayer()).get(this.figurStringWeiss(fig.getId()));
 					spiel.laufen(pos,ziel);
-					if(spiel.getZugOk()==true){
-						this.getFelder().get(this.feld(pos)).setIcon(null);
-						this.getFelder().get(this.feld(ziel)).setIcon(figur);
-						parts=null;
+						
+//					if(zielFeld.getFigur()==null){
+//						this.getFelder().get(this.feld(pos)).setIcon(null);
+//					}
+					 if(zielFeld.getFigur()!=null&& zielFeld.getFigur().getFarbe()==spiel.getSpielerAmZug().getFarbe()){
+						
 					}else{
-						System.out.println("Zug nicht korrekt !");
+						
+						
+						this.getFelder().get(this.feld(pos)).setIcon(null);
+						this.getFelder().get(this.feld(ziel)).setIcon(null);
+						this.getFelder().get(this.feld(spiel.gibFeld(fig.getId()).getId())).setIcon(figur);
 					}
-					
+
+						parts=null;
+						
 				}else{
 					System.out.println("Du bist nicht dran !");
-				}
-				
-			}
-			
-			else if(spiel.farbePlayer().startsWith("S")){
+				}	
+			}else if(spiel.farbePlayer().startsWith("S")){
 				if(spiel.getSpielerAmZug().getFarbe()==fig.getFarbe()){
 					ImageIcon figur=(ImageIcon)this.farbeIcon(spiel.farbePlayer()).get(this.figurStringSchwarz(fig.getId()));
 					spiel.laufen(pos,ziel);
-					if(spiel.getZugOk()==true){
-						this.getFelder().get(this.feld(pos)).setIcon(null);
-						this.getFelder().get(this.feld(ziel)).setIcon(figur);
-						parts=null;
-					}else{
-						System.out.println("Zug nicht korrekt !");
-					}
+//					if(spiel.getZugOk()==true){
+//					if(zielFeld.getFigur()==null){
+//						this.getFelder().get(this.feld(pos)).setIcon(null);
+//					}	
 					
+					if(zielFeld.getFigur()!=null&& zielFeld.getFigur().getFarbe()==spiel.getSpielerAmZug().getFarbe()){
+							
+						}else{
+							this.getFelder().get(this.feld(pos)).setIcon(null);
+							this.getFelder().get(this.feld(ziel)).setIcon(null);
+							this.getFelder().get(this.feld(spiel.gibFeld(fig.getId()).getId())).setIcon(figur);
+						}
+						
+						parts=null;
+//					}else{
+//						System.out.println("Zug nicht korrekt !");
+//					}
 				}else{
 					System.out.println("Du bist nicht dran !");
 				}
-				
 			}
 		}else{
 			System.out.println("Da ist keine Figur drauf !");
 		}
-		
-		
-		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 	/**
 	 * Die Methode laufen fuer die Icons anstatt der Figur vom Backend
 	 * @param e

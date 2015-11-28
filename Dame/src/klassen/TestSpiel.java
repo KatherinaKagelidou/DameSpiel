@@ -17,9 +17,17 @@ public class TestSpiel {
 		i.starteSpiel();
 
 	i.laufen("H2","G3");
-	i.laufen("E5","F4");
-	i.laufen("G3","F4");
-	i.laufen("E9" ,"F10");
+	i.laufen("E3","F4");
+	i.laufen("H12","G11");
+	i.laufen("F4" ,"G3");
+	i.laufen("G11", "F10");
+//	i.laufen("H6", "G7");
+//    i.laufen("E11", "F10");
+//    i.laufen("H8", "G7");
+//	System.out.println(i.gibFigur("G11"));
+	
+//	System.out.println(i.gibFeld("white 26"));
+	
 	
 		
 		
