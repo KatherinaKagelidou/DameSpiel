@@ -382,6 +382,8 @@ public class Spiel implements iBediener, Serializable {
                     figur.setSpielfeld(spielbrett.getFeld(zielFeld.getId()));
 
                     zielFeld.setFigur(figur);
+                    System.out.println(figur.getFeld().getId());
+                    
                 }
 
             }
@@ -451,18 +453,19 @@ public class Spiel implements iBediener, Serializable {
                       }
                   }
               } else {
-                  System.out.println(spielerAmZug.getName()
-                          + " du musst schlagen!!!");
-                  if((kannSchlagenLinksSchwarz(aktFeld)&&(zielFeld.getFigur()!=null))){
-                	  schlagen(aktFeld.getId(),zielFeld.getId(),getNachbar(aktPos, false).getId());
+                  System.out.println(spielerAmZug.getName() + " du musst schlagen!!!");
+                  if((kannSchlagenLinksSchwarz(aktFeld)&&(zielFeld.getFigur()!=null)&&(!(zielFeld.getFigur().getFarbe().equals(FarbEnum.SCHWARZ))))){
+                	  schlagen(aktFeld.getId(),zielFeld.getId(),getNachbar(zielPos, false).getId());
                 	  zugOk=true;
-                  }else if((kannSchlagenRechtsSchwarz(aktFeld)&&(zielFeld.getFigur()!=null))){
-                	  schlagen(aktFeld.getId(),zielFeld.getId(),getNachbar(aktPos, true).getId());
+                  }else if((kannSchlagenRechtsSchwarz(aktFeld)&&(zielFeld.getFigur()!=null)&&(!(zielFeld.getFigur().getFarbe().equals(FarbEnum.SCHWARZ))))){
+                	  schlagen(aktFeld.getId(),zielFeld.getId(),getNachbar(zielPos, true).getId());
                 	  zugOk=true;
                   }else
-                  if((datenSchlagen.get(0).equals(aktPos)&&(zielFeld.getFigur()!=null))){
+                  if((datenSchlagen.get(0).equals(aktPos)&&(zielFeld.getFigur()!=null)&&(!(zielFeld.getFigur().getFarbe().equals(FarbEnum.SCHWARZ))))){
                       schlagen(datenSchlagen.get(0), datenSchlagen.get(1),datenSchlagen.get(2));
                       zugOk=true;
+                      }else if(figur.getFarbe().equals(spielerAmZug.getFarbe())&&(kannSchlagen()==false)){
+                    	  System.out.println("Du kannst deine eigene Figur nicht schlagen");
                       }else{
                     	  System.out.println("Die Figur "+aktFeld.getFigur().getId()+" wurde weggepustet!!!");
                     	  aktFeld.setFigur(null);
@@ -499,18 +502,21 @@ public class Spiel implements iBediener, Serializable {
               } else {
                   System.out.println(spielerAmZug.getName()
                           + " du musst schlagen!!!");
-                  if((kannSchlagenLinksWeiss(aktFeld)&&(zielFeld.getFigur()!=null))){
-                	  schlagen(aktFeld.getId(),zielFeld.getId(),getNachbar(aktPos, false).getId());
+                  if((kannSchlagenLinksWeiss(aktFeld)&&(zielFeld.getFigur()!=null)&&(!(zielFeld.getFigur().getFarbe().equals(FarbEnum.WEISS))))){
+                	  schlagen(aktFeld.getId(),zielFeld.getId(),getNachbar(zielPos, true).getId());
                 	  zugOk=true;
-                  }else if((kannSchlagenRechtsWeiss(aktFeld)&&(zielFeld.getFigur()!=null))){
-                	  schlagen(aktFeld.getId(),zielFeld.getId(),getNachbar(aktPos, true).getId());
+                  }else
+                	  if((kannSchlagenRechtsWeiss(aktFeld)&&(zielFeld.getFigur()!=null)&&(!(zielFeld.getFigur().getFarbe().equals(FarbEnum.WEISS))))){
+                	  schlagen(aktFeld.getId(),zielFeld.getId(),getNachbar(zielPos, false).getId());
                 	  zugOk=true;
                   }else 
-                	  if((datenSchlagen.get(0).equals(aktPos)&&(zielFeld.getFigur()!=null))){
+                	  if((datenSchlagen.get(0).equals(aktPos)&&(zielFeld.getFigur()!=null)&&(!(zielFeld.getFigur().getFarbe().equals(FarbEnum.WEISS))))){
                       schlagen(datenSchlagen.get(0), datenSchlagen.get(1),datenSchlagen.get(2));
                       zugOk=true;
                       
-                      }else{
+                      }else if(figur.getFarbe().equals(spielerAmZug.getFarbe())&&(kannSchlagen()==false)){
+                    	  System.out.println("Du kannst deine eigene Figur nicht schlagen");
+                      }else {
                     	  System.out.println("Die Figur "+aktFeld.getFigur().getId()+" wurde weggepustet!!!");
                     	  aktFeld.setFigur(null);
                     	  zugOk=true;
@@ -520,8 +526,6 @@ public class Spiel implements iBediener, Serializable {
               }
 
           }
-
-          
           if(zugOk==true){
         	 zugBeenden();
           	 zugOk=false;
@@ -1577,6 +1581,31 @@ public Spielfigur gibFigur(String feld){
 	return f;
 }
 
+@Override
+public boolean istFeldBelegt(Spielfigur figur, Spielfeld feld){
+	
+
+	if(feld.getFigur().equals(figur)){
+		return true;
+	}
+	
+	return false;
+}
+
+@Override
+public boolean istFigurDrin(String figur){
+	for (int i = 0; i < spielbrett.getFelder().length; i++) {
+        for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
+        	if(spielbrett.getFelder()[i][j].getFigur()!=null){
+        		if(spielbrett.getFelder()[i][j].getFigur().getId().equals(figur)){
+            		return true;
+            	}
+        	}
+        }
+	}
+	
+	return false;
+}
 
 
 

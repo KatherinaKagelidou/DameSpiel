@@ -120,7 +120,7 @@ public class GuiSpielbrett extends JOptionPane {
 		pnlRight = new JPanel();
 		pnlAdd = new JPanel();
 		pnlLeft = new JPanel();
-		imageBrett = new JLabel(new ImageIcon("brett-akt.png"));
+		imageBrett = new JLabel(new ImageIcon("brettNeu.png"));
 		figurSchwarz = new JLabel(new ImageIcon("schwarzStein100.png"));
 		figurWeiss = new JLabel(new ImageIcon("weissStein100.png"));
 		fertig = new JButton("Zug beenden");
@@ -223,233 +223,161 @@ public class GuiSpielbrett extends JOptionPane {
 //		felder.get(44).setIcon(weiss.get(2));
 
 		// setzt die buttons auf ihre Position auf dem Spielbrett
-		felder.get(0).setBounds(41, 501, 60, 60);
+		felder.get(0).setBounds(9, 513, 36, 36);
 		felder.get(0).setText("A1");
-		felder.get(0).setText(null);
-		felder.get(1).setBounds(133, 501, 60, 60);
+		felder.get(1).setBounds(102, 513, 36, 36);
 		felder.get(1).setText("A3");
-		felder.get(1).setText(null);
-		felder.get(2).setBounds(224, 501, 60, 60);
+		felder.get(2).setBounds(194, 513, 36, 36);
 		felder.get(2).setText("A5");
-		felder.get(2).setText(null);
-		felder.get(3).setBounds(315, 501, 60, 60);
+		felder.get(3).setBounds(285, 513, 36, 36);
 		felder.get(3).setText("A7");
-		felder.get(3).setText(null);
-		felder.get(4).setBounds(408, 501, 60, 60);
+		felder.get(4).setBounds(377, 513, 36, 36);
 		felder.get(4).setText("A9");
-		felder.get(4).setText(null);
-		felder.get(5).setBounds(499, 501, 60, 60);
+		felder.get(5).setBounds(469, 513, 36, 36);
 		felder.get(5).setText("A11");
-		felder.get(5).setText(null);
 
-		felder.get(6).setBounds(86, 454, 60, 60);
+		felder.get(6).setBounds(56, 466, 36, 36);
 		felder.get(6).setText("B2");
-		felder.get(6).setText(null);
-		felder.get(7).setBounds(178, 454, 60, 60);
+		felder.get(7).setBounds(148, 466, 36, 36);
 		felder.get(7).setText("B4");
-		felder.get(7).setText(null);
-		felder.get(8).setBounds(270, 454, 60, 60);
+		felder.get(8).setBounds(240, 466, 36, 36);
 		felder.get(8).setText("B6");
-		felder.get(8).setText(null);
-		felder.get(9).setBounds(360, 454, 60, 60);
+		felder.get(9).setBounds(331, 466, 36, 36);
 		felder.get(9).setText("B8");
-		felder.get(9).setText(null);
-		felder.get(10).setBounds(452, 454, 60, 60);
+		felder.get(10).setBounds(423, 466, 36, 36);
 		felder.get(10).setText("B10");
-		felder.get(10).setText(null);
-		felder.get(11).setBounds(545, 454, 60, 60);
+		felder.get(11).setBounds(515, 466, 36, 36);
 		felder.get(11).setText("B12");
-		felder.get(11).setText(null);
 
-		felder.get(12).setBounds(41, 410, 60, 60);
+		felder.get(12).setBounds(9, 421, 36, 36);
 		felder.get(12).setText("C1");
-		felder.get(12).setText(null);
-		felder.get(13).setBounds(133, 410, 60, 60);
+		felder.get(13).setBounds(102, 421, 36, 36);
 		felder.get(13).setText("C3");
-		felder.get(13).setText(null);
-		felder.get(14).setBounds(224, 410, 60, 60);
+		felder.get(14).setBounds(194, 421, 36, 36);
 		felder.get(14).setText("C5");
-		felder.get(14).setText(null);
-		felder.get(15).setBounds(315, 410, 60, 60);
+		felder.get(15).setBounds(285, 421, 36, 36);
 		felder.get(15).setText("C7");
-		felder.get(15).setText(null);
-		felder.get(16).setBounds(408, 410, 60, 60);
+		felder.get(16).setBounds(377, 421, 36, 36);
 		felder.get(16).setText("C9");
-		felder.get(16).setText(null);
-		felder.get(17).setBounds(499, 410, 60, 60);
+		felder.get(17).setBounds(469, 421, 36, 36);
 		felder.get(17).setText("C11");
-		felder.get(17).setText(null);
 
-		felder.get(18).setBounds(86, 364, 60, 60);
+		felder.get(18).setBounds(56, 376, 36, 36);
 		felder.get(18).setText("D2");
-		felder.get(18).setText(null);
-		felder.get(19).setBounds(178, 364, 60, 60);
+		felder.get(19).setBounds(148, 376, 36, 36);
 		felder.get(19).setText("D4");
-		felder.get(19).setText(null);
-		felder.get(20).setBounds(270, 364, 60, 60);
+		felder.get(20).setBounds(240, 376, 36, 36);
 		felder.get(20).setText("D6");
-		felder.get(20).setText(null);
-		felder.get(21).setBounds(360, 364, 60, 60);
+		felder.get(21).setBounds(331, 376, 36, 36);
 		felder.get(21).setText("D8");
-		felder.get(21).setText(null);
-		felder.get(22).setBounds(452, 364, 60, 60);
+		felder.get(22).setBounds(423, 376, 36, 36);
 		felder.get(22).setText("D10");
-		felder.get(22).setText(null);
-		felder.get(23).setBounds(545, 364, 60, 60);
+		felder.get(23).setBounds(515, 376, 36, 36);
 		felder.get(23).setText("D12");
-		felder.get(23).setText(null);
 
-		felder.get(24).setBounds(41, 318, 60, 60);
+		felder.get(24).setBounds(9, 329, 36, 36);
 		felder.get(24).setText("E1");
-		felder.get(24).setText(null);
-		felder.get(25).setBounds(133, 318, 60, 60);
+		felder.get(25).setBounds(102, 329, 36, 36);
 		felder.get(25).setText("E3");
-		felder.get(25).setText(null);
-		felder.get(26).setBounds(224, 318, 60, 60);
+		felder.get(26).setBounds(194, 329, 36, 36);
 		felder.get(26).setText("E5");
-		felder.get(26).setText(null);
-		felder.get(27).setBounds(315, 318, 60, 60);
+		felder.get(27).setBounds(285, 329, 36, 36);
 		felder.get(27).setText("E7");
-		felder.get(27).setText(null);
-		felder.get(28).setBounds(408, 318, 60, 60);
+		felder.get(28).setBounds(377, 329, 36, 36);
 		felder.get(28).setText("E9");
-		felder.get(28).setText(null);
-		felder.get(29).setBounds(499, 318, 60, 60);
+		felder.get(29).setBounds(469, 329, 36, 36);
 		felder.get(29).setText("E11");
-		felder.get(29).setText(null);
 
-		felder.get(30).setBounds(86, 274, 60, 60);
+		felder.get(30).setBounds(56, 284, 36, 36);
 		felder.get(30).setText("F2");
-		felder.get(30).setText(null);
-		felder.get(31).setBounds(178, 274, 60, 60);
+		felder.get(31).setBounds(148, 284, 36, 36);
 		felder.get(31).setText("F4");
-		felder.get(31).setText(null);
-		felder.get(32).setBounds(270, 274, 60, 60);
+		felder.get(32).setBounds(240, 284, 36, 36);
 		felder.get(32).setText("F6");
-		felder.get(32).setText(null);
-		felder.get(33).setBounds(360, 274, 60, 60);
+		felder.get(33).setBounds(331, 284, 36, 36);
 		felder.get(33).setText("F8");
-		felder.get(33).setText(null);
-		felder.get(34).setBounds(452, 274, 60, 60);
+		felder.get(34).setBounds(423, 284, 36, 36);
 		felder.get(34).setText("F10");
-		felder.get(34).setText(null);
-		felder.get(35).setBounds(545, 274, 60, 60);
+		felder.get(35).setBounds(515, 284, 36, 36);
 		felder.get(35).setText("F12");
-		felder.get(35).setText(null);
 
-		felder.get(36).setBounds(41, 228, 60, 60);
+		felder.get(36).setBounds(9, 238, 36, 36);
 		felder.get(36).setText("G1");
-		felder.get(36).setText(null);
-		felder.get(37).setBounds(133, 228, 60, 60);
+		felder.get(37).setBounds(102, 238, 36, 36);
 		felder.get(37).setText("G3");
-		felder.get(37).setText(null);
-		felder.get(38).setBounds(224, 228, 60, 60);
+		felder.get(38).setBounds(194, 238, 36, 36);
 		felder.get(38).setText("G5");
-		felder.get(38).setText(null);
-		felder.get(39).setBounds(315, 228, 60, 60);
+		felder.get(39).setBounds(285, 238, 36, 36);
 		felder.get(39).setText("G7");
-		felder.get(39).setText(null);
-		felder.get(40).setBounds(408, 228, 60, 60);
+		felder.get(40).setBounds(377, 238, 36, 36);
 		felder.get(40).setText("G9");
-		felder.get(40).setText(null);
-		felder.get(41).setBounds(499, 228, 60, 60);
+		felder.get(41).setBounds(469, 238, 36, 36);
 		felder.get(41).setText("G11");
-		felder.get(41).setText(null);
 
-		felder.get(42).setBounds(86, 182, 60, 60);
+		felder.get(42).setBounds(56, 193, 36, 36);
 		felder.get(42).setText("H2");
-		felder.get(42).setText(null);
-		felder.get(43).setBounds(178, 182, 60, 60);
+		felder.get(43).setBounds(148, 193, 36, 36);
 		felder.get(43).setText("H4");
-		felder.get(43).setText(null);
-		felder.get(44).setBounds(270, 182, 60, 60);
+		felder.get(44).setBounds(240, 193, 36, 36);
 		felder.get(44).setText("H6");
-		felder.get(44).setText(null);
-		felder.get(45).setBounds(360, 182, 60, 60);
+		felder.get(45).setBounds(331, 193, 36, 36);
 		felder.get(45).setText("H8");
-		felder.get(45).setText(null);
-		felder.get(46).setBounds(452, 182, 60, 60);
+		felder.get(46).setBounds(423, 193, 36, 36);
 		felder.get(46).setText("H10");
-		felder.get(46).setText(null);
-		felder.get(47).setBounds(545, 182, 60, 60);
+		felder.get(47).setBounds(515, 193, 36, 36);
 		felder.get(47).setText("H12");
-		felder.get(47).setText(null);
 
-		felder.get(48).setBounds(41, 136, 60, 60);
+		felder.get(48).setBounds(9, 146, 36, 36);
 		felder.get(48).setText("I1");
-		felder.get(48).setText(null);
-		felder.get(49).setBounds(133, 136, 60, 60);
+		felder.get(49).setBounds(102, 146, 36, 36);
 		felder.get(49).setText("I3");
-		felder.get(49).setText(null);
-		felder.get(50).setBounds(224, 136, 60, 60);
+		felder.get(50).setBounds(194, 146, 36, 36);
 		felder.get(50).setText("I5");
-		felder.get(50).setText(null);
-		felder.get(51).setBounds(315, 136, 60, 60);
+		felder.get(51).setBounds(285, 146, 36, 36);
 		felder.get(51).setText("I7");
-		felder.get(51).setText(null);
-		felder.get(52).setBounds(408, 136, 60, 60);
+		felder.get(52).setBounds(377, 146, 36, 36);
 		felder.get(52).setText("I9");
-		felder.get(52).setText(null);
-		felder.get(53).setBounds(499, 136, 60, 60);
+		felder.get(53).setBounds(469, 146, 36, 36);
 		felder.get(53).setText("I11");
-		felder.get(53).setText(null);
 
-		felder.get(54).setBounds(86, 90, 60, 60);
+		felder.get(54).setBounds(56, 100, 36, 36);
 		felder.get(54).setText("J2");
-		felder.get(54).setText(null);
-		felder.get(55).setBounds(178, 90, 60, 60);
+		felder.get(55).setBounds(148, 100, 36, 36);
 		felder.get(55).setText("J4");
-		felder.get(55).setText(null);
-		felder.get(56).setBounds(270, 90, 60, 60);
+		felder.get(56).setBounds(240, 100, 36, 36);
 		felder.get(56).setText("J6");
-		felder.get(56).setText(null);
-		felder.get(57).setBounds(360, 90, 60, 60);
+		felder.get(57).setBounds(331, 100, 36, 36);
 		felder.get(57).setText("J8");
-		felder.get(57).setText(null);
-		felder.get(58).setBounds(452, 90, 60, 60);
+		felder.get(58).setBounds(423, 100, 36, 36);
 		felder.get(58).setText("J10");
-		felder.get(58).setText(null);
-		felder.get(59).setBounds(545, 90, 60, 60);
+		felder.get(59).setBounds(515, 100, 36, 36);
 		felder.get(59).setText("J12");
-		felder.get(59).setText(null);
 
-		felder.get(60).setBounds(41, 45, 60, 60);
+		felder.get(60).setBounds(9, 55, 36, 36);
 		felder.get(60).setText("K1");
-		felder.get(60).setText(null);
-		felder.get(61).setBounds(133, 45, 60, 60);
+		felder.get(61).setBounds(102, 55, 36, 36);
 		felder.get(61).setText("K3");
-		felder.get(61).setText(null);
-		felder.get(62).setBounds(224, 45, 60, 60);
+		felder.get(62).setBounds(194, 55, 36, 36);
 		felder.get(62).setText("K5");
-		felder.get(62).setText(null);
-		felder.get(63).setBounds(315, 45, 60, 60);
+		felder.get(63).setBounds(285, 55, 36, 36);
 		felder.get(63).setText("K7");
-		felder.get(63).setText(null);
-		felder.get(64).setBounds(408, 45, 60, 60);
+		felder.get(64).setBounds(377, 55, 36, 36);
 		felder.get(64).setText("K9");
-		felder.get(64).setText(null);
-		felder.get(65).setBounds(499, 45, 60, 60);
+		felder.get(65).setBounds(469, 55, 36, 36);
 		felder.get(65).setText("K11");
-		felder.get(65).setText(null);
 
-		felder.get(66).setBounds(86, -1, 60, 60);
+		felder.get(66).setBounds(56, 9, 36, 36);
 		felder.get(66).setText("L2");
-		felder.get(66).setText(null);
-		felder.get(67).setBounds(178, -1, 60, 60);
+		felder.get(67).setBounds(148, 9, 36, 36);
 		felder.get(67).setText("L4");
-		felder.get(67).setText(null);
-		felder.get(68).setBounds(270, -1, 60, 60);
+		felder.get(68).setBounds(240, 9, 36, 36);
 		felder.get(68).setText("L6");
-		felder.get(68).setText(null);
-		felder.get(69).setBounds(360, -1, 60, 60);
+		felder.get(69).setBounds(331, 9, 36, 36);
 		felder.get(69).setText("L8");
-		felder.get(69).setText(null);
-		felder.get(70).setBounds(452, -1, 60, 60);
+		felder.get(70).setBounds(423, 9, 36, 36);
 		felder.get(70).setText("L10");
-		felder.get(70).setText(null);
-		felder.get(71).setBounds(545, -1, 60, 60);
+		felder.get(71).setBounds(515, 9, 36, 36);
 		felder.get(71).setText("L12");
-		felder.get(71).setText(null);
 
 		// //setzt die schwarzen figuren auf dem Brett
 		// for (int i = 0; i <= 29; i++) {
@@ -650,55 +578,56 @@ public class GuiSpielbrett extends JOptionPane {
 		Spielfeld zielFeld = spiel.gebeFeld(ziel);
 		Spielfigur fig=aktFeld.getFigur();
 		
+		
 		if(fig!=null){
 			if(spiel.farbePlayer().startsWith("W")){
 				if(spiel.getSpielerAmZug().getFarbe()==fig.getFarbe()){
 					ImageIcon figur=(ImageIcon)this.farbeIcon(spiel.farbePlayer()).get(this.figurStringWeiss(fig.getId()));
 					spiel.laufen(pos,ziel);
-//						if((spiel.kannSchlagen()&&(zielFeld.getFigur()==null))){
-					if((spiel.kannSchlagen()&&(this.getFelder().get(this.feld(ziel)).getIcon()==null))){
+					
+					if(spiel.istFigurDrin(fig.getId())==false){
 							this.getFelder().get(this.feld(pos)).setIcon(null);
-							System.out.println("er geht hier rein");
-							return;
-						}else
-							if(zielFeld.getFigur()!=null&& zielFeld.getFigur().getFarbe()==spiel.getSpielerAmZug().getFarbe()){
-						
+							parts=null;
+							
+					}else if(zielFeld.getFigur()!=null&& zielFeld.getFigur().getFarbe()==spiel.getSpielerAmZug().getFarbe()){
+						parts=null;
 					}else{
 						this.getFelder().get(this.feld(pos)).setIcon(null);
 						this.getFelder().get(this.feld(ziel)).setIcon(null);
 						this.getFelder().get(this.feld(spiel.gibFeld(fig.getId()).getId())).setIcon(figur);
-					}
-
 						parts=null;
-						
+					}	
 				}else{
 					System.out.println("Du bist nicht dran !");
-				}	
+				}
+				
 			}else if(spiel.farbePlayer().startsWith("S")){
 				if(spiel.getSpielerAmZug().getFarbe()==fig.getFarbe()){
 					ImageIcon figur=(ImageIcon)this.farbeIcon(spiel.farbePlayer()).get(this.figurStringSchwarz(fig.getId()));
 					spiel.laufen(pos,ziel);
-//					if((spiel.kannSchlagen()&&(this.getFelder().get(this.feld(ziel)).getIcon()==null))){
-//						this.getFelder().get(this.feld(pos)).setIcon(null);
-//						System.out.println("er geht hier rein");
-//						return;
-//					}else
-						if(zielFeld.getFigur()!=null&& zielFeld.getFigur().getFarbe()==spiel.getSpielerAmZug().getFarbe()){
-							
-						}else{
-							this.getFelder().get(this.feld(pos)).setIcon(null);
-							this.getFelder().get(this.feld(ziel)).setIcon(null);
-							this.getFelder().get(this.feld(spiel.gibFeld(fig.getId()).getId())).setIcon(figur);
-						}
-						
+					
+					// die abfrage is da wenn die figur gepustet wird
+					if(spiel.istFigurDrin(fig.getId())==false){
+						this.getFelder().get(this.feld(pos)).setIcon(null);
 						parts=null;
-//					}else{
-//						System.out.println("Zug nicht korrekt !");
-//					}
+												
+					}else 
+						// falls die figur die eigene figur schlagen will
+						if(zielFeld.getFigur()!=null&& zielFeld.getFigur().getFarbe()==spiel.getSpielerAmZug().getFarbe()){
+						parts=null;
+						
+					}else{
+						// normal laufen und schlagen
+						this.getFelder().get(this.feld(pos)).setIcon(null);
+						this.getFelder().get(this.feld(ziel)).setIcon(null);
+						this.getFelder().get(this.feld(spiel.gibFeld(fig.getId()).getId())).setIcon(figur);
+						parts=null;
+					}
 				}else{
 					System.out.println("Du bist nicht dran !");
 				}
 			}
+			
 		}else{
 			System.out.println("Da ist keine Figur drauf !");
 		}

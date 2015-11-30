@@ -102,6 +102,7 @@ public class EventHandler implements ActionListener {
 //		}
 			if (cmd.equals("ziehen")) {
 				guiSpielbrett.laufText();
+				
 			}
 		}
 		}

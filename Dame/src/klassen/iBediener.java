@@ -43,6 +43,8 @@ public interface iBediener {
 	boolean getZugOk();
 	Spielfeld gibFeld(String figur);
 	Spielfigur gibFigur(String feld);
+	boolean istFeldBelegt(Spielfigur figur, Spielfeld feld);
+	boolean istFigurDrin(String figur);
 	
 
 
