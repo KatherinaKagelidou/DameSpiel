@@ -453,18 +453,20 @@ public class Spiel implements iBediener, Serializable {
               } else {
                   System.out.println(spielerAmZug.getName()
                           + " du musst schlagen!!!");
-//                  if((kannSchlagenLinksSchwarz(aktFeld)&&(zielFeld.getFigur()!=null))){
-//                	  schlagen(aktFeld.getId(),zielFeld.getId(),getNachbar(aktPos, false).getId());
-//                  }else if((kannSchlagenRechtsSchwarz(aktFeld)&&(zielFeld.getFigur()!=null))){
-//                	  schlagen(aktFeld.getId(),zielFeld.getId(),getNachbar(aktPos, true).getId());
-//                  }else
+                  if((kannSchlagenLinksSchwarz(aktFeld)&&(zielFeld.getFigur()!=null))){
+                	  schlagen(aktFeld.getId(),zielFeld.getId(),getNachbar(aktPos, false).getId());
+                	  zugOk=true;
+                  }else if((kannSchlagenRechtsSchwarz(aktFeld)&&(zielFeld.getFigur()!=null))){
+                	  schlagen(aktFeld.getId(),zielFeld.getId(),getNachbar(aktPos, true).getId());
+                	  zugOk=true;
+                  }else
                   if((datenSchlagen.get(0).equals(aktPos)&&(zielFeld.getFigur()!=null))){
                       schlagen(datenSchlagen.get(0), datenSchlagen.get(1),datenSchlagen.get(2));
                       zugOk=true;
                       }else{
                     	  System.out.println("Die Figur "+aktFeld.getFigur().getId()+" wurde weggepustet!!!");
                     	  aktFeld.setFigur(null);
-//                    	  zugOk=true;
+                    	  zugOk=true;
                     	  
                       }
 
@@ -497,11 +499,13 @@ public class Spiel implements iBediener, Serializable {
               } else {
                   System.out.println(spielerAmZug.getName()
                           + " du musst schlagen!!!");
-//                  if((kannSchlagenLinksWeiss(aktFeld)&&(zielFeld.getFigur()!=null))){
-//                	  schlagen(aktFeld.getId(),zielFeld.getId(),getNachbar(aktPos, false).getId());
-//                  }else if((kannSchlagenRechtsWeiss(aktFeld)&&(zielFeld.getFigur()!=null))){
-//                	  schlagen(aktFeld.getId(),zielFeld.getId(),getNachbar(aktPos, true).getId());
-//                  }else 
+                  if((kannSchlagenLinksWeiss(aktFeld)&&(zielFeld.getFigur()!=null))){
+                	  schlagen(aktFeld.getId(),zielFeld.getId(),getNachbar(aktPos, false).getId());
+                	  zugOk=true;
+                  }else if((kannSchlagenRechtsWeiss(aktFeld)&&(zielFeld.getFigur()!=null))){
+                	  schlagen(aktFeld.getId(),zielFeld.getId(),getNachbar(aktPos, true).getId());
+                	  zugOk=true;
+                  }else 
                 	  if((datenSchlagen.get(0).equals(aktPos)&&(zielFeld.getFigur()!=null))){
                       schlagen(datenSchlagen.get(0), datenSchlagen.get(1),datenSchlagen.get(2));
                       zugOk=true;
@@ -509,7 +513,7 @@ public class Spiel implements iBediener, Serializable {
                       }else{
                     	  System.out.println("Die Figur "+aktFeld.getFigur().getId()+" wurde weggepustet!!!");
                     	  aktFeld.setFigur(null);
-//                    	  zugOk=true;
+                    	  zugOk=true;
                     	  
                       }
               
@@ -1176,7 +1180,7 @@ public class Spiel implements iBediener, Serializable {
     }
     
     
-    private boolean kannSchlagen() {
+    public boolean kannSchlagen() {
         FarbEnum farbe = spielerAmZug.getFarbe();
         switch (farbe) {
         case WEISS:

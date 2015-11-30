@@ -583,15 +583,15 @@ public class GuiSpielbrett extends JOptionPane {
 				if(spiel.getSpielerAmZug().getFarbe()==fig.getFarbe()){
 					ImageIcon figur=(ImageIcon)this.farbeIcon(spiel.farbePlayer()).get(this.figurStringWeiss(fig.getId()));
 					spiel.laufen(pos,ziel);
-						
-//					if(zielFeld.getFigur()==null){
-//						this.getFelder().get(this.feld(pos)).setIcon(null);
-//					}
-					 if(zielFeld.getFigur()!=null&& zielFeld.getFigur().getFarbe()==spiel.getSpielerAmZug().getFarbe()){
+//						if((spiel.kannSchlagen()&&(zielFeld.getFigur()==null))){
+					if((spiel.kannSchlagen()&&(this.getFelder().get(this.feld(ziel)).getIcon()==null))){
+							this.getFelder().get(this.feld(pos)).setIcon(null);
+							System.out.println("er geht hier rein");
+							return;
+						}else
+							if(zielFeld.getFigur()!=null&& zielFeld.getFigur().getFarbe()==spiel.getSpielerAmZug().getFarbe()){
 						
 					}else{
-						
-						
 						this.getFelder().get(this.feld(pos)).setIcon(null);
 						this.getFelder().get(this.feld(ziel)).setIcon(null);
 						this.getFelder().get(this.feld(spiel.gibFeld(fig.getId()).getId())).setIcon(figur);
@@ -606,12 +606,12 @@ public class GuiSpielbrett extends JOptionPane {
 				if(spiel.getSpielerAmZug().getFarbe()==fig.getFarbe()){
 					ImageIcon figur=(ImageIcon)this.farbeIcon(spiel.farbePlayer()).get(this.figurStringSchwarz(fig.getId()));
 					spiel.laufen(pos,ziel);
-//					if(spiel.getZugOk()==true){
-//					if(zielFeld.getFigur()==null){
+//					if((spiel.kannSchlagen()&&(this.getFelder().get(this.feld(ziel)).getIcon()==null))){
 //						this.getFelder().get(this.feld(pos)).setIcon(null);
-//					}	
-					
-					if(zielFeld.getFigur()!=null&& zielFeld.getFigur().getFarbe()==spiel.getSpielerAmZug().getFarbe()){
+//						System.out.println("er geht hier rein");
+//						return;
+//					}else
+						if(zielFeld.getFigur()!=null&& zielFeld.getFigur().getFarbe()==spiel.getSpielerAmZug().getFarbe()){
 							
 						}else{
 							this.getFelder().get(this.feld(pos)).setIcon(null);
