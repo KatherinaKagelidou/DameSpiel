@@ -19,11 +19,17 @@ public class DatenzugriffCSV implements iDatenzugriff {
 
 	private BufferedReader br;
 	private BufferedWriter bw;
+	private Spiel s;
 	
 	/**
 	 * Diese Methode öffnet die CSV Datei.
 
 	 */
+	
+	public DatenzugriffCSV(Spiel spiel){
+		this.s=spiel;
+	}
+	
 	@Override
 	public void oeffnen(Properties p) throws IOException {
 		String dateiname = p.getProperty("Dateiname");
@@ -111,6 +117,18 @@ public class DatenzugriffCSV implements iDatenzugriff {
 			br.close();
 			br = null;
 		}
+	}
+
+	@Override
+	public void speichern(String filename, Object spiel) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Object laden(String filename) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -98,7 +98,7 @@ public class mail{
 	 
 	        // Anhang
 	        String[] attachFiles = new String[1];
-	        attachFiles[0] = "C:/Users/user/Desktop/pdf.pdf"; // PFAD verwenden wo die PDF gespeichert wurde
+	        attachFiles[0] = "C:/Users/Katherina/Desktop/Damekokokkok.pdf"; // PFAD verwenden wo die PDF gespeichert wurde
 	    
 	        //Fehlerbehandlung: Email gesendet oder Fehlgeschlagen 
 	        

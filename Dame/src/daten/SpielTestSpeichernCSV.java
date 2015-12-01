@@ -23,9 +23,9 @@ public class SpielTestSpeichernCSV {
 		spiel.starteSpiel();
 //		spiel.ermittleSpielerAmZug();
 		
-		spiel.laufen("H2", "G3","white 30");
+		spiel.laufen("H2", "G3");
 		
-		spiel.laufen("E11", "F10","black 30");
+		spiel.laufen("E11", "F10");
 		
 		
 	

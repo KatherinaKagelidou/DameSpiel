@@ -15,6 +15,11 @@ public void oeffnen(Properties p) throws IOException;
 	
 	//nachträglich eingefügt----------------------------------------------
 	public Object laden(String name, String typ) throws IOException;
+
+	//fuer die gui
+	void speichern(String filename, Object spiel);
+
+	Object laden(String filename);
 }
 
 

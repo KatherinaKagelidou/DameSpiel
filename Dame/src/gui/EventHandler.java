@@ -5,10 +5,15 @@ import klassen.iBediener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 public class EventHandler implements ActionListener {
 
@@ -104,7 +109,52 @@ public class EventHandler implements ActionListener {
 				guiSpielbrett.laufText();
 				
 			}
+			 
 		}
+		
+		
+		 
+		if(cmd.equals("ser")){
+			try {
+				new guiSpeicherSpiel(guiSpeicherSpiel.SAVE_SER);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		 if(cmd.equals("csv")){
+			try {
+				new guiSpeicherSpiel(guiSpeicherSpiel.SAVE_CSV);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		 if(cmd.equals("pdf")){
+			spielbrettPNG();
+			try {
+				new guiSpeicherSpiel(guiSpeicherSpiel.SAVE_PDF);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		
+			
+		
+		}
+	 public void spielbrettPNG(){
+			JPanel panel=guiSpielbrett.getBrettPanel();
+			BufferedImage bild=new BufferedImage(panel.getSize().width,panel.getSize().height,BufferedImage.TYPE_INT_RGB);
+			panel.paint(bild.createGraphics());
+			File datei=new File("brett.png");
+			try{
+//				datei.createNewFile();
+				ImageIO.write(bild, "png", datei);
+				
+			}catch (IOException e){
+				e.printStackTrace();
+			}
 		}
 //	}
 

@@ -503,11 +503,11 @@ public class Spiel implements iBediener, Serializable {
                   System.out.println(spielerAmZug.getName()
                           + " du musst schlagen!!!");
                   if((kannSchlagenLinksWeiss(aktFeld)&&(zielFeld.getFigur()!=null)&&(!(zielFeld.getFigur().getFarbe().equals(FarbEnum.WEISS))))){
-                	  schlagen(aktFeld.getId(),zielFeld.getId(),getNachbar(zielPos, true).getId());
+                	  schlagen(aktFeld.getId(),zielFeld.getId(),getNachbar(zielPos, false).getId());
                 	  zugOk=true;
                   }else
                 	  if((kannSchlagenRechtsWeiss(aktFeld)&&(zielFeld.getFigur()!=null)&&(!(zielFeld.getFigur().getFarbe().equals(FarbEnum.WEISS))))){
-                	  schlagen(aktFeld.getId(),zielFeld.getId(),getNachbar(zielPos, false).getId());
+                	  schlagen(aktFeld.getId(),zielFeld.getId(),getNachbar(zielPos, true).getId());
                 	  zugOk=true;
                   }else 
                 	  if((datenSchlagen.get(0).equals(aktPos)&&(zielFeld.getFigur()!=null)&&(!(zielFeld.getFigur().getFarbe().equals(FarbEnum.WEISS))))){
@@ -1048,6 +1048,9 @@ public class Spiel implements iBediener, Serializable {
                 if(pruefeID2(feld2)){
                     kannSchlagen=false;
                 }else{
+                	if(pruefeOben(feld2)){
+                		kannSchlagen=false;
+                	}else
                 
                 
                 if ((feld2.getFigur() != null)
@@ -1086,6 +1089,9 @@ public class Spiel implements iBediener, Serializable {
                 if(pruefeID1(feld2)){
                     kannSchlagen=false;
                 }else{
+                	if(pruefeOben(feld2)){
+                		kannSchlagen=false;
+                	}else
                 
                 
                 if ((feld2.getFigur() != null)
@@ -1123,6 +1129,9 @@ public class Spiel implements iBediener, Serializable {
                 if(pruefeID1(feld2)){
                     kannSchlagen=false;
                 }else{
+                	if(pruefeUnten(feld2)){
+                		kannSchlagen=false;
+                	}else
                 
                 
                 if ((feld2.getFigur() != null)
@@ -1161,6 +1170,9 @@ public class Spiel implements iBediener, Serializable {
                 if(pruefeID2(feld2)){
                     kannSchlagen=false;
                 }else{
+                	if(pruefeUnten(feld2)){
+                		kannSchlagen=false;
+                	}else
                 
                 if ((feld2.getFigur() != null)
                         && (feld2.getFigur().getFarbe()
@@ -1370,7 +1382,7 @@ public class Spiel implements iBediener, Serializable {
     @Override
     public void speichernCSV(String dateiname) {
         try {
-            daten = new DatenzugriffCSV();
+            daten = new DatenzugriffCSV(this);
             Properties p = new Properties();
             p.setProperty("Dateiname", dateiname + ".csv");
             p.setProperty("Modus", "s");
@@ -1483,7 +1495,7 @@ public Object laden(String name, String typ) throws IOException {
 
 @SuppressWarnings("unchecked")
 public void ladenCSV(String filename) {
-	iDatenzugriff load = new DatenzugriffCSV();
+	iDatenzugriff load = new DatenzugriffCSV(this);
 	Spiel s = new Spiel();
 	
 	

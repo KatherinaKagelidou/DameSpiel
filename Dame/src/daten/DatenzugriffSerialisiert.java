@@ -67,5 +67,23 @@ public class DatenzugriffSerialisiert implements iDatenzugriff {
 			ois = null;
 		}
 	}
+
+	@Override
+	public Object laden(String name, String typ) throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void speichern(String filename, Object spiel) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Object laden(String filename) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }
