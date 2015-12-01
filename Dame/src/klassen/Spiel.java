@@ -778,13 +778,13 @@ public class Spiel implements iBediener, Serializable {
                     if ((this.spielbrett.getPositionen().get(0) < this.spielbrett.getPositionen().get(2)) 
                             && (this.spielbrett.getPositionen().get(1) < this.spielbrett.getPositionen().get(3))) {
                         while (aktFeld.getId() != zielFeld.getId()) {
-                            nachbar = getNachbarDame(aktPos, false, false);
+                            nachbar = getNachbarDame(aktPos, true, true);
                             if((nachbar.getFigur()!=null)&&(nachbar.getFigur().getFarbe().equals(FarbEnum.WEISS))){
                                 System.out.println("Du kannst nicht weiter laufen weil die Spielfigur " + nachbar.getFigur().getId() + 
                                         " auf dem Feld "+nachbar.getId() + " deinen weg kreuzt.");
                                 return;
                             }else if((nachbar.getFigur()!=null)&&(nachbar.getFigur().getFarbe().equals(FarbEnum.SCHWARZ))){
-                                nachbar2=getNachbarDame(nachbar.getId(),false,false);
+                                nachbar2=getNachbarDame(nachbar.getId(),true,true);
                                 if(nachbar2.getFigur()==null){
                                     aktPos=nachbar2.getId();
                                     moveFigur(figur, aktFeld, nachbar2);
@@ -806,13 +806,13 @@ public class Spiel implements iBediener, Serializable {
                     }else if ((this.spielbrett.getPositionen().get(0) < this.spielbrett.getPositionen().get(2)) 
                             && (this.spielbrett.getPositionen().get(1) > this.spielbrett.getPositionen().get(3))) {
                         while (aktFeld.getId() != zielFeld.getId()) {
-                            nachbar = getNachbarDame(aktPos, true, false);
+                            nachbar = getNachbarDame(aktPos, false, true);
                             if((nachbar.getFigur()!=null)&&(nachbar.getFigur().getFarbe().equals(FarbEnum.WEISS))){
                                 System.out.println("Du kannst nicht weiter laufen weil die Spielfigur " + nachbar.getFigur().getId() + 
                                         " auf dem Feld "+nachbar.getId() + " deinen weg kreuzt.");
                                 return;
                             }else if((nachbar.getFigur()!=null)&&(nachbar.getFigur().getFarbe().equals(FarbEnum.SCHWARZ))){
-                                nachbar2=getNachbarDame(nachbar.getId(),true, false);
+                                nachbar2=getNachbarDame(nachbar.getId(),false, true);
                                 if(nachbar2.getFigur()==null){
                                     aktPos=nachbar2.getId();
                                     moveFigur(figur, aktFeld, nachbar2);
@@ -834,7 +834,7 @@ public class Spiel implements iBediener, Serializable {
                     }else if ((this.spielbrett.getPositionen().get(0) > this.spielbrett.getPositionen().get(2)) 
                             && (this.spielbrett.getPositionen().get(1) < this.spielbrett.getPositionen().get(3))) {
                         while (aktFeld.getId() != zielFeld.getId()) {
-                            nachbar = getNachbarDame(aktPos, false, true);
+                            nachbar = getNachbarDame(aktPos, true,false);
                             if((nachbar.getFigur()!=null)&&(nachbar.getFigur().getFarbe().equals(FarbEnum.WEISS))){
                                 System.out.println("Du kannst nicht weiter laufen weil die Spielfigur " + nachbar.getFigur().getId() + 
                                         " auf dem Feld " + nachbar.getId() + " deinen weg kreuzt.");
@@ -862,13 +862,13 @@ public class Spiel implements iBediener, Serializable {
                     }else if ((this.spielbrett.getPositionen().get(0) > this.spielbrett.getPositionen().get(2)) 
                             && (this.spielbrett.getPositionen().get(1) > this.spielbrett.getPositionen().get(3))) {
                         while (aktFeld.getId() != zielFeld.getId()) {
-                            nachbar = getNachbarDame(aktPos, true, true);
+                            nachbar = getNachbarDame(aktPos, false, false);
                             if((nachbar.getFigur()!=null)&&(nachbar.getFigur().getFarbe().equals(FarbEnum.WEISS))){
                                 System.out.println("Du kannst nicht weiter laufen weil die Spielfigur " + nachbar.getFigur().getId() + 
                                         " auf dem Feld "+nachbar.getId() + " deinen weg kreuzt.");
                                 return;
                             }else if((nachbar.getFigur()!=null)&&(nachbar.getFigur().getFarbe().equals(FarbEnum.SCHWARZ))){
-                                nachbar2=getNachbarDame(nachbar.getId(),true,true);
+                                nachbar2=getNachbarDame(nachbar.getId(),false,false);
                                 if(nachbar2.getFigur()==null){
                                     aktPos=nachbar2.getId();
                                     moveFigur(figur, aktFeld, nachbar2);
