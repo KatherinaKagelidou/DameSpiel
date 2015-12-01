@@ -20,6 +20,19 @@ import javax.mail.internet.MimeMultipart;
 
 
 public class mail{
+	/**
+	 * Methode zum versenden der mail
+	 * @param host
+	 * @param port
+	 * @param userName
+	 * @param password
+	 * @param toAddress
+	 * @param subject
+	 * @param message
+	 * @param attachFiles
+	 * @throws AddressException
+	 * @throws MessagingException
+	 */
 	
 	public static void sendEmailWithAttachments(String host, String port,
 	        final String userName, final String password, String toAddress,

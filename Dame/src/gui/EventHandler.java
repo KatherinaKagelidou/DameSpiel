@@ -47,6 +47,9 @@ public class EventHandler implements ActionListener {
 		this.menuDialog = menuDialog;
 	}
 
+	/**
+	 * Methode actionPerformed fuer die events der buttons 
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String cmd = e.getActionCommand();

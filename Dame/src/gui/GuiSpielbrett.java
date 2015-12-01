@@ -579,7 +579,9 @@ public class GuiSpielbrett extends JOptionPane {
 
 		}
 	}
-
+/**
+ * Methode addListener fuer die events
+ */
 	private void addListener() {
 		// for (int i = 0; i < felder.size(); i++) {
 		// felder.get(i).addActionListener(event);
@@ -608,6 +610,10 @@ public class GuiSpielbrett extends JOptionPane {
 
 	}
 
+	/**
+	 * methode spieler 
+	 * added die spieler die eingegeben wurden vom backend
+	 */
 	public void spieler() {
 
 		String name1 = spieler1.getNameEingabe().getText();
@@ -624,6 +630,12 @@ public class GuiSpielbrett extends JOptionPane {
 
 	}
 
+	
+	/**
+	 * Methode hatIcon prueft ob ein Button ein Icon hat
+	 * @param e
+	 * @return
+	 */
 	public boolean hatIcon(ActionEvent e) {
 
 		JButton feld = (JButton) e.getSource();
@@ -681,7 +693,11 @@ public class GuiSpielbrett extends JOptionPane {
 
 		return false;
 	}
-
+/**
+ * Methode zum laufen der Icons anstatt fiugrn
+ * textEingabe wird auf regulaeren ausdruck geprueft 
+ * schlagen und pusten werden beruecksichtigt
+ */
 	public void laufText() {
 		String[] parts = text.getText().split("-");
 		String pos = parts[0];
