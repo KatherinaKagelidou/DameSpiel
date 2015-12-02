@@ -8,12 +8,16 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import daten.mail;
 
 public class EventHandler implements ActionListener {
 
@@ -23,7 +27,7 @@ public class EventHandler implements ActionListener {
 	private Spieler2AuswahlDialog spieler2AuswahlDialog;
 	private GuiSpielbrett guiSpielbrett;
 	private MenuDialogLaden menuDialog;
-
+	private guiMail mail;
 	private iBediener i;
 	private Spiel spiel;
 
@@ -45,6 +49,10 @@ public class EventHandler implements ActionListener {
 
 	public EventHandler(MenuDialogLaden menuDialog) {
 		this.menuDialog = menuDialog;
+	}
+	
+	public EventHandler(guiMail mail) {
+		this.mail=mail;
 	}
 
 	/**
@@ -108,12 +116,18 @@ public class EventHandler implements ActionListener {
 //				guiSpielbrett.lauf(e);
 //			}
 //		}
+			if(e.getSource()==guiSpielbrett.getText()){
+				System.out.println("TextFeld wurde geklickt!");
+			}
 			if (cmd.equals("ziehen")) {
 				guiSpielbrett.laufText();
 				
 			}
 			 
+			
 		}
+		
+		
 		
 		
 		 
@@ -141,8 +155,48 @@ public class EventHandler implements ActionListener {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-		}
-		
+			
+			
+			}
+		 
+		 else if (cmd.equals("mail")){
+				new guiMail(guiSpielbrett.getFrame());
+			}
+			
+			else if (cmd.equals("Auswaehlen")){
+				new mailAuswahl();
+			}
+			
+			else if (cmd.equals("Abbrechen")){
+				mail.setVisible(false);
+				mail.dispose();
+				mail.getOwner().setEnabled(true);
+			}
+			
+			else if (cmd.equals("Senden")){
+			  	String EmailPattern="^[a-zA-Z0-9._-]{1,20}@[a-zA-Z0-9]{1,20}.[a-zA-Z]{2,3}$";
+	        	
+	        	Pattern pattern=Pattern.compile(EmailPattern);
+	        	Matcher regexMatcher= pattern.matcher(mail.jtfEmpfaenger.getText());
+	        	
+	        	if(!regexMatcher.matches()){
+	        		JOptionPane.showMessageDialog(null, "Email ist falsch !");
+	        	}
+	        	else{
+	        		String an = mail.jtfEmpfaenger.getText();
+	        		try{
+	        			mail.sendEmail(an);
+	        		}catch (Exception ex){
+	        			Object[] options = {"OK"};
+	        			JOptionPane.showOptionDialog(mail.getJDialog(), ex.getMessage(), "Achtung!", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+						return;
+	        		}
+	        		Object[] options = {"OK"};
+					JOptionPane.showOptionDialog(mail.getJDialog(), "E-Mail versendet!", "Erfolg!", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+					mail.dispose();
+					mail.getOwner().setEnabled(true);
+	        	}
+			}
 			
 		
 		}

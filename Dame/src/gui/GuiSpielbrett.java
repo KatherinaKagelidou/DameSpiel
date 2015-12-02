@@ -85,12 +85,16 @@ public class GuiSpielbrett extends JOptionPane {
 	private ArrayList<String> posZiel = new ArrayList<String>();
 	private ArrayList<JButton> posZielButton = new ArrayList<JButton>();
 
-	private JMenuBar menu;
-	private JMenu datei;
-	private JMenuItem ser;
-	private JMenuItem csv;
-	private JMenuItem pdf;
-	private JMenuItem mail;
+//	private JMenuBar menu;
+//	private JMenu datei;
+//	private JMenuItem ser;
+//	private JMenuItem csv;
+//	private JMenuItem pdf;
+//	private JMenuItem mail;
+	
+	private JMenuBar menuBar;
+	private JMenu datei,speichern;
+	private JMenuItem pdf,mail,ser,csv;
 
 	private Spielbrett brett;
 
@@ -119,6 +123,9 @@ public class GuiSpielbrett extends JOptionPane {
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 		frame.setVisible(true);
+		
+		
+		
 
 		WindowListener winListener = new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -142,18 +149,34 @@ public class GuiSpielbrett extends JOptionPane {
 	private void createWidgets() {
 		
 		
-		menu = new JMenuBar();
-		datei = new JMenu("Speichern");
-		ser = new JMenuItem("als SER");
-		csv = new JMenuItem("als CSV");
-		pdf = new JMenuItem("als PDF");
-		mail = new JMenuItem("als Email");
+//		menu = new JMenuBar();
+//		datei = new JMenu("Speichern");
+//		ser = new JMenuItem("als SER");
+//		csv = new JMenuItem("als CSV");
+//		pdf = new JMenuItem("als PDF");
+//		mail = new JMenuItem("als Email");
+		
+		
+		menuBar = new JMenuBar();
+		datei= new JMenu("Datei");
+		speichern = new JMenu("Speichern");
+		pdf= new JMenuItem("PDF");
+		csv = new JMenuItem("CSV");
+		ser = new JMenuItem("Serial");
+		mail = new JMenuItem("send Mail");
+		
+		menuBar.add(datei);
+		datei.add(speichern);
+		speichern.add(pdf);
+		speichern.add(ser);
+		speichern.add(csv);
+		speichern.add(mail);
 
-		datei.add(ser);
-		datei.add(csv);
-		datei.add(pdf);
-		datei.add(mail);
-		menu.add(datei);
+//		datei.add(ser);
+//		datei.add(csv);
+//		datei.add(pdf);
+//		datei.add(mail);
+//		menu.add(datei);
 		pnlRight = new JPanel();
 		pnlAdd = new JPanel();
 		pnlLeft = new JPanel();
@@ -213,7 +236,7 @@ public class GuiSpielbrett extends JOptionPane {
 		frame.getContentPane().add(BorderLayout.SOUTH, scrollPane);
 		frame.getContentPane().add(BorderLayout.LINE_END, pnlRight);
 		frame.getContentPane().add(BorderLayout.LINE_START, pnlLeft);
-		frame.getContentPane().add(BorderLayout.NORTH, menu);
+		frame.getContentPane().add(BorderLayout.NORTH, menuBar);
 
 		pnlAdd.add(figurSchwarz);
 		pnlAdd.add(figurWeiss);
@@ -225,8 +248,9 @@ public class GuiSpielbrett extends JOptionPane {
 		pnlRight.add(pnlAdd);
 
 		pnlRight.add(Box.createVerticalGlue());
-
+		
 		pnlAdd.add(text);
+//		fertig.setEnabled(false);
 		pnlRight.add(fertig);
 
 		 Message message = new Message(textArea);
@@ -503,6 +527,10 @@ public class GuiSpielbrett extends JOptionPane {
 
 	}
 
+	public JButton getFertig() {
+		return fertig;
+	}
+
 	/**
 	 * Methode spielErstellen erstellt ein neues Spiel
 	 */
@@ -597,6 +625,10 @@ public class GuiSpielbrett extends JOptionPane {
 		pdf.setActionCommand("pdf");
 		mail.addActionListener(new EventHandler(this));
 		mail.setActionCommand("mail");
+		
+		text.addActionListener(event);
+		
+//		text.setActionCommand(this);
 
 	}
 
@@ -699,10 +731,20 @@ public class GuiSpielbrett extends JOptionPane {
  * schlagen und pusten werden beruecksichtigt
  */
 	public void laufText() {
+		
+		
+		
+		
 		String[] parts = text.getText().split("-");
+		
+		
 		String pos = parts[0];
 		String ziel = parts[1];
-
+		
+		
+		
+			
+		
 		Pattern.matches("[A-L]{1}[0-9]{1}[0-2]{0,1}", parts[0]);
 		Pattern.matches("[A-L]{1}[0-9]{1}[0-2]{0,1}", parts[1]);
 		if (Pattern.matches("[A-L]{1}[0-9]{1}[0-2]{0,1}", parts[0]) == false
@@ -711,6 +753,8 @@ public class GuiSpielbrett extends JOptionPane {
 					.println("Falsche Eingabe.. Nur Grossbuchstaben von A bis L gueltig und Zahlen von 1 - 12 ");
 			return;
 		}
+		
+		
 		Spielfeld aktFeld = spiel.gebeFeld(pos);
 		Spielfeld zielFeld = spiel.gebeFeld(ziel);
 		Spielfigur fig = aktFeld.getFigur();
@@ -1293,10 +1337,15 @@ public class GuiSpielbrett extends JOptionPane {
 		return brettPanel;
 	}
 	/**
-	 * Methode speichert in die PDF
-	 * 
-	 * @since 1.00
+	 * Getter fuer das JFrame
+	 * @return
 	 */
+	public JFrame getFrame() {
+		return frame;
+	}
 
+	public JTextField getText() {
+		return text;
+	}
 	
 }
