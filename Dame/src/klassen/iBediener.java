@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public interface iBediener {
     
-    public void addSpieler(String name, FarbEnum farbe,KI ki);
+    public void addSpieler(String name, FarbEnum farbe,String KI);
     public void starteSpiel();
 
 
@@ -45,6 +45,7 @@ public interface iBediener {
 	Spielfigur gibFigur(String feld);
 	boolean istFeldBelegt(Spielfigur figur, Spielfeld feld);
 	boolean istFigurDrin(String figur);
+	
 	
 
 

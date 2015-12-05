@@ -12,10 +12,11 @@ public class TestSpiel {
 		
 		
 		
-		i.addSpieler("Schwarz", FarbEnum.SCHWARZ,null);
-		i.addSpieler("Weiss", FarbEnum.WEISS,null);
+		i.addSpieler("Schwarz", FarbEnum.SCHWARZ,"Spieler");
+		i.addSpieler("Weiss", FarbEnum.WEISS,"KI");
 		i.starteSpiel();
 
+		
 	i.laufen("H2","G3");
 	i.laufen("E5","F4");
 	i.laufen("H12","G11");
