@@ -1,12 +1,14 @@
 package klassen;
 
 import java.io.Serializable;
+import java.util.Random;
 
 public class KI_Dame extends KI implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private Spiel spiel;
+	private Spielfigur figur;
 	private Spielbrett spielbrett;
 	/**
 	 * der Konstruktor der Klasse KI
@@ -23,9 +25,9 @@ public class KI_Dame extends KI implements Serializable {
 		super(spiel);
 	}
 
-
-	//laufMethode da als parameter keine randomFigur übergeben werden kann wird auch keine übergeben
-		//beim ausführen kommt immer eine nullppointer exception bei der ersten for schleife
+	//keine ahnung ob es richtig ist
+	//laufMethode da als parameter keine randomFigur übergeben werden kann wird auch nichts übergeben als parameter
+	//beim ausführen kommt immer eine nullppointer exception bei der ersten for schleife
 	// der Fehler  auch in der klasse spiel wenn neue spieler erstellt werden mit der uebegabe der ki
 	//iwas wird da falsch gemacht und nicht richtig erkannt 
 	   @Override
@@ -39,9 +41,11 @@ public class KI_Dame extends KI implements Serializable {
 
 					randomFigur = (spielbrett.getFelder()[i][j].getFigur().getId());
 					// Spielfeld feld = spielbrett.getFelder()[i][j];
+					
+					generateFigurToInt(randomFigur);
 				}
 			}
-
+			
 			Spielfeld aktFeld = spiel.gebeFeld(randomFigur);
 
 			Spielfeld zielFeld = spiel.gebeFeld(zielPos);
@@ -57,5 +61,17 @@ public class KI_Dame extends KI implements Serializable {
 				}
 			}
 		}
+       @Override
+	   public void generateFigurToInt(String s) {
+			Random random = new Random();
 
+			for (int i = 0; i < spiel.getFigurWeiss().length; i++) {
+
+				int n = random.nextInt(i);
+
+				spiel.getFigurWeiss()[n] = figur;
+
+				s = figur.getId();
+			}
+		}
 }
