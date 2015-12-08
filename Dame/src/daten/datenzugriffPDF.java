@@ -5,6 +5,7 @@ package daten;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.util.Properties;
 
@@ -27,8 +28,12 @@ import com.itextpdf.text.pdf.PdfWriter;
  * Diese Klasse bildet die PDF ab.
 
  */
-public class datenzugriffPDF implements iDatenzugriff {
+public class datenzugriffPDF implements iDatenzugriff,Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Document document = null;
 	PdfWriter writer = null;
 	Font font = null;

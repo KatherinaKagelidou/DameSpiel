@@ -1,6 +1,7 @@
 package gui;
 
 import java.io.File;
+import java.io.Serializable;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -12,7 +13,7 @@ import daten.DatenzugriffSerialisiert;
 import daten.iDatenzugriff;
 import klassen.Spiel;
 
-public class GuiSpielLaden extends JFrame{
+public class GuiSpielLaden extends JFrame   implements Serializable{
 
 	
 

@@ -23,7 +23,7 @@ public class guiSpeicherSpiel extends JFrame implements  Serializable{
 		public String pfad;
 		private int status;
 		
-		
+		private Spiel spiel;
 		
 		private String defaultName = "Dame";
 		private int format;
@@ -147,7 +147,8 @@ public class guiSpeicherSpiel extends JFrame implements  Serializable{
 		 */
 		public void saveGameCSV(String pfad){
 			iDatenzugriff csv = new DatenzugriffCSV((Spiel) GuiSpielbrett.getSpiel());
-			csv.speichern(pfad,  GuiSpielbrett.getSpiel());
+			csv.speichernCSV(pfad,  GuiSpielbrett.getSpiel());
+//			spiel.speichernCSV(pfad);
 
 		}
 

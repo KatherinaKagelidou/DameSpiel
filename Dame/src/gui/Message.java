@@ -3,6 +3,7 @@ package gui;
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.io.Serializable;
 
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
@@ -11,8 +12,12 @@ import javax.swing.text.JTextComponent;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
-public class Message {
+public class Message  implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextComponent textComponent;
 	private Document document;
 	private boolean isAppend;

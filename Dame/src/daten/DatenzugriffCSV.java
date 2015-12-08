@@ -1,5 +1,7 @@
 package daten;
 
+import gui.GuiSpielbrett;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,6 +15,7 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -23,9 +26,13 @@ import klassen.Spielfeld;
 import klassen.Spielfigur;
 import klassen.iBediener;
 
-public class DatenzugriffCSV implements iDatenzugriff {
+public class DatenzugriffCSV implements iDatenzugriff,Serializable {
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private BufferedWriter bw;
 	private BufferedReader br;
 	private PrintWriter pW;
@@ -36,6 +43,7 @@ public class DatenzugriffCSV implements iDatenzugriff {
 
 	private Spielbrett spielbrett;
 	private static iDatenzugriff daten;
+	private GuiSpielbrett gui;
 	
 	/**
 	 * Diese Methode öffnet die CSV Datei.
@@ -335,6 +343,9 @@ public class DatenzugriffCSV implements iDatenzugriff {
 						+ this.spiel.getSpieler2().getFarbe() + "";
 				daten.schreiben(s + "\n");
 
+			
+			;
+			
 				for (int i = 0; i < spielbrett.getFelder().length; i++) {
 					for (int j = 0; j < spielbrett.getFelder()[i].length; j++)
 						daten.schreiben(spielbrett.getFelder()[i][j] + "\n");
@@ -370,31 +381,10 @@ public class DatenzugriffCSV implements iDatenzugriff {
 	}
 
 	@Override
-	public boolean saveGame(String path, String fileName, iBediener iBediener){
-		if(!path.endsWith("/")) path += "/";
-		if(!fileName.endsWith(".csv")) fileName += ".csv";
-		
-		// Create folder if not exist
-		File dir = new File(path);
-		if(!dir.exists()) dir.mkdir();
-		
-		
-		PrintWriter pw = null;
-		try {
-			pw = new PrintWriter(new FileWriter(path + fileName));
-
-			// Write string to CSV
-			pw.write((String)spiel.speichernString());
-		} catch (IOException e) {
-			return false;
-		} finally {
-			if (pw != null){
-				pw.flush();
-				pw.close();
-			}
-		}
-
-		return true;
+	public boolean saveGame(String path, String fileName, iBediener iBediener) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
+	
 }

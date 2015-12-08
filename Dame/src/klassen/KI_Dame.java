@@ -1,9 +1,8 @@
 package klassen;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class KI_Dame extends KI implements Serializable{
+public class KI_Dame extends KI {
 
 	/**
 	 * 
@@ -19,8 +18,6 @@ public class KI_Dame extends KI implements Serializable{
 	
 	@Override
 	public ArrayList<String> startZiel(){
-//		System.out.println(datenLaufen);
-//		System.out.println(spiel.anzahlFigur());
 		ArrayList<String> feld=null;
 		if(kannSchlagen==false){
 			datenSchlagen.clear();
@@ -31,6 +28,7 @@ public class KI_Dame extends KI implements Serializable{
 				}
 			}
 			if(kannSchlagen==true){
+				uberprufteFigur.clear();
 				feld=datenSchlagen;
 				ziel=datenSchlagen;
 				kannSchlagen=false;

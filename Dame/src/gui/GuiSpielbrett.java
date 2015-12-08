@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,7 +44,7 @@ import klassen.Spielfeld;
 import klassen.Spielfigur;
 import klassen.iBediener;
 
-public class GuiSpielbrett extends JOptionPane {
+public class GuiSpielbrett extends JOptionPane   implements Serializable{
 
 	/**
 	 * 
@@ -1355,6 +1356,7 @@ public class GuiSpielbrett extends JOptionPane {
 	 * @param spiel
 	 */
 	public void setSpiel(iBediener spiel) {
+
 		GuiSpielbrett.spiel=(Spiel) spiel;
 		this.spieler1.farbAuswahl((String) spieler1
 				.getFarbAuswahl().getSelectedItem());

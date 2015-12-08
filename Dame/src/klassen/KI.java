@@ -18,6 +18,7 @@ public abstract class KI implements Serializable {
 	private ArrayList<Spielfigur> neuFullWeiss=new ArrayList<Spielfigur>();
 	private ArrayList<Spielfigur> neuFullSchwarz=new ArrayList<Spielfigur>();
 	private boolean binDrinKi=false;
+	private ArrayList<Spielfeld> zielFeldDame=new ArrayList<Spielfeld>();
 
 	/**
 	 * der Konstruktor der Klasse mit der Komposition zu Spieler
@@ -75,32 +76,137 @@ public abstract class KI implements Serializable {
 	}
 	
 	public void putArrayKI(){
-		if(binDrinKi==false){
-			spiel.putArray();
-		}
 		
 		for (Spielfigur each : spiel.getFigurWeiss2()){
-			neuFullWeiss.add(each);	
-			binDrinKi=true;
+			neuFullWeiss.add(each);
 		}
 		for (Spielfigur each : spiel.getFigurSchwarz2()){
 			neuFullSchwarz.add(each);
-			binDrinKi=true;
 		}
 	}
+	public void putArrayKIWeiss(){
+		
+		for (Spielfigur each : spiel.getFigurWeiss2()){
+			neuFullWeiss.add(each);	
+		}
+	}
+	public void putArrayKISchawrz(){
+		for (Spielfigur each : spiel.getFigurSchwarz2()){
+			neuFullSchwarz.add(each);
+		}
+	}
+	
+	public Spielfeld randomSpielfeld(){
+		int i=(int)(12 * Math.random()) +0;
+		int j=(int)(12 * Math.random()) +0;
+		Spielfeld f=spiel.getSpielbrett().getFelder()[i][j];
+		Spielfeld f2=null;
+//		if(f!=null){
+			if(f.getFarbeFeld().equals(FarbEnum.SCHWARZ)){
+				f2=f;
+				zielFeldDame.add(f2);
+				return f2;
+			}else{
+				this.randomSpielfeld();
+				
+			}
+//		}
+		return f2;
+	}
+	
+	public boolean istDiagonal(Spielfeld akt,Spielfeld ziel){
+		spiel.getSpielbrett().getPositionen().clear();
+		boolean istDiagonal=false;
+		Spielfeld nachbar=null;
+        spiel.getSpielbrett().Umwandler(akt.getId());
+        spiel.getSpielbrett().Umwandler(ziel.getId());
+        
+        //ObenRechts
+        if ((spiel.getSpielbrett().getPositionen().get(0) < spiel.getSpielbrett().getPositionen().get(2)) 
+                && (spiel.getSpielbrett().getPositionen().get(1) < spiel.getSpielbrett().getPositionen().get(3))) {
+        	 while (akt.getId() !=ziel.getId()) {
+                 nachbar = spiel.getNachbarDame(akt.getId(), true, true);
+                 spiel.moveFigur(akt.getFigur(), akt, nachbar);
+                 akt=nachbar;
+                 //wenn das Zielfeld nicht auf der Diagonalen liegt
+                 if(spiel.pruefeOben(akt)||spiel.pruefeID2(akt)){
+            		 istDiagonal=false;
+            	 }
+        }
+        	 istDiagonal=true;
+        	 
+        	  //ObenLinks
+        }else  if ((spiel.getSpielbrett().getPositionen().get(0) < spiel.getSpielbrett().getPositionen().get(2)) 
+                && (spiel.getSpielbrett().getPositionen().get(1) > spiel.getSpielbrett().getPositionen().get(3))) {
+        	while (akt.getId() !=ziel.getId()) {
+                nachbar = spiel.getNachbarDame(akt.getId(), false, true);
+                spiel.moveFigur(akt.getFigur(), akt, nachbar);
+                akt=nachbar;
+                //wenn das Zielfeld nicht auf der Diagonalen liegt
+                if(spiel.pruefeOben(akt)||spiel.pruefeID1(akt)){
+           		 istDiagonal=false;
+           	 }
+       }
+       	 istDiagonal=true;
+        	
+        	//UnternRechts
+        }else  if ((spiel.getSpielbrett().getPositionen().get(0) > spiel.getSpielbrett().getPositionen().get(2)) 
+                && (spiel.getSpielbrett().getPositionen().get(1) < spiel.getSpielbrett().getPositionen().get(3))) {
+        	while (akt.getId() !=ziel.getId()) {
+                nachbar = spiel.getNachbarDame(akt.getId(), true, false);
+                spiel.moveFigur(akt.getFigur(), akt, nachbar);
+                akt=nachbar;
+                //wenn das Zielfeld nicht auf der Diagonalen liegt
+                if(spiel.pruefeUnten(akt)||spiel.pruefeID2(akt)){
+           		 istDiagonal=false;
+           	 }
+       }
+       	 istDiagonal=true;
+        	
+       	 //UntenLinks
+        }else if ((spiel.getSpielbrett().getPositionen().get(0) > spiel.getSpielbrett().getPositionen().get(2)) 
+                && (spiel.getSpielbrett().getPositionen().get(1) > spiel.getSpielbrett().getPositionen().get(3))) {
+        	while (akt.getId() !=ziel.getId()) {
+                nachbar = spiel.getNachbarDame(akt.getId(), false, false);
+                spiel.moveFigur(akt.getFigur(), akt, nachbar);
+                akt=nachbar;
+                //wenn das Zielfeld nicht auf der Diagonalen liegt
+                if(spiel.pruefeUnten(akt)||spiel.pruefeID1(akt)){
+           		 istDiagonal=false;
+           	 }
+       }
+       	 istDiagonal=true;
+        	
+        }
+		return istDiagonal;
+	}
+
 	
 
 	public Spielfigur randomFigur() {
 		Spielfigur f=null;
+//		if(binDrinKi==false){
+//			putArrayKI();
+//		}
 
 		if(spiel.getSpielerAmZug().getFarbe().equals(FarbEnum.WEISS)){
-				int n=(int)(30 * Math.random()) +1;
-				f=spiel.getFigurWeiss()[n];
+				int n=(int)(neuFullWeiss.size() * Math.random()) +1;
+				if(neuFullWeiss.get(n-1)!=null){
+					f=neuFullWeiss.get(n-1);
+					neuFullWeiss.remove(n-1);
+					binDrinKi=true;
+				}
 				
+
 		}else if(spiel.getSpielerAmZug().getFarbe().equals(FarbEnum.SCHWARZ)){
-				int n=(int)(30 * Math.random()) +1;
-				f=spiel.getFigurSchwarz()[n];
+				int n=(int)(neuFullSchwarz.size() * Math.random()) +1;
+				if(neuFullSchwarz.get(n-1)!=null){
+					f=neuFullSchwarz.get(n-1);
+					neuFullSchwarz.remove(n-1);
+					binDrinKi=true;
+				}	
 		}
+
 		return f;
 	}
 	
@@ -112,7 +218,30 @@ public abstract class KI implements Serializable {
 	
 	public boolean kannLaufen() {
 		FarbEnum farbe = spiel.getSpielerAmZug().getFarbe();
+		
+		 if(binDrinKi==false){
+				putArrayKI();
+			}
+		 if(neuFullWeiss.size()==0){
+	        	putArrayKIWeiss();
+	        	return false;
+	     }
+	     if(neuFullSchwarz.size()==0){
+	        	putArrayKISchawrz();
+	        	return false;
+	     
+	     }
+	     
 		Spielfigur figur=randomFigur();
+		
+//		if(spiel.getFigur().istDame(figur)==true){
+		if(figur.getDame()==true){
+			if(this.istDiagonal(figur.getFeld(), this.randomSpielfeld())==true){
+				datenLaufen.add(figur.getFeld().getId());
+				datenLaufen.add(zielFeldDame.get(0).getId());
+				return true;
+			}
+		}
 		 if(spiel.istFigurDrin(figur.getId())==true){
 			switch (farbe) {
 			case WEISS:
@@ -247,6 +376,18 @@ public abstract class KI implements Serializable {
 	
 	public boolean kannSchlagen() {
         FarbEnum farbe = spiel.getSpielerAmZug().getFarbe();
+        if(binDrinKi==false){
+			putArrayKI();
+		}
+        if(neuFullWeiss.size()==0){
+        	putArrayKIWeiss();
+        	return false;
+        }
+        if(neuFullSchwarz.size()==0){
+        	putArrayKISchawrz();
+        	return false;
+        }
+        
         Spielfigur figur=randomFigur();
 
         if(spiel.istFigurDrin(figur.getId())==true){

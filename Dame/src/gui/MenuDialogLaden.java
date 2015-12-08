@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.Scanner;
 import java.util.TreeMap;
 
@@ -21,7 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-public class MenuDialogLaden extends JPanel {
+public class MenuDialogLaden extends JPanel  implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 

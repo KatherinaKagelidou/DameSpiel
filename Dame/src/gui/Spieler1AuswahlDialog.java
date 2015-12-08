@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -22,8 +23,12 @@ import javax.swing.SwingConstants;
 import klassen.FarbEnum;
 import klassen.Spieler;
 
-public class Spieler1AuswahlDialog extends JOptionPane {
+public class Spieler1AuswahlDialog extends JOptionPane  implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	JFrame frame;
 	JButton spielStarten;
 	JLabel spielTypFrage;

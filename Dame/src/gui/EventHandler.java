@@ -111,7 +111,8 @@ public class EventHandler implements ActionListener {
 		}
 
 		if (cmd.equals("laden")) {
-			new GuiSpielLaden();
+//			new GuiSpielLaden();
+			spiel.speichernCSV("");
 			
 		}
 		
@@ -141,28 +142,10 @@ public class EventHandler implements ActionListener {
 				new guiSpeicherSpiel(guiSpeicherSpiel.SAVE_SER);
 			}
 		 if(cmd.equals("csv")){
-			 JFileChooser fc = new JFileChooser("Spielstand sichern (CSV)");
-				fc.addChoosableFileFilter(new FileNameExtensionFilter("CSV - File", "csv"));
-				fc.setAcceptAllFileFilterUsed(false);
-				int result = fc.showSaveDialog(null);
-
-				boolean error = false;
-
-				switch (result) {
-				case JFileChooser.APPROVE_OPTION:
-					String dirPath = fc.getCurrentDirectory().toString();
-					if(fc.getSelectedFile() != null){
-						String fileName = fc.getSelectedFile().getName();
-						
-						DatenzugriffCSV savegame = new DatenzugriffCSV(spiel);
-						if(savegame.saveGame(dirPath, fileName, GuiSpielbrett.getSpiel())){
-							
-							return;
-						}else error = true;
+			
+				new guiSpeicherSpiel(guiSpeicherSpiel.SAVE_CSV);
 					}
-//				new guiSpeicherSpiel(guiSpeicherSpiel.SAVE_CSV);
-					}
-			}
+			
 			 if(cmd.equals("pdf")){
 				spielbrettPNG();
 				

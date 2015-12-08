@@ -1,14 +1,19 @@
 package gui;
 
 import java.awt.Color;
+import java.io.Serializable;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-public class StartGui {
+public class StartGui  implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JButton button = new JButton("Jetzt spielen");
 	JFrame fra;
 	private JLabel backImgPanel = new JLabel(new ImageIcon("startbildNeu.png"));

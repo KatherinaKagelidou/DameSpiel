@@ -29,8 +29,8 @@ public class Spiel implements iBediener, Serializable {
     private Spieler spielerAmZug;
     private int spielerAnz = 0;
     private Spielbrett spielbrett;
-    private Spielfigur figur;
-    private int weissAnzahl=0;
+	private Spielfigur figur;
+	private int weissAnzahl=0;
     private int schwarzAnzahl=0;
     private Spielfigur[] figurWeiss = new Spielfigur[31];
     private Spielfigur[] figurSchwarz = new Spielfigur[31];
@@ -45,11 +45,18 @@ public class Spiel implements iBediener, Serializable {
     private PrintWriter pw;
     private String[]gepusteteFigur = new String[1];
     private boolean kannLaufen=false;
-    private boolean binDrin=false;
     
     public Spiel() {
 //    	this.starteSpiel();
     }
+    
+    public Spielfigur getFigur() {
+		return figur;
+	}
+    
+    public Spielbrett getSpielbrett() {
+		return spielbrett;
+	}
     
     public ArrayList<Spielfigur> getFigurWeiss2() {
 		return figurWeiss2;
@@ -131,14 +138,14 @@ public class Spiel implements iBediener, Serializable {
     public void addSpieler(String name, FarbEnum farbe, KI ki) {
     	
         if (spielerAnz == 2) {
-            throw new RuntimeException("Es kann kein Spieler mehr hinzugef¸gt werden");
+            throw new RuntimeException("Es kann kein Spieler mehr hinzugef√ºgt werden");
         }
 
         if (spielerAnz == 1) {
 
-            // wenn spieler keine farbe gew‰hlt hat
+            // wenn spieler keine farbe gew√§hlt hat
             if (farbe == null) {
-                throw new RuntimeException( "Bitte w‰hle eine Farbe aus !!");
+                throw new RuntimeException( "Bitte w√§hle eine Farbe aus !!");
             }
             
             Spieler sp = new Spieler(name, farbe, ki);
@@ -153,7 +160,7 @@ public class Spiel implements iBediener, Serializable {
             
            
             
-            System.out.println("Spieler " + sp + " wurde hinzugef¸gt " + sp.getFarbe());
+            System.out.println("Spieler " + sp + " wurde hinzugef√ºgt " + sp.getFarbe());
         }
         
         
@@ -167,7 +174,7 @@ public class Spiel implements iBediener, Serializable {
                 spielerAnz++;
             }
 
-            System.out.println("Spieler " + sp + " wurde hinzugef¸gt " + sp.getFarbe());
+            System.out.println("Spieler " + sp + " wurde hinzugef√ºgt " + sp.getFarbe());
         }
     }
 
@@ -281,7 +288,7 @@ public class Spiel implements iBediener, Serializable {
                     }
                 }
 
-            }// else schlieﬂen
+            }// else schlie√üen
 
         }// 1. if
 
@@ -329,7 +336,7 @@ public class Spiel implements iBediener, Serializable {
      */
     @Override
     public void starteSpiel() {
-
+    	
         System.out.println("--- Das Spiel beginnt! ---");
         System.out.println(" ");
 
@@ -343,6 +350,7 @@ public class Spiel implements iBediener, Serializable {
             spielbrett = new Spielbrett();
             this.setSpielerAnz(spielerAnz);
             this.figurSetzen();
+            this.putArray();
             System.out.println(spieler1.getName() + " du musst anfangen :-)");
         }
     }
@@ -374,13 +382,13 @@ public class Spiel implements iBediener, Serializable {
     }
     
     public void removeFigurAusArray(Spielfigur figur){
-    	if(binDrin==false){
-    		putArray();
-    	}
+//    	if(binDrin==false){
+//    		putArray();
+//    	}
     	
 //    	figurSchwarz2.remove(0);
     	if(figur!=null){
-    		binDrin=true;
+//    		binDrin=true;
     		if(figur.getFarbe().equals(FarbEnum.SCHWARZ)){
     	    	for(int i=0;i<figurSchwarz2.size();i++){
     	    		if(figurSchwarz2.get(i).getId().equals(figur.getId())){
@@ -412,9 +420,9 @@ public class Spiel implements iBediener, Serializable {
 
         if (figur.getFarbe().equals(FarbEnum.SCHWARZ)) {
 
-                // setzt figur, die schl‰gt auf neue pos
+                // setzt figur, die schl√§gt auf neue pos
                 moveFigur(figur, aktuell, ziel);
-                // lˆscht geschlagene figur
+                // l√∂scht geschlagene figur
                 System.out.println("Figur "+gegner.getFigur().getId() +" auf Feld " + gegner.getId()+ " wurde von Spieler " +spielerAmZug.getName()+" geschlagen!");
 
                 for (int i = 0; i < spielbrett.getFelder().length; i++) {
@@ -430,9 +438,9 @@ public class Spiel implements iBediener, Serializable {
 
         } else {
 
-            // setzt figur, die schl‰gt auf neue pos
+            // setzt figur, die schl√§gt auf neue pos
                 moveFigur(figur, aktuell, ziel);
-                // lˆscht geschlagene figur
+                // l√∂scht geschlagene figur
                 System.out.println("Figur "+gegner.getFigur().getId() +" auf Feld " + gegner.getId()+ " wurde von Spieler " +spielerAmZug.getName()+" geschlagen!");
 
                 for (int i = 0; i < spielbrett.getFelder().length; i++) {
@@ -462,7 +470,7 @@ public class Spiel implements iBediener, Serializable {
         return f;
     }
 
-    private void moveFigur(Spielfigur figur, Spielfeld aktFeld,Spielfeld zielFeld) {
+    public void moveFigur(Spielfigur figur, Spielfeld aktFeld,Spielfeld zielFeld) {
         for (int i = 0; i < spielbrett.getFelder().length; i++) {
             for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
                 if (spielbrett.getFelder()[i][j].equals(aktFeld)) {
@@ -1556,192 +1564,144 @@ public class Spiel implements iBediener, Serializable {
         pw.close();
     }
 
-    public Spielbrett getSpielbrett() {
-		return spielbrett;
+    @Override
+    public void speichernCSV(String dateiname) {
+        try {
+            daten = new DatenzugriffCSV(this);
+            Properties p = new Properties();
+            p.setProperty("Dateiname", dateiname + ".csv");
+            p.setProperty("Modus", "s");
+            daten.oeffnen(p);
+
+            String s = "";
+            s += "Spieler: " + spieler1.getName() + " mit der Farbe "
+                    + spieler1.getFarbe() + " \n" + "Spieler: " + spieler2.getName() + " mit der Farbe "
+                    + spieler2.getFarbe()+ "";
+            daten.schreiben(s + "\n");
+
+            for (int i = 0; i < spielbrett.getFelder().length; i++) {
+                for (int j = 0; j < spielbrett.getFelder()[i].length; j++)
+                    daten.schreiben(spielbrett.getFelder()[i][j] + "\n");
+            }
+
+            daten.schreiben(this);
+
+        } catch (Exception e) {
+            // System.err.println("Speichern CSV fehlgeschlagen!");
+            System.out.println("geladen");
+        } finally {
+
+            try {
+                daten.schliessen(dateiname);
+            } catch (IOException fehler) {
+                System.out.println(fehler.getMessage());
+            }
+
+        }
+
+    }
+
+//    @Override
+//    public Spiel lesenCSV(String s) {
+//        try {
+//            daten = new DatenzugriffCSV();
+//            Properties p = new Properties();
+//            daten.oeffnen(p);
+//            Spiel spiel = (Spiel) daten.lesen(".csv");
+//            System.out.println("Das Spiel wird geladen.");
+//            daten.schliessen(p);
+//            return spiel;
+//        } catch (Exception e) {
+//            System.err.println("Laden CSV fehlgeschlagen!");
+//            return null;
+//        }
+//
+//    }
+
+    @Override
+    public void speichernSerial(String s) {
+        try {
+            daten = new DatenzugriffSerialisiert();
+            Properties p = new Properties();
+            p.setProperty("datei", s + ".ser");
+            daten.oeffnen(p);
+            daten.schreiben(this);
+            System.out.println("Das Spiel wurde gespeichert: "
+                    + p.getProperty("datei"));
+            daten.schliessen(p);
+        } catch (Exception e) {
+            System.out.println("Speichern serialisiert !");
+        }
+    }
+
+@Override
+public Spiel lesenCSV(String s) {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+@Override
+public Spiel ladenSerial(String s) {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+    /**
+     * laden serial return spiel
+     */
+//    @Override
+//    public Spiel ladenSerial(String s) {
+//        try {
+//            daten = new DatenzugriffSerialisiert();
+//            Properties p = new Properties();
+//            daten.oeffnen(p);
+//            Spiel spiel = (Spiel) daten.lesen(".ser");
+//            System.out.println("Das Spiel wurde erfolgreich geladen.");
+//            daten.schliessen(p);
+//            return spiel;
+//        } catch (Exception e) {
+//            System.out.println("Laden serialisiert fehlgeschlagen!");
+//            return null;
+//        }
+//
+//    }
+@Override
+public Object laden(String name, String typ) throws IOException {
+	typ = typ.toLowerCase();
+	switch (typ) {
+	case ("csv"):
+		ladenCSV(name);
+		break;
+	default:
+		throw new RuntimeException("Dateityp nicht existent");
 	}
+	return null;
+}
 
-	@Override
-	public void speichernCSV(String dateiname) {
-		try {
-			daten = new DatenzugriffCSV(this);
-			Properties p = new Properties();
-			p.setProperty("Dateiname", dateiname + ".csv");
-			p.setProperty("Modus", "s");
-			daten.oeffnen(p);
+public void ladenCSV(String filename) {
+	iDatenzugriff load = new DatenzugriffCSV(this);
+	Spiel s = new Spiel();
+	
+	
 
-			String s = "";
-			s += "Spieler: " + spieler1.getName() + " mit der Farbe "
-					+ spieler1.getFarbe() + " \n" + "Spieler: "
-					+ spieler2.getName() + " mit der Farbe "
-					+ spieler2.getFarbe() + "";
-			daten.schreiben(s + "\n");
-
-			for (int i = 0; i < spielbrett.getFelder().length; i++) {
-				for (int j = 0; j < spielbrett.getFelder()[i].length; j++)
-					daten.schreiben(spielbrett.getFelder()[i][j] + "\n");
-			}
-
-			daten.schreiben(this);
-
-		} catch (Exception e) {
-			// System.err.println("Speichern CSV fehlgeschlagen!");
-			System.out.println("geladen");
-		} finally {
-
-			try {
-				daten.schliessen(dateiname);
-			} catch (IOException fehler) {
-				System.out.println(fehler.getMessage());
-			}
-
-		}
-
-	}
-
-	// @Override
-	// public Spiel lesenCSV(String s) {
-	// try {
-	// daten = new DatenzugriffCSV();
-	// Properties p = new Properties();
-	// daten.oeffnen(p);
-	// Spiel spiel = (Spiel) daten.lesen(".csv");
-	// System.out.println("Das Spiel wird geladen.");
-	// daten.schliessen(p);
-	// return spiel;
-	// } catch (Exception e) {
-	// System.err.println("Laden CSV fehlgeschlagen!");
-	// return null;
-	// }
-	//
-	// }
-
-	@Override
-	public void speichernSerial(String s) {
-		try {
-			daten = new DatenzugriffSerialisiert();
-			Properties p = new Properties();
-			p.setProperty("datei", s + ".ser");
-			daten.oeffnen(p);
-			daten.schreiben(this);
-			System.out.println("Das Spiel wurde gespeichert: "
-					+ p.getProperty("datei"));
-			daten.schliessen(p);
-		} catch (Exception e) {
-			System.out.println("Speichern serialisiert !");
-		}
-	}
-
-	@Override
-	public Spiel lesenCSV(String s) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Spiel ladenSerial(String s) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/**
-	 * laden serial return spiel
-	 */
-	// @Override
-	// public Spiel ladenSerial(String s) {
-	// try {
-	// daten = new DatenzugriffSerialisiert();
-	// Properties p = new Properties();
-	// daten.oeffnen(p);
-	// Spiel spiel = (Spiel) daten.lesen(".ser");
-	// System.out.println("Das Spiel wurde erfolgreich geladen.");
-	// daten.schliessen(p);
-	// return spiel;
-	// } catch (Exception e) {
-	// System.out.println("Laden serialisiert fehlgeschlagen!");
-	// return null;
-	// }
-	//
-	// }
-	@Override
-	public Object laden(String name, String typ) throws IOException {
-		typ = typ.toLowerCase();
-		switch (typ) {
-		case ("csv"):
-			ladenCSV(name);
-			break;
-		default:
-			throw new RuntimeException("Dateityp nicht existent");
-		}
-		return null;
-	}
-
-	@SuppressWarnings("unchecked")
-	public void ladenCSV(String filename) {
-		iDatenzugriff load = new DatenzugriffCSV(this);
-		Spiel s = new Spiel();
-
-		// spielbrett = new Spielbrett();
-		// try {
-		// ArrayList<String> s = (ArrayList<String>) load.laden(filename,
-		// "csv");
-		// for (int i = 0; i < s.size() - 1; i++) {
-		// String[] args = s.get(i).split(";");
-		// // i an der Stelle 0 und 1 sind Spieler
-		// if (i == 0) {
-		//
-		// FarbEnum farbe;
-		// if (args[1].equals("Schwarz")) {
-		// farbe = FarbEnum.SCHWARZ;
-		// } else {
-		// farbe = FarbEnum.WEISS;
-		// }
-		// Spieler s1 = new Spieler(args[0], farbe, null);
-		// this.addSpieler(s1.getName(), FarbEnum.WEISS, null);
-		//
-		// } else if (i == 1) {
-		//
-		// FarbEnum farbe;
-		// if (args[1].equals("Schwarz")) {
-		// farbe = FarbEnum.SCHWARZ;
-		// } else {
-		// farbe = FarbEnum.WEISS;
-		// }
-		// Spieler s2 = new Spieler(args[0], farbe, null);
-		// this.addSpieler(s2.getName(), FarbEnum.WEISS, null);
-		// // i an der Stelle 2 ist ActiveSpieler
-		// }
-		//
-		// }
-		//
-
-		// spielbrett.getSb();
 		System.out.println("lalalallaa so siehts aus");
 
-		// if (this.spieler[0] == this.getActiveSpieler()) {
-		// this.playerRotation(this.getActiveSpieler(), this.spieler[1]);
-		// } else {
-		// this.playerRotation(this.getActiveSpieler(), this.spieler[0]);
-		// }
 
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
 
+}
+@Override
+public void speichern(Object obj, String name) throws IOException {
+	Scanner s = new Scanner(System.in);
+	String typ = s.next();
+	switch (typ) {
+	case ("csv"):
+		speichernCSV(name);
+		break;
+	
+	default:
+		throw new RuntimeException("Dateityp " + " nicht existent");
 	}
-
-	@Override
-	public void speichern(Object obj, String name) throws IOException {
-		Scanner s = new Scanner(System.in);
-		String typ = s.next();
-		switch (typ) {
-		case ("csv"):
-			speichernCSV(name);
-			break;
-
-		default:
-			throw new RuntimeException("Dateityp " + " nicht existent");
-		}
-	}
+}
 
 @Override
 public Spielfeld gibFeld(String figur){
@@ -1816,15 +1776,15 @@ public void putArray(){
 public int anzahlFigur(){
 	int counter=0;
 	
-	if(binDrin==false){
-		putArray();
-	}
+//	if(binDrin==false){
+//		putArray();
+//	}
   	
 	if(spielerAmZug.getFarbe().equals(FarbEnum.WEISS)){
-		binDrin=true;
+//		binDrin=true;
 		counter=this.getFigurWeiss2().size();
 	}else if(spielerAmZug.getFarbe().equals(FarbEnum.SCHWARZ)){
-		binDrin=true;
+//		binDrin=true;
 		counter=this.getFigurSchwarz2().size();
 	}
         
@@ -1833,59 +1793,7 @@ public int anzahlFigur(){
 }
 
 
-public String speichernString() {
-	// Get gameboard fields
-//			Spielfeld felder[][] = this.gameboard.getFields();
-			Spielfeld felder [][] =this.spielbrett.getFelder();
-			
-			String gameString = "";
 
-			// first row: information of player 1
-//			gameString += this.getPlayer().getName() + ";" + this.getPlayer(1).getColor() + ";";
-			gameString += this.getSpieler1().getName() + ";" + this.getSpieler1().getFarbe() + ";";
-			
-
-			// second row: information of player 2
-			gameString += this.getSpieler2().getName() + ";" + this.getSpieler2().getFarbe() + ";";
-			
-
-			// third row: saves who is the current Player and the game size
-//			gameString += this.getCurrentGamer().getColor() + ";" + this.getGameboard().getFields().length + "\n";
-
-			gameString +=  this.getSpielerAmZug().getFarbe() + ";" + this.getSpielbrett().getFelder().length + "\n";
-			// fourth row.. saves the current board state
-			for (int i = felder.length - 1; i >= 0; i--) {
-				// For every column
-				for (int j = 0; j < felder.length; j++) {
-					// Get figure of field
-					Spielfigur currentFigure = felder[j][i].getFigur();
-					// Write seperator
-
-					// Check if field has figure or not
-					if (currentFigure == null) {
-						// e for empty
-						gameString += "e";
-					} else {
-						if (currentFigure.getFarbe() == FarbEnum.WEISS) {
-							if (currentFigure.istDame(currentFigure)) {
-								gameString += "W+";
-							} else {
-								gameString += "W ";
-							}
-						} else if (currentFigure.istDame(currentFigure)) {
-							gameString += "S+";
-						} else {
-							gameString += "S ";
-						}
-					}
-					if(j != felder.length - 1) gameString += ";";
-				}
-				// End of line
-				gameString += "\n";
-			}
-			return gameString;
-	
-}
 
 
 
