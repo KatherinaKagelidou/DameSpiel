@@ -125,7 +125,7 @@ public class guiMail extends JDialog implements Serializable{
 				+ "Liebe Gruesse das B2 Team";
 		pdf = new datenzugriffPDF();
 //		pdf.speichern(spiel, filename);
-		mail email = new mail(an, betreff, text, "C:/Users/Katherina/Desktop/DameNeu.pdf", "DameNeu.pdf", null, null);
+		mail email = new mail(an, betreff, text, "C:/Users/Katherina/Desktop/DameNeu.pdf", "Dame.pdf", null, null);
 
 				
 	}

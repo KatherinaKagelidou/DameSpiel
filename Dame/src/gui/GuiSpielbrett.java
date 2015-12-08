@@ -231,10 +231,10 @@ public class GuiSpielbrett extends JOptionPane   implements Serializable{
 		pnlRight.add(fertig);
 		pnlRight.add(kiLaufen);
 
-//		Message message = new Message(textArea);
-//		message.redirectOut();
-//		message.redirectErr(Color.red, null);
-//		message.setMessageLines(1000);
+		Message message = new Message(textArea);
+		message.redirectOut();
+		message.redirectErr(Color.red, null);
+		message.setMessageLines(1000);
 
 		// this.getSpiel().starteSpiel();
 		
