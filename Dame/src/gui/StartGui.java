@@ -16,7 +16,7 @@ public class StartGui  implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private JButton button = new JButton("Jetzt spielen");
 	JFrame fra;
-	private JLabel backImgPanel = new JLabel(new ImageIcon("startbildNeu.png"));
+	private JLabel backImgPanel = new JLabel(new ImageIcon("pics\\startbildNeu.png"));
 	private EventHandler event;
 
 	MenuDialogLaden laden;

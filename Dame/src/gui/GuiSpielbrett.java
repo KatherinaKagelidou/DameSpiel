@@ -155,16 +155,16 @@ public class GuiSpielbrett extends JOptionPane   implements Serializable{
 		pnlRight = new JPanel();
 		pnlAdd = new JPanel();
 		pnlLeft = new JPanel();
-		imageBrett = new JLabel(new ImageIcon("brett-akt.png"));
-		figurSchwarz = new JLabel(new ImageIcon("schwarzStein100.png"));
-		figurWeiss = new JLabel(new ImageIcon("weissStein100.png"));
+		imageBrett = new JLabel(new ImageIcon("pics\\brett-akt.png"));
+		figurSchwarz = new JLabel(new ImageIcon("pics\\schwarzStein100.png"));
+		figurWeiss = new JLabel(new ImageIcon("pics\\weissStein100.png"));
 		fertig = new JButton("Zug beenden");
 		text = new JTextField();
 		kiLaufen = new JButton("Lauf KI           ");
 		
 		//Dame bild ändern 
-		dameWeiss = new ImageIcon("weissSteinKrone.png");
-		dameSchwarz= new ImageIcon("schwarzSteinKrone.png");
+		dameWeiss = new ImageIcon("pics\\weissSteinKrone.png");
+		dameSchwarz= new ImageIcon("pics\\schwarzSteinKrone.png");
 
 		textArea = new JTextArea();
 		textArea.setFont(textArea.getFont().deriveFont(Font.BOLD + Font.ITALIC,
@@ -188,14 +188,14 @@ public class GuiSpielbrett extends JOptionPane   implements Serializable{
 		// auf das Brett zu setzen
 		schwarz = new ArrayList<ImageIcon>();
 		for (int i = 1; i <= 30; i++) {
-			schwarz.add(new ImageIcon("schwarzerStein60.png"));
+			schwarz.add(new ImageIcon("pics\\schwarzerStein60.png"));
 		}
 		// liste fuer fie weissen figuren um diese in einer schleife
 		// auf das Brett zu setzen
 
 		weiss = new ArrayList<ImageIcon>();
 		for (int i = 1; i <= 30; i++) {
-			weiss.add(new ImageIcon("weissStein60.png"));
+			weiss.add(new ImageIcon("pics\\weissStein60.png"));
 
 		}
 		brettPanel = new JPanel();
