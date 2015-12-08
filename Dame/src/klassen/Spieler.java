@@ -1,5 +1,6 @@
 package klassen;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -7,14 +8,18 @@ import java.util.ArrayList;
  * @author B2
  *
  */
-public class Spieler {
+public class Spieler implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private Spielfigur figur;
 	private FarbEnum farbe;
 	private KI ki;
 	private static final int spielfigurMax =31;
 //	private ArrayList<Spielfigur> spielfiguren = new ArrayList<Spielfigur>();
-	private Spielfigur[] figurArray = new Spielfigur[spielfigurMax] ;
+	private Spielfigur[] figurArray = new Spielfigur[spielfigurMax];
 	private int spielfigurAnz=0;
 
 	
@@ -25,11 +30,14 @@ public class Spieler {
 	 * @param farbe für die spielfiguren
 	 */
 	public Spieler(String name, FarbEnum farbe, KI ki){
+	
 		this.setName(name);
 		this.setFarbe(farbe);
 		this.setKi(ki);
 		
 	}
+	
+	
 	
 	
 	public Spielfigur[] getFigurArray() {
@@ -45,8 +53,6 @@ public class Spieler {
 
 	public void setKi(KI ki){
 		this.ki=ki;
-		
-	
 	}
 	
 	public KI getKi() {
@@ -133,7 +139,7 @@ public class Spieler {
 	}
 	
 
-
+	
 
 
 	/**
@@ -141,7 +147,7 @@ public class Spieler {
 	 */
 	@Override 
 	public String toString(){
-		return getName() ;
+		return getName() + "";
 
 				
 				

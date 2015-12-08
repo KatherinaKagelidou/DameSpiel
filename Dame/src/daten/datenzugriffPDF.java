@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Properties;
 
+import klassen.Spiel;
+import klassen.iBediener;
+
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -119,6 +122,34 @@ public class datenzugriffPDF implements iDatenzugriff {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	
+
+	@Override
+	public void speichernCSV(String dateiname, Object spiel) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Object laden2(String filename) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+
+	@Override
+	public boolean saveGame(String path, String fileName, iBediener iBediener) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+//	@Override
+//	public void speichernCSV(String dateiname) {
+//		// TODO Auto-generated method stub
+//		
+//	}
 	
 
 

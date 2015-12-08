@@ -15,7 +15,10 @@ import java.util.ArrayList;
  */
 public class Spielbrett implements Serializable {
 
-	private static final long SerialVersion = 1l;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Spielfeld spielfeld;
 	private Spielbrett sb;
 	private Spielfeld[][] felder ;

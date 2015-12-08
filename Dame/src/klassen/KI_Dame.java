@@ -1,77 +1,60 @@
 package klassen;
 
 import java.io.Serializable;
-import java.util.Random;
+import java.util.ArrayList;
 
-public class KI_Dame extends KI implements Serializable {
+public class KI_Dame extends KI implements Serializable{
 
-	private static final long serialVersionUID = 1L;
-
-	private Spiel spiel;
-	private Spielfigur figur;
-	private Spielbrett spielbrett;
 	/**
-	 * der Konstruktor der Klasse KI
 	 * 
-	 * @param spieler
-	 *            ist die KI
 	 */
-	public KI_Dame() {
+	private static final long serialVersionUID = 1L;
+	
 
-		laufKI();
-	}
 
 	public KI_Dame(Spiel spiel) {
 		super(spiel);
 	}
-
-	//keine ahnung ob es richtig ist
-	//laufMethode da als parameter keine randomFigur übergeben werden kann wird auch nichts übergeben als parameter
-	//beim ausführen kommt immer eine nullppointer exception bei der ersten for schleife
-	// der Fehler  auch in der klasse spiel wenn neue spieler erstellt werden mit der uebegabe der ki
-	//iwas wird da falsch gemacht und nicht richtig erkannt 
-	   @Override
-		public void laufKI() {
-
-			String randomFigur = null;
-			String zielPos = null;
-
-			for (int i = 0; i < spielbrett.getFelder().length; i++) {
-				for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
-
-					randomFigur = (spielbrett.getFelder()[i][j].getFigur().getId());
-					// Spielfeld feld = spielbrett.getFelder()[i][j];
-					
-					generateFigurToInt(randomFigur);
+	
+	
+	@Override
+	public ArrayList<String> startZiel(){
+//		System.out.println(datenLaufen);
+//		System.out.println(spiel.anzahlFigur());
+		ArrayList<String> feld=null;
+		if(kannSchlagen==false){
+			datenSchlagen.clear();
+			while(kannSchlagen()==false){
+				if(uberprufteFigur.size()==spiel.anzahlFigur()){
+					uberprufteFigur.clear();
+					break;
 				}
 			}
-			
-			Spielfeld aktFeld = spiel.gebeFeld(randomFigur);
-
-			Spielfeld zielFeld = spiel.gebeFeld(zielPos);
-			Spielfigur figur = spiel.gebeFigur(aktFeld.getFigur().getId());
-
-			if (spiel.getSpielerAmZug().equals(FarbEnum.WEISS)) {
-				if (aktFeld.getFigur().getFarbe().equals(FarbEnum.WEISS)) {
-
-					spielbrett.Umwandler(randomFigur);
-					spielbrett.Umwandler(zielPos);
-					System.out.println("Random Figur " + randomFigur
-							+ "--------------------------------");
-				}
+			if(kannSchlagen==true){
+				feld=datenSchlagen;
+				ziel=datenSchlagen;
+				kannSchlagen=false;
+				return feld;
 			}
 		}
-       @Override
-	   public void generateFigurToInt(String s) {
-			Random random = new Random();
-
-			for (int i = 0; i < spiel.getFigurWeiss().length; i++) {
-
-				int n = random.nextInt(i);
-
-				spiel.getFigurWeiss()[n] = figur;
-
-				s = figur.getId();
+		
+		if(kannLaufen==false){
+			datenLaufen.clear();
+			while(kannLaufen()==false){
+			}
+			if(kannLaufen==true){
+				feld=datenLaufen;
+				ziel=datenLaufen;
+				kannLaufen=false;
 			}
 		}
+		return feld;
+	}
+	
+	
+
+	
+	
+	
+
 }

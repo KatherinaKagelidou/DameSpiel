@@ -2,6 +2,7 @@ package gui;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -13,7 +14,7 @@ import daten.DatenzugriffSerialisiert;
 import daten.datenzugriffPDF;
 import daten.iDatenzugriff;
 
-public class guiSpeicherSpiel extends JFrame{
+public class guiSpeicherSpiel extends JFrame implements  Serializable{
 
 
 		private static final long serialVersionUID = 1L;
@@ -35,7 +36,7 @@ public class guiSpeicherSpiel extends JFrame{
 		 * @param format das jeweilige format
 		 * @throws IOException 
 		 */
-		public guiSpeicherSpiel(int format) throws IOException{
+		public guiSpeicherSpiel(int format) {
 			this.format = format;
 			speichern();
 		}
@@ -44,7 +45,7 @@ public class guiSpeicherSpiel extends JFrame{
 		 * Methode zum speichern des Spielstandes
 		 * @throws IOException 
 		 */
-		private void speichern() throws IOException {
+		private void speichern()  {
 			if(format == SAVE_SER){
 				jfc.setSelectedFile(new File(defaultName+".ser"));
 				status = jfc.showSaveDialog(this);
@@ -127,15 +128,16 @@ public class guiSpeicherSpiel extends JFrame{
 			serialisieren.speichern(pfad, (Spiel) GuiSpielbrett.getSpiel());
 		}
 		
+//		
+		
 		/**
 		 * Methode zum pdf speichern
 		 * @param pfad der ausgewahelte speicherpfad
 		 * @throws IOException 
 		 */
-		public void saveGamePDF(String pfad) throws IOException{
+		public void saveGamePDF(String pfad) {
 			iDatenzugriff pdf = new datenzugriffPDF();
 			pdf.speichern(pfad, GuiSpielbrett.getSpiel());
-//			pdf.schliessen(GuiSpielbrett.getSpiel());
 			
 		}
 		
@@ -145,7 +147,10 @@ public class guiSpeicherSpiel extends JFrame{
 		 */
 		public void saveGameCSV(String pfad){
 			iDatenzugriff csv = new DatenzugriffCSV((Spiel) GuiSpielbrett.getSpiel());
-			csv.speichern(pfad, (Spiel) GuiSpielbrett.getSpiel());
+			csv.speichern(pfad,  GuiSpielbrett.getSpiel());
+
 		}
 
+		
+		
 }

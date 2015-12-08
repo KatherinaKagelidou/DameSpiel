@@ -5,6 +5,7 @@ package gui;
 import java.awt.GridLayout;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.Serializable;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -20,7 +21,11 @@ import daten.iDatenzugriff;
 /**
  * In dieser Klasse wird die Funktion zum Email versenden implementiert  
  */
-public class guiMail extends JDialog{
+public class guiMail extends JDialog implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static JFrame spielbrett;
 	private JButton jbSenden;
 	private JButton jbAbbrechen;

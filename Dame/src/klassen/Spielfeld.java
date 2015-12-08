@@ -9,7 +9,11 @@ import java.io.Serializable;
  */
 public class Spielfeld implements Serializable{
 	
-	private static final long SerialVersion = 1l;
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String id;
 	private Spielfigur figur;
 	private boolean hatSpielfigur = false;
@@ -98,6 +102,7 @@ public class Spielfeld implements Serializable{
 		.println("Die Figur "+ this.getFigur()+"auf Feld " + this.getId() + " wurde entfernt!");
 	
 			this.setFigur(null);
+			
 	}
 
 	/**

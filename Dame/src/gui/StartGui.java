@@ -65,4 +65,9 @@ public class StartGui {
 		return button;
 	}
 
+	public JFrame getFra() {
+		return fra;
+	}
+	
+
 }

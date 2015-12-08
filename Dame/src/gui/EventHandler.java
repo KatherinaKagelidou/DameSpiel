@@ -13,11 +13,13 @@ import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
-import daten.mail;
+import daten.DatenzugriffCSV;
 
 public class EventHandler implements ActionListener {
 
@@ -28,6 +30,7 @@ public class EventHandler implements ActionListener {
 	private GuiSpielbrett guiSpielbrett;
 	private MenuDialogLaden menuDialog;
 	private guiMail mail;
+
 	private iBediener i;
 	private Spiel spiel;
 
@@ -55,9 +58,6 @@ public class EventHandler implements ActionListener {
 		this.mail=mail;
 	}
 
-	/**
-	 * Methode actionPerformed fuer die events der buttons 
-	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String cmd = e.getActionCommand();
@@ -74,7 +74,8 @@ public class EventHandler implements ActionListener {
 
 			String name = spieler1AuswahlDialog.getNameEingabe().getText();
 		
-
+//		     String art="KI";
+			
 			if (name == null || name.length() < 2) {
 				JOptionPane.showMessageDialog(spieler1AuswahlDialog,
 						"Name muss mindestens 2 Zeichen enthalten!", "ERROR!",
@@ -86,6 +87,9 @@ public class EventHandler implements ActionListener {
 			
 
 			}
+//			if(spieler1AuswahlDialog.getArtAuswahl().getSelectedItem()){
+//				System.out.println("ich bin eine ki");
+//			}
 
 		}
 
@@ -106,6 +110,12 @@ public class EventHandler implements ActionListener {
 
 		}
 
+		if (cmd.equals("laden")) {
+			new GuiSpielLaden();
+			
+		}
+		
+		
 		if(guiSpielbrett!=null){
 //		for (JButton b:guiSpielbrett.getFelder()) {
 ////			if (cmd.equals(b.getText())&& guiSpielbrett.hatIcon(e)==true) {
@@ -116,103 +126,108 @@ public class EventHandler implements ActionListener {
 //				guiSpielbrett.lauf(e);
 //			}
 //		}
-			if(e.getSource()==guiSpielbrett.getText()){
-				System.out.println("TextFeld wurde geklickt!");
-			}
 			if (cmd.equals("ziehen")) {
 				guiSpielbrett.laufText();
 				
 			}
-			 
+			if (cmd.equals("laufKI")) {
+				guiSpielbrett.laufKI();
+
+			}
 			
 		}
 		
-		
-		
-		
-		 
-		if(cmd.equals("ser")){
-			try {
+		 if(cmd.equals("ser")){
 				new guiSpeicherSpiel(guiSpeicherSpiel.SAVE_SER);
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
 			}
-		}
 		 if(cmd.equals("csv")){
-			try {
-				new guiSpeicherSpiel(guiSpeicherSpiel.SAVE_CSV);
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			 JFileChooser fc = new JFileChooser("Spielstand sichern (CSV)");
+				fc.addChoosableFileFilter(new FileNameExtensionFilter("CSV - File", "csv"));
+				fc.setAcceptAllFileFilterUsed(false);
+				int result = fc.showSaveDialog(null);
+
+				boolean error = false;
+
+				switch (result) {
+				case JFileChooser.APPROVE_OPTION:
+					String dirPath = fc.getCurrentDirectory().toString();
+					if(fc.getSelectedFile() != null){
+						String fileName = fc.getSelectedFile().getName();
+						
+						DatenzugriffCSV savegame = new DatenzugriffCSV(spiel);
+						if(savegame.saveGame(dirPath, fileName, GuiSpielbrett.getSpiel())){
+							
+							return;
+						}else error = true;
+					}
+//				new guiSpeicherSpiel(guiSpeicherSpiel.SAVE_CSV);
+					}
 			}
-		}
-		 if(cmd.equals("pdf")){
-			spielbrettPNG();
-			try {
-				new guiSpeicherSpiel(guiSpeicherSpiel.SAVE_PDF);
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			
-			
-			}
-		 
-		 else if (cmd.equals("mail")){
-				new guiMail(guiSpielbrett.getFrame());
-			}
-			
-			else if (cmd.equals("Auswaehlen")){
-				new mailAuswahl();
-			}
-			
-			else if (cmd.equals("Abbrechen")){
-				mail.setVisible(false);
-				mail.dispose();
-				mail.getOwner().setEnabled(true);
-			}
-			
-			else if (cmd.equals("Senden")){
-			  	String EmailPattern="^[a-zA-Z0-9._-]{1,20}@[a-zA-Z0-9]{1,20}.[a-zA-Z]{2,3}$";
-	        	
-	        	Pattern pattern=Pattern.compile(EmailPattern);
-	        	Matcher regexMatcher= pattern.matcher(mail.jtfEmpfaenger.getText());
-	        	
-	        	if(!regexMatcher.matches()){
-	        		JOptionPane.showMessageDialog(null, "Email ist falsch !");
-	        	}
-	        	else{
-	        		String an = mail.jtfEmpfaenger.getText();
-	        		try{
-	        			mail.sendEmail(an);
-	        		}catch (Exception ex){
-	        			Object[] options = {"OK"};
-	        			JOptionPane.showOptionDialog(mail.getJDialog(), ex.getMessage(), "Achtung!", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-						return;
-	        		}
-	        		Object[] options = {"OK"};
-					JOptionPane.showOptionDialog(mail.getJDialog(), "E-Mail versendet!", "Erfolg!", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+			 if(cmd.equals("pdf")){
+				spielbrettPNG();
+				
+					new guiSpeicherSpiel(guiSpeicherSpiel.SAVE_PDF);
+				
+				
+				}
+			 
+			 else if (cmd.equals("mail")){
+					new guiMail(guiSpielbrett.getFrame());
+				}
+				
+				else if (cmd.equals("Auswaehlen")){
+					new mailAuswahl();
+				}
+				
+				else if (cmd.equals("Abbrechen")){
+					mail.setVisible(false);
 					mail.dispose();
 					mail.getOwner().setEnabled(true);
-	        	}
-			}
-			
-		
-		}
-	 public void spielbrettPNG(){
-			JPanel panel=guiSpielbrett.getBrettPanel();
-			BufferedImage bild=new BufferedImage(panel.getSize().width,panel.getSize().height,BufferedImage.TYPE_INT_RGB);
-			panel.paint(bild.createGraphics());
-			File datei=new File("brett.png");
-			try{
-//				datei.createNewFile();
-				ImageIO.write(bild, "png", datei);
+				}
 				
-			}catch (IOException e){
-				e.printStackTrace();
+				else if (cmd.equals("Senden")){
+				  	String EmailPattern="^[a-zA-Z0-9._-]{1,20}@[a-zA-Z0-9]{1,20}.[a-zA-Z]{2,3}$";
+		        	
+		        	Pattern pattern=Pattern.compile(EmailPattern);
+		        	Matcher regexMatcher= pattern.matcher(mail.jtfEmpfaenger.getText());
+		        	
+		        	if(!regexMatcher.matches()){
+		        		JOptionPane.showMessageDialog(null, "Email ist falsch !");
+		        	}
+		        	else{
+		        		String an = mail.jtfEmpfaenger.getText();
+		        		try{
+		        			mail.sendEmail(an);
+		        		}catch (Exception ex){
+		        			Object[] options = {"OK"};
+		        			JOptionPane.showOptionDialog(mail.getJDialog(), ex.getMessage(), "Achtung!", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+							return;
+		        		}
+		        		Object[] options = {"OK"};
+						JOptionPane.showOptionDialog(mail.getJDialog(), "E-Mail versendet!", "Erfolg!", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+						mail.dispose();
+						mail.getOwner().setEnabled(true);
+		        	}
+				}
+				
+			
 			}
+		 public void spielbrettPNG(){
+				JPanel panel=guiSpielbrett.getBrettPanel();
+				BufferedImage bild=new BufferedImage(panel.getSize().width,panel.getSize().height,BufferedImage.TYPE_INT_RGB);
+				panel.paint(bild.createGraphics());
+				File datei=new File("brett.png");
+				try{
+//					datei.createNewFile();
+					ImageIO.write(bild, "png", datei);
+					
+				}catch (IOException e){
+					e.printStackTrace();
+				}
+			}
+//		}
+		
 		}
 //	}
 
-}
+

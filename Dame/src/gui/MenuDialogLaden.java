@@ -29,9 +29,11 @@ public class MenuDialogLaden extends JPanel {
 	JMenuItem datei, laden;
 	JPanel pnlOben;
 	private JFileChooser _fileChooser = new JFileChooser();
+	private EventHandler e;
 
 	public MenuDialogLaden() {
 
+		e=new EventHandler(this);
 		pnlOben = new JPanel();
 		pnlOben.setLayout(new GridLayout(0, 1, 5, 5));
 
@@ -47,7 +49,7 @@ public class MenuDialogLaden extends JPanel {
 
 		//
 		laden.addActionListener(new OpenAction());
-		// addListener() ;
+		 addListener() ;
 
 	}
 
@@ -64,13 +66,13 @@ public class MenuDialogLaden extends JPanel {
 
 	}
 
-	// private void addListener() {
-	//
-	// laden.addActionListener(new EventHandler(this));
-	// laden.setActionCommand("Spiel Laden");
-	//
-	//
-	//
-	// }
+	 private void addListener() {
+	
+	 laden.addActionListener(new EventHandler(this));
+	 laden.setActionCommand("laden");
+	
+	
+	
+	 }
 
 }

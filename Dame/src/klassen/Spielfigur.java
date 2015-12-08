@@ -1,18 +1,25 @@
 package klassen;
+
+import java.io.Serializable;
+
 /**
  * Klasse Spielfigur
  * @author B2
  *
  */
-public class Spielfigur {
+public class Spielfigur implements Serializable{
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private FarbEnum farbe;
 	private String id;
 	private String position;
 	private Spielfeld spielfeld;
 	private static int counter = 1;
-	private boolean istDame;
+	private boolean istDame=false;
 	
 	
 	
@@ -38,20 +45,17 @@ public class Spielfigur {
 
 	}
 
-	public boolean getDame(Spielfigur figur) {
-		if (figur.getId().startsWith("w")) {
-		if (figur.getPosition().contains("A")) {
-			istDame = true;
-		}
+	public boolean getDame() {
+		return istDame;
 	}
-	if (figur.getId().startsWith("b")) {
-		if (figur.getPosition().contains("L")) {
-			istDame = true;
-
+	
+	public boolean istDame(Spielfigur figur){
+		if(figur.getDame()==true){
+		return true;
 		}
-
-	}
-	return istDame;
+		return false;	
+		
+	
 	}
 	
 	public String getId(){
@@ -172,8 +176,7 @@ public class Spielfigur {
 	@Override
 	public String toString() {
 
-		return "Spielfigur " + this.getId()+ " mit der Farbe " + 
-		this.getFarbe() + " auf Feld " + this.getPosition() +  " ist Dame " + getDame(this);
+		return  this.getId()+ " ---> " + this.getPosition() +  " ist Dame " + getDame();
 
 	}
 

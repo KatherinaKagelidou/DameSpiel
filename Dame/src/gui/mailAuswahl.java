@@ -1,6 +1,7 @@
 package gui;
 
 import java.io.File;
+import java.io.Serializable;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -11,7 +12,7 @@ import javax.swing.JPanel;
 /**
  * In dieser Klasse die Auswahl de Email implementiert
  */
-public class mailAuswahl extends JFrame {
+public class mailAuswahl extends JFrame implements Serializable  {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel jl = new JLabel("");

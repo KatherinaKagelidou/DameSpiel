@@ -1,488 +1,463 @@
 package klassen;
 
-import gui.GuiSpielbrett;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Random;
 
-abstract class KI implements Serializable {
+public abstract class KI implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private Spiel spiel;
+	protected Spiel spiel;
 	private Spieler spieler;
-	private Spielfigur figur;
-	private Spielbrett spielbrett;
-	private boolean kannLaufen = false;
-	private boolean kannSchlagen = false;
-	private ArrayList<String> datenLaufen = new ArrayList<String>();
-	private ArrayList<String> datenSchlagen = new ArrayList<String>();
-	private GuiSpielbrett gui;
-	private FarbEnum farbe;
-	private Spielfeld feld;
-	private boolean willSchlagenKI = false;
-
-	public KI() {
-
-	}
+	protected boolean kannLaufen = false;
+	protected boolean kannSchlagen = false;
+	protected ArrayList<String> datenLaufen = new ArrayList<String>();
+	protected ArrayList<String> datenSchlagen = new ArrayList<String>();
+	protected ArrayList<Spielfigur> uberprufteFigur=new ArrayList<Spielfigur>();
+	protected ArrayList<String> ziel=new ArrayList<String>();
+	private ArrayList<Spielfigur> neuFullWeiss=new ArrayList<Spielfigur>();
+	private ArrayList<Spielfigur> neuFullSchwarz=new ArrayList<Spielfigur>();
+	private boolean binDrinKi=false;
 
 	/**
 	 * der Konstruktor der Klasse mit der Komposition zu Spieler
 	 * 
 	 * @param spieler
 	 */
+	
+
 
 	public KI(Spiel spiel) {
-		this.spiel = spiel;
+//		if(spieler==null){
+//			throw new RuntimeException("KI kann nicht ohne Spieler existieren !");
+//		}
+		this.setSpiel(spiel);
+		this.setKannSchlagen(kannSchlagen);
+		this.setKannLaufen(kannLaufen);
+		
+	}
+	
 
+	public ArrayList<String> getZiel() {
+		return ziel;
 	}
 
-	/**
-	 * Konstruktor der abstakten Klasse KI
-	 */
+	public Spiel getSpiel() {
+		return spiel;
+	}
 
-	public KI(Spieler spieler, Spielbrett spielbrett) {
+	public void setSpiel(Spiel spiel) {
+		this.spiel = spiel;
+	}
 
+	public boolean getKannLaufen() {
+		return kannLaufen;
+	}
+
+	public void setKannLaufen(boolean kannLaufen) {
+		this.kannLaufen = kannLaufen;
+	}
+
+	public boolean getKannSchlagen() {
+		return kannSchlagen;
+	}
+
+	public void setKannSchlagen(boolean kannSchlagen) {
+		this.kannSchlagen = kannSchlagen;
+	}
+
+	public void setSpieler(Spieler spieler) {
 		this.spieler = spieler;
-		this.spielbrett = spielbrett;
 	}
 
 	public Spieler getSpieler() {
 		return this.spieler;
 	}
-
-	// KI-denken
-
-	public void KIdenken() {
-
-	}
-
-	//entweder die methode zum generieren der figuren in random oder in der 
-	//methode laufen selbst implementiert -noch nichts getestet  und was sinvoller ist 
-	public void generateFigurToInt(String s) {
-		Random random = new Random();
-
-		for (int i = 0; i < spiel.getFigurWeiss().length; i++) {
-
-			int n = random.nextInt(i);
-
-			spiel.getFigurWeiss()[n] = figur;
-
-			s = figur.getId();
+	
+	public void putArrayKI(){
+		if(binDrinKi==false){
+			spiel.putArray();
+		}
+		
+		for (Spielfigur each : spiel.getFigurWeiss2()){
+			neuFullWeiss.add(each);	
+			binDrinKi=true;
+		}
+		for (Spielfigur each : spiel.getFigurSchwarz2()){
+			neuFullSchwarz.add(each);
+			binDrinKi=true;
 		}
 	}
+	
 
-	// LAUFEN
+	public Spielfigur randomFigur() {
+		Spielfigur f=null;
 
+		if(spiel.getSpielerAmZug().getFarbe().equals(FarbEnum.WEISS)){
+				int n=(int)(30 * Math.random()) +1;
+				f=spiel.getFigurWeiss()[n];
+				
+		}else if(spiel.getSpielerAmZug().getFarbe().equals(FarbEnum.SCHWARZ)){
+				int n=(int)(30 * Math.random()) +1;
+				f=spiel.getFigurSchwarz()[n];
+		}
+		return f;
+	}
+	
+	
+	
+
+
+	//------------------------------LAUFEN--------------------------
+	
 	public boolean kannLaufen() {
 		FarbEnum farbe = spiel.getSpielerAmZug().getFarbe();
-		switch (farbe) {
-		case WEISS:
-			for (int i = spielbrett.getFelder().length - 1; i >= 0; i--) {
-
-				for (int j = spielbrett.getFelder().length - 1; j >= 0; j--) {
-
-					if (kannLaufenLinksWeiss(spielbrett.getFelder()[i][j])
-							|| kannLaufenRechtsWeiss(spielbrett.getFelder()[i][j])) {
-
-						return true;
+		Spielfigur figur=randomFigur();
+		 if(spiel.istFigurDrin(figur.getId())==true){
+			switch (farbe) {
+			case WEISS:
+				if (kannLaufenLinksWeiss(figur.getFeld())
+						|| kannLaufenRechtsWeiss(figur.getFeld())) {
+					kannLaufen=true;
+					return true;
 					}
-
+				break;
+				
+			case SCHWARZ:
+				if (kannLaufenLinksSchwarz(figur.getFeld())
+						|| kannLaufenRechtsSchwarz(figur.getFeld())) {
+//					System.out.println("schwarz "+datenLaufen);
+					kannLaufen=true;
+					return true;
 				}
+				break;
 			}
-			break;
-		case SCHWARZ:
-			for (int i = 0; i < spielbrett.getFelder().length; i++) {
-				for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
-
-					if (kannLaufenLinksSchwarz(spielbrett.getFelder()[i][j])
-							|| kannLaufenRechtsSchwarz(spielbrett.getFelder()[i][j])) {
-						return true;
-					}
-				}
-			}
-			break;
+//			System.out.println("im laufen drin"+datenLaufen);
 		}
 		return false;
-
 	}
 
 	private boolean kannLaufenRechtsSchwarz(Spielfeld feld) {
-
 		kannLaufen = false;
 		if (feld.getFarbeFeld().equals(FarbEnum.SCHWARZ)) {
 			if (feld.getFigur() != null) {
-
-				if (spiel.pruefeID1(feld)) {
+				if (spiel.pruefeOben(feld)) {
 					return kannLaufen = false;
-				} else if (feld.getFigur().getFarbe().equals(FarbEnum.SCHWARZ)) {
-
-					Spielfeld feld2 = spiel.getNachbar(feld.getId(), false);
-
-					if (spiel.pruefeID1(feld2)) {
-						kannLaufen = false;
-					} else {
-						if (spiel.pruefeOben(feld2)) {
-							kannLaufen = false;
-						} else if ((feld2.getFigur() != null)) {
+				}if(spiel.pruefeID2(feld)){ 
+					return kannLaufen = false;
+				}else if (feld.getFigur().getFarbe().equals(FarbEnum.SCHWARZ)) {
+					Spielfeld feld2 = spiel.getNachbar(feld.getId(), true);
+					if ((feld2.getFigur() != null)) {
 							kannLaufen = false;
 						}
-
-						if (feld2.getFigur() == null) {
-							kannLaufen = true;
-							datenLaufen.add(feld.getId());
-							datenLaufen.add(feld2.getId());
+					if (feld2.getFigur() == null) {
+						kannLaufen = true;
+						datenLaufen.add(feld.getId());
+						datenLaufen.add(feld2.getId());
 
 						}
 					}
 				}
 			}
-		}
 		return kannLaufen;
-
-	}
+		}
 
 	private boolean kannLaufenLinksSchwarz(Spielfeld feld) {
-
 		kannLaufen = false;
 		if (feld.getFarbeFeld().equals(FarbEnum.SCHWARZ)) {
 			if (feld.getFigur() != null) {
-
-				if (spiel.pruefeID1(feld)) {
+				if (spiel.pruefeOben(feld)) {
 					return kannLaufen = false;
-				} else if (feld.getFigur().getFarbe().equals(FarbEnum.SCHWARZ)) {
-
+				}if(spiel.pruefeID1(feld)){ 
+					return kannLaufen = false;
+				}else if (feld.getFigur().getFarbe().equals(FarbEnum.SCHWARZ)) {
 					Spielfeld feld2 = spiel.getNachbar(feld.getId(), false);
-
-					if (spiel.pruefeID1(feld2)) {
-						kannLaufen = false;
-					} else {
-						if (spiel.pruefeOben(feld2)) {
-							kannLaufen = false;
-						} else if ((feld2.getFigur() != null)) {
+					if ((feld2.getFigur() != null)) {
 							kannLaufen = false;
 						}
-						if (feld2.getFigur() == null) {
-							kannLaufen = true;
-							datenLaufen.add(feld.getId());
-							datenLaufen.add(feld2.getId());
+					if (feld2.getFigur() == null) {
+						kannLaufen = true;
+						datenLaufen.add(feld.getId());
+						datenLaufen.add(feld2.getId());
 
 						}
 					}
 				}
 			}
-		}
 		return kannLaufen;
-
-	}
+		}
 
 	private boolean kannLaufenRechtsWeiss(Spielfeld feld) {
-
 		kannLaufen = false;
 		if (feld.getFarbeFeld().equals(FarbEnum.SCHWARZ)) {
 			if (feld.getFigur() != null) {
-
-				if (spiel.pruefeID1(feld)) {
+				if (spiel.pruefeUnten(feld)) {
 					return kannLaufen = false;
-				} else if (feld.getFigur().getFarbe().equals(FarbEnum.WEISS)) {
+				}if(spiel.pruefeID1(feld)){ 
+					return kannLaufen = false;
+				}else if (feld.getFigur().getFarbe().equals(FarbEnum.WEISS)) {
 					Spielfeld feld2 = spiel.getNachbar(feld.getId(), true);
-
-					if (spiel.pruefeID1(feld2)) {
-						kannLaufen = false;
-					} else {
-						if (spiel.pruefeUnten(feld2)) {
+					if ((feld2.getFigur() != null)) {
 							kannLaufen = false;
-						} else
-
-						if ((feld2.getFigur() != null)) {
-							kannLaufen = false;
-						} else if (feld2.getFigur() == null) {
-							kannLaufen = true;
-							datenLaufen.add(feld.getId());
-							datenLaufen.add(feld2.getId());
+						}
+					if (feld2.getFigur() == null) {
+						kannLaufen = true;
+						datenLaufen.add(feld.getId());
+						datenLaufen.add(feld2.getId());
 
 						}
 					}
 				}
 			}
-		}
 		return kannLaufen;
-
-	}
+		}
 
 	private boolean kannLaufenLinksWeiss(Spielfeld feld) {
-
 		kannLaufen = false;
-
 		if (feld.getFarbeFeld().equals(FarbEnum.SCHWARZ)) {
 			if (feld.getFigur() != null) {
-
-				if (spiel.pruefeID2(feld)) {
+				if (spiel.pruefeUnten(feld)) {
 					return kannLaufen = false;
-				} else if (feld.getFigur().getFarbe().equals(FarbEnum.WEISS)) {
+				}if(spiel.pruefeID2(feld)){ 
+					return kannLaufen = false;
+				
+				}else if (feld.getFigur().getFarbe().equals(FarbEnum.WEISS)) {
 					Spielfeld feld2 = spiel.getNachbar(feld.getId(), false);
-
-					if (spiel.pruefeID2(feld2)) {
-						kannLaufen = false;
-					} else {
-						if (spiel.pruefeUnten(feld2)) {
+					if ((feld2.getFigur() != null)) {
 							kannLaufen = false;
-						} else
-
-						if ((feld2.getFigur() != null)) {
-							kannLaufen = false;
-
 						}
-
-						else if (feld2.getFigur() == null) {
-							kannLaufen = true;
-							datenLaufen.add(feld.getId());
-							datenLaufen.add(feld2.getId());
+					if (feld2.getFigur() == null) {
+						kannLaufen = true;
+						datenLaufen.add(feld.getId());
+						datenLaufen.add(feld2.getId());
 
 						}
 					}
 				}
 			}
-		}
 		return kannLaufen;
-
-	}
-
-	// SCHLAGEN
-
-	public boolean kannSchlagenRechtsSchwarz(Spielfeld feld) {
-
-		kannSchlagen = false;
-		if (feld.getFarbeFeld().equals(FarbEnum.SCHWARZ)) {
-			if (feld.getFigur() != null) {
-
-				if (spiel.pruefeID2(feld)) {
-					return kannSchlagen = false;
-				} else if (feld.getFigur().getFarbe().equals(FarbEnum.SCHWARZ)) {
-					Spielfeld feld2 = spiel.getNachbar(feld.getId(), true);
-
-					if (spiel.pruefeID2(feld2)) {
-						kannSchlagen = false;
-					} else {
-						if (spiel.pruefeOben(feld2)) {
-							kannSchlagen = false;
-						} else
-
-						if ((feld2.getFigur() != null)
-								&& (feld2.getFigur().getFarbe()
-										.equals(FarbEnum.WEISS))) {
-							Spielfeld feld3 = spiel.getNachbar(feld2.getId(),
-									true);
-
-							if (feld3.getFigur() == null) {
-								kannSchlagen = true;
-								datenSchlagen.add(feld.getId());
-								datenSchlagen.add(feld2.getId());
-								datenSchlagen.add(feld3.getId());
-							} else {
-								kannSchlagen = false;
-							}
-						} else {
-							kannSchlagen = false;
-						}
-					}
-				}
-			}
 		}
-		return kannSchlagen;
 
-	}
+    
+	//------------------------------SCHLAGEN------------------------
+	
 
-	public boolean kannSchlagenLinksSchwarz(Spielfeld feld) {
-
-		kannSchlagen = false;
-		if (feld.getFarbeFeld().equals(FarbEnum.SCHWARZ)) {
-			if (feld.getFigur() != null) {
-
-				if (spiel.pruefeID1(feld)) {
-					return kannSchlagen = false;
-				} else if (feld.getFigur().getFarbe().equals(FarbEnum.SCHWARZ)) {
-
-					Spielfeld feld2 = spiel.getNachbar(feld.getId(), false);
-
-					if (spiel.pruefeID1(feld2)) {
-						kannSchlagen = false;
-					} else {
-						if (spiel.pruefeOben(feld2)) {
-							kannSchlagen = false;
-						} else
-
-						if ((feld2.getFigur() != null)
-								&& (feld2.getFigur().getFarbe()
-										.equals(FarbEnum.WEISS))) {
-							Spielfeld feld3 = spiel.getNachbar(feld2.getId(),
-									false);
-							if (feld3.getFigur() == null) {
-								kannSchlagen = true;
-								datenSchlagen.add(feld.getId());
-								datenSchlagen.add(feld2.getId());
-								datenSchlagen.add(feld3.getId());
-							} else {
-								kannSchlagen = false;
-							}
-						} else {
-							kannSchlagen = false;
-						}
-					}
-				}
-			}
-		}
-		return kannSchlagen;
-
-	}
-
-	public boolean kannSchlagenRechtsWeiss(Spielfeld feld) {
-
-		kannSchlagen = false;
-		if (feld.getFarbeFeld().equals(FarbEnum.SCHWARZ)) {
-			if (feld.getFigur() != null) {
-
-				if (spiel.pruefeID1(feld)) {
-					return kannSchlagen = false;
-				} else if (feld.getFigur().getFarbe().equals(FarbEnum.WEISS)) {
-					Spielfeld feld2 = spiel.getNachbar(feld.getId(), true);
-
-					if (spiel.pruefeID1(feld2)) {
-						kannSchlagen = false;
-					} else {
-						if (spiel.pruefeUnten(feld2)) {
-							kannSchlagen = false;
-						} else
-
-						if ((feld2.getFigur() != null)
-								&& (feld2.getFigur().getFarbe()
-										.equals(FarbEnum.SCHWARZ))) {
-							Spielfeld feld3 = spiel.getNachbar(feld2.getId(),
-									true);
-							if (feld3.getFigur() == null) {
-								kannSchlagen = true;
-								datenSchlagen.add(feld.getId());
-								datenSchlagen.add(feld2.getId());
-								datenSchlagen.add(feld3.getId());
-							} else {
-								kannSchlagen = false;
-							}
-						} else {
-							kannSchlagen = false;
-						}
-					}
-				}
-			}
-		}
-		return kannSchlagen;
-
-	}
-
-	public boolean kannSchlagenLinksWeiss(Spielfeld feld) {
-
-		kannSchlagen = false;
-
-		if (feld.getFarbeFeld().equals(FarbEnum.SCHWARZ)) {
-			if (feld.getFigur() != null) {
-
-				if (spiel.pruefeID2(feld)) {
-					return kannSchlagen = false;
-				} else if (feld.getFigur().getFarbe().equals(FarbEnum.WEISS)) {
-					Spielfeld feld2 = spiel.getNachbar(feld.getId(), false);
-
-					if (spiel.pruefeID2(feld2)) {
-						kannSchlagen = false;
-					} else {
-						if (spiel.pruefeUnten(feld2)) {
-							kannSchlagen = false;
-						} else
-
-						if ((feld2.getFigur() != null)
-								&& (feld2.getFigur().getFarbe()
-										.equals(FarbEnum.SCHWARZ))) {
-							Spielfeld feld3 = spiel.getNachbar(feld2.getId(),
-									false);
-							if (feld3.getFigur() == null) {
-								kannSchlagen = true;
-								datenSchlagen.add(feld.getId());
-								datenSchlagen.add(feld2.getId());
-								datenSchlagen.add(feld3.getId());
-							} else {
-								kannSchlagen = false;
-							}
-						} else {
-							kannSchlagen = false;
-						}
-					}
-				}
-			}
-		}
-		return kannSchlagen;
-
-	}
-
+		
+	
+	
 	public boolean kannSchlagen() {
-		FarbEnum farbe = spiel.getSpielerAmZug().getFarbe();
-		switch (farbe) {
-		case WEISS:
-			for (int i = spielbrett.getFelder().length - 1; i >= 0; i--) {
+        FarbEnum farbe = spiel.getSpielerAmZug().getFarbe();
+        Spielfigur figur=randomFigur();
 
-				for (int j = spielbrett.getFelder().length - 1; j >= 0; j--) {
+        if(spiel.istFigurDrin(figur.getId())==true){
+        	if(uberprufteFigur.size()>=1){
+            	
+           	 if(uberprufteFigur.contains(figur)){
+//           		 System.out.println("FIGUR---"+figur.getId());
+           		 for(int i=0;i<uberprufteFigur.size();i++){
+    					if(figur==uberprufteFigur.get(i)){
+    						uberprufteFigur.remove(uberprufteFigur.get(i));
+    					}
+    				}
+                }
+           	 uberprufteFigur.add(figur);
+           }else{
+           	 uberprufteFigur.add(figur);
+           }
+        	
+        	
+          
+           switch (farbe) {
+           case WEISS:
+           	if (kannSchlagenLinksWeiss(figur.getFeld())
+           			|| kannSchlagenRechtsWeiss(figur.getFeld())){
+           		kannSchlagen=true;
+           		return true;
+           	}
+           	break;
+           case SCHWARZ:
+           	if (kannSchlagenLinksSchwarz(figur.getFeld())
+           			|| kannSchlagenRechtsSchwarz(figur.getFeld())){
+           		kannSchlagen=true;
+           		return true;
+           	}
+           	break;
+           }
+        }
+        return false;
+    }
+	
+	public boolean kannSchlagenRechtsSchwarz(Spielfeld feld) {
+		
+        kannSchlagen = false;
+        if (feld.getFarbeFeld().equals(FarbEnum.SCHWARZ)) {
+            if (feld.getFigur() != null) {
+            
+            if (spiel.pruefeID2(feld)) {
+                return kannSchlagen = false;
+            } else if(spiel.pruefeOben(feld)){
+              	 return kannSchlagen = false;
+            } else if (feld.getFigur().getFarbe().equals(FarbEnum.SCHWARZ)) {
+                Spielfeld feld2 = spiel.getNachbar(feld.getId(), true);
+                
+                if(spiel.pruefeID2(feld2)){
+                    kannSchlagen=false;
+                }else{
+                	if(spiel.pruefeOben(feld2)){
+                		kannSchlagen=false;
+                	}else
+                
+                if ((feld2.getFigur() != null)
+                        && (feld2.getFigur().getFarbe().equals(FarbEnum.WEISS))) {
+                    Spielfeld feld3 = spiel.getNachbar(feld2.getId(), true);
+                    
+                    if (feld3.getFigur() == null) {
+                        kannSchlagen = true;
+                        datenSchlagen.add(feld.getId());
+                        datenSchlagen.add(feld2.getId());
+                        datenSchlagen.add(feld3.getId());
+                    } else {
+                        kannSchlagen = false;
+                    }
+                } else {
+                    kannSchlagen = false;
+                }
+            }
+        }}}
+        return kannSchlagen;
 
-					if (kannSchlagenLinksWeiss(spielbrett.getFelder()[i][j])
-							|| kannSchlagenRechtsWeiss(spielbrett.getFelder()[i][j])) {
+    }
 
-						return true;
-					}
+    public boolean kannSchlagenLinksSchwarz(Spielfeld feld) {
 
-				}
-			}
-			break;
-		case SCHWARZ:
-			for (int i = 0; i < spielbrett.getFelder().length; i++) {
-				for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
+        kannSchlagen = false;
+        if (feld.getFarbeFeld().equals(FarbEnum.SCHWARZ)) {
+            if (feld.getFigur() != null) {
+            
+            if (spiel.pruefeID1(feld)) {
+                return kannSchlagen = false;
+            } else if(spiel.pruefeOben(feld)){
+              	 return kannSchlagen = false;
+            } else if (feld.getFigur().getFarbe().equals(FarbEnum.SCHWARZ)) {
+            
+                Spielfeld feld2 = spiel.getNachbar(feld.getId(), false);
+                
+                if(spiel.pruefeID1(feld2)){
+                    kannSchlagen=false;
+                }else{
+                	if(spiel.pruefeOben(feld2)){
+                		kannSchlagen=false;
+                	}else
+                
+                if ((feld2.getFigur() != null)
+                        && (feld2.getFigur().getFarbe().equals(FarbEnum.WEISS))) {
+                    Spielfeld feld3 = spiel.getNachbar(feld2.getId(), false);
+                    if (feld3.getFigur() == null) {
+                        kannSchlagen = true;
+                        datenSchlagen.add(feld.getId());
+                        datenSchlagen.add(feld2.getId());
+                        datenSchlagen.add(feld3.getId());
+                    } else {
+                        kannSchlagen = false;
+                    }
+                } else {
+                    kannSchlagen = false;
+                }
+            }
+        }}}
+        return kannSchlagen;
 
-					if (kannSchlagenLinksSchwarz(spielbrett.getFelder()[i][j])
-							|| kannSchlagenRechtsSchwarz(spielbrett.getFelder()[i][j])) {
-						return true;
-					}
-				}
-			}
-			break;
-		}
-		return false;
+    }
 
-	}
+    public boolean kannSchlagenRechtsWeiss(Spielfeld feld) {
 
-	//laufMethode da als parameter keine randomFigur übergeben werden kann wird auch keine übergeben
-	//beim ausführen kommt immer eine nullppointer exception bei der ersten for schleife
-	public void laufKI() {
+        
+        kannSchlagen = false;
+        if (feld.getFarbeFeld().equals(FarbEnum.SCHWARZ)) {
+            if (feld.getFigur() != null) {
+            
+            if (spiel.pruefeID1(feld)) {
+                return kannSchlagen = false;
+            } else if(spiel.pruefeUnten(feld)){
+              	 return kannSchlagen = false;
+            } else if (feld.getFigur().getFarbe().equals(FarbEnum.WEISS)) {
+                Spielfeld feld2 = spiel.getNachbar(feld.getId(), true);
+                
+                if(spiel.pruefeID1(feld2)){
+                    kannSchlagen=false;
+                }else{
+                	if(spiel.pruefeUnten(feld2)){
+                		kannSchlagen=false;
+                	}else
+                
+                if ((feld2.getFigur() != null)
+                        && (feld2.getFigur().getFarbe().equals(FarbEnum.SCHWARZ))) {
+                    Spielfeld feld3 = spiel.getNachbar(feld2.getId(), true);
+                    if (feld3.getFigur() == null) {
+                        kannSchlagen = true;
+                        datenSchlagen.add(feld.getId());
+                        datenSchlagen.add(feld2.getId());
+                        datenSchlagen.add(feld3.getId());
+                    } else {
+                        kannSchlagen = false;
+                    }
+                } else {
+                    kannSchlagen = false;
+                }
+            }
+        }}}
+        return kannSchlagen;
 
-//		String randomFigur = null;
-//		String zielPos = null;
-//
-//		for (int i = 0; i < spielbrett.getFelder().length; i++) {
-//			for (int j = 0; j < spielbrett.getFelder()[i].length; j++) {
-//
-//				randomFigur = (spielbrett.getFelder()[i][j].getFigur().getId());
-//				// Spielfeld feld = spielbrett.getFelder()[i][j];
-//			}
-//		}
-//
-//		Spielfeld aktFeld = spiel.gebeFeld(randomFigur);
-//
-//		Spielfeld zielFeld = spiel.gebeFeld(zielPos);
-//		Spielfigur figur = spiel.gebeFigur(aktFeld.getFigur().getId());
-//
-//		if (spiel.getSpielerAmZug().equals(FarbEnum.WEISS)) {
-//			if (aktFeld.getFigur().getFarbe().equals(FarbEnum.WEISS)) {
-//
-//				spielbrett.Umwandler(randomFigur);
-//				spielbrett.Umwandler(zielPos);
-//				System.out.println("Random Figur " + randomFigur
-//						+ "--------------------------------");
-//			}
-//		}
-	}
+    }
+
+    public boolean kannSchlagenLinksWeiss(Spielfeld feld) {
+
+        kannSchlagen = false;
+
+        if (feld.getFarbeFeld().equals(FarbEnum.SCHWARZ)) {
+            if (feld.getFigur() != null) {
+                
+            if (spiel.pruefeID2(feld)) {
+                return kannSchlagen = false;
+            } else if(spiel.pruefeUnten(feld)){
+              	 return kannSchlagen = false;
+            } else if (feld.getFigur().getFarbe().equals(FarbEnum.WEISS)) {
+                Spielfeld feld2 = spiel.getNachbar(feld.getId(), false);
+                
+                if(spiel.pruefeID2(feld2)){
+                    kannSchlagen=false;
+                }else{
+                	if(spiel.pruefeUnten(feld2)){
+                		kannSchlagen=false;
+                	}else
+                
+                if ((feld2.getFigur() != null)
+                        && (feld2.getFigur().getFarbe()
+                                .equals(FarbEnum.SCHWARZ))) {
+                    Spielfeld feld3 = spiel.getNachbar(feld2.getId(), false);
+                    if (feld3.getFigur() == null) {
+                        kannSchlagen = true;
+                        datenSchlagen.add(feld.getId());
+                        datenSchlagen.add(feld2.getId());
+                        datenSchlagen.add(feld3.getId());
+                    } else {
+                        kannSchlagen = false;
+                    }
+                } else {
+                    kannSchlagen = false;
+                }
+            }
+        }}}
+        return kannSchlagen;
+
+    }
+
+
+	
+//	public abstract String gebeStart();
+//	public abstract String gebeZiel();
+	public abstract ArrayList<String> startZiel();
+
+
 
 }
